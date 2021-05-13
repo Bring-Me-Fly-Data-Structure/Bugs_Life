@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package Issue;
-//hello
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -25,6 +26,11 @@ public class Issue implements Comparable<Issue> {
     private String tag;
     private Integer priority;
     private String status;
+
+    public Issue() {
+    }
+    
+    
 
     public Issue(int issueNo, String issueTitle, String descriptionText, String cretor_user, Integer priority, String status) {
         this.issueNo = issueNo;
@@ -130,6 +136,19 @@ public class Issue implements Comparable<Issue> {
         this.status = status;
     }
     
+    public Issue(String issueTitle, String descriptionText,  String cretor_user, String assignee_user, ArrayList comment, String tag, Integer priority, String status) {
+        this.issueNo =0;
+        this.issueTitle = issueTitle;
+        this.descriptionText = descriptionText;
+        this.timestamp = new java.util.Date();
+        this.cretor_user = cretor_user;
+        this.assignee_user = assignee_user;
+        this.comment = comment;
+        this.tag = tag;
+        this.priority = priority;
+        this.status = status;
+    }
+    
     public int getIssueNo() {
         return issueNo;
     }
@@ -203,18 +222,28 @@ public class Issue implements Comparable<Issue> {
     }
 
     public Date getTimestamp() {
-        return timestamp;
+       return timestamp;
+    }
+    
+    public String changeDateFormat(){
+        SimpleDateFormat ft=new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        return ft.format(timestamp);
     }
 
     @Override
     public int compareTo(Issue object) {
+        int result=0;
         if (this.getPriority() < object.getPriority()) {
-            return 1;
+            result= 2;
         } else if (this.getPriority() > object.getPriority()) {
-            return -1;
-        } else {
-            return 0;
+            result= -1;
+        } else if(this.getPriority() == object.getPriority()){
+            if(this.getTimestamp().compareTo(object.getTimestamp())>0){
+                result= 1;
+            }else
+                result= 0;
         }
+        return result;
     }
     
     
