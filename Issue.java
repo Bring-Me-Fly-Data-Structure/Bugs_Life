@@ -84,31 +84,31 @@ public class Issue implements Comparable<Issue> {
         this.comment=null;
     }
     
-    public Issue(int issueNo, String issueTitle, String descriptionText, String cretor_user, String assignee_user, ArrayList comment, Integer priority, String status) {
-        this.issueNo = issueNo;
-        this.issueTitle = issueTitle;
-        this.descriptionText = descriptionText;
-        this.timestamp = new java.util.Date();
-        this.cretor_user = cretor_user;
-        this.assignee_user = assignee_user;
-        this.comment = comment;
-        this.priority = priority;
-        this.status = status;
-        this.tag=null;
-    }
-
-//    public Issue(int issueNo, String issueTitle, String descriptionText, String cretor_user, String assignee_user, ArrayList<String> tag, Integer priority, String status) {
+//    public Issue(int issueNo, String issueTitle, String descriptionText, String cretor_user, String assignee_user, ArrayList comment, Integer priority, String status) {
 //        this.issueNo = issueNo;
 //        this.issueTitle = issueTitle;
 //        this.descriptionText = descriptionText;
 //        this.timestamp = new java.util.Date();
 //        this.cretor_user = cretor_user;
 //        this.assignee_user = assignee_user;
-//        this.tag = tag;
+//        this.comment = comment;
 //        this.priority = priority;
 //        this.status = status;
-//        this.comment=null;
+//       this.tag=null;
 //    }
+
+    public Issue(int issueNo, String issueTitle, String descriptionText, String cretor_user, String assignee_user, ArrayList<String> tag, Integer priority, String status) {
+        this.issueNo = issueNo;
+        this.issueTitle = issueTitle;
+        this.descriptionText = descriptionText;
+        this.timestamp = new java.util.Date();
+        this.cretor_user = cretor_user;
+        this.assignee_user = assignee_user;
+        this.tag = tag;
+        this.priority = priority;
+        this.status = status;
+        this.comment=null;
+    }
 
     public Issue(int issueNo, String issueTitle, String descriptionText,  String cretor_user, ArrayList comment, ArrayList<String> tag, Integer priority, String status) {
         this.issueNo = issueNo;
