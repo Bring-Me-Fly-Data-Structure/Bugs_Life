@@ -25,7 +25,7 @@ public class Issuequeue {
         this.queuename=queuename;
     }
     
-    public boolean offer(int issueNo, String issueTitle, String descriptionText, String cretor_user, Integer priority, String status){
+       public boolean offer(int issueNo, String issueTitle, String descriptionText, String cretor_user, Integer priority, String status){
         Issue obj=new Issue(issueNo,issueTitle,descriptionText,cretor_user,priority,status);
         //return list.offer(obj);
         return list.add(obj);
@@ -37,7 +37,7 @@ public class Issuequeue {
          return list.add(obj);
     }
     
-    public boolean offer(int issueNo, String issueTitle, String descriptionText, String cretor_user, Integer priority,String tag, String status){
+    public boolean offer(int issueNo, String issueTitle, String descriptionText, String cretor_user, Integer priority,ArrayList<String> tag, String status){
         Issue obj=new Issue(issueNo,issueTitle,descriptionText,cretor_user,priority,tag,status);
         //return list.offer(obj);
          return list.add(obj);
@@ -49,31 +49,31 @@ public class Issuequeue {
          return list.add(obj);
     }
     
-    public boolean offer(int issueNo, String issueTitle, String descriptionText, String cretor_user, String assignee_user, ArrayList comment, Integer priority, String status){
-        Issue obj=new Issue(issueNo,issueTitle,descriptionText,cretor_user,assignee_user,comment,priority,status);
-        //return list.offer(obj);
-         return list.add(obj);
-    }
-    
-    public boolean offer(int issueNo, String issueTitle, String descriptionText, String cretor_user, String assignee_user, String tag, Integer priority, String status){
+//    public boolean offer(int issueNo, String issueTitle, String descriptionText, String cretor_user, String assignee_user, ArrayList comment, Integer priority, String status){
+//        Issue obj=new Issue(issueNo,issueTitle,descriptionText,cretor_user,assignee_user,comment,priority,status);
+//        //return list.offer(obj);
+//         return list.add(obj);
+//    }
+//    
+    public boolean offer(int issueNo, String issueTitle, String descriptionText, String cretor_user, String assignee_user, ArrayList<String> tag, Integer priority, String status){
         Issue obj=new Issue(issueNo,issueTitle,descriptionText,cretor_user,assignee_user,tag,priority,status);
         //return list.offer(obj);
          return list.add(obj);
     }
     
-    public boolean offer(int issueNo, String issueTitle, String descriptionText,  String cretor_user, ArrayList comment, String tag, Integer priority, String status){
+    public boolean offer(int issueNo, String issueTitle, String descriptionText,  String cretor_user, ArrayList comment, ArrayList<String> tag, Integer priority, String status){
         Issue obj=new Issue(issueNo,issueTitle,descriptionText,cretor_user,comment,tag,priority,status);
         //return list.offer(obj);
         return list.add(obj);
     }
     
-    public boolean offer(int issueNo, String issueTitle, String descriptionText,  String cretor_user, String assignee_user, ArrayList comment, String tag, Integer priority, String status){
+    public boolean offer(int issueNo, String issueTitle, String descriptionText,  String cretor_user, String assignee_user, ArrayList comment, ArrayList<String> tag, Integer priority, String status){
         Issue obj=new Issue(issueNo,issueTitle,descriptionText,cretor_user,assignee_user,comment,tag,priority,status);
         //return list.offer(obj);
          return list.add(obj);
     }
     
-    public boolean offer(String issueTitle, String descriptionText,  String cretor_user, String assignee_user, ArrayList comment, String tag, Integer priority, String status){
+    public boolean offer(String issueTitle, String descriptionText,  String cretor_user, String assignee_user, ArrayList comment, ArrayList<String> tag, Integer priority, String status){
         Issue obj=new Issue(issueTitle,descriptionText,cretor_user,assignee_user,comment,tag,priority,status);
         //return list.offer(obj);
          return list.add(obj);
