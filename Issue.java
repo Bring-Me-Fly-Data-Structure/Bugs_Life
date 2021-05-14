@@ -23,7 +23,7 @@ public class Issue implements Comparable<Issue> {
     private String cretor_user;
     private String assignee_user;
     private ArrayList comment;
-    private String tag;
+    private ArrayList<String> tag;
     private Integer priority;
     private String status;
 
@@ -71,7 +71,7 @@ public class Issue implements Comparable<Issue> {
         this.tag=null;
     }
 
-    public Issue(int issueNo, String issueTitle, String descriptionText, String cretor_user,Integer priority, String tag,String status) {
+    public Issue(int issueNo, String issueTitle, String descriptionText, String cretor_user,Integer priority, ArrayList<String> tag,String status) {
         this.issueNo = issueNo;
         this.issueTitle = issueTitle;
         this.descriptionText = descriptionText;
@@ -97,20 +97,20 @@ public class Issue implements Comparable<Issue> {
         this.tag=null;
     }
 
-    public Issue(int issueNo, String issueTitle, String descriptionText, String cretor_user, String assignee_user, String tag, Integer priority, String status) {
-        this.issueNo = issueNo;
-        this.issueTitle = issueTitle;
-        this.descriptionText = descriptionText;
-        this.timestamp = new java.util.Date();
-        this.cretor_user = cretor_user;
-        this.assignee_user = assignee_user;
-        this.tag = tag;
-        this.priority = priority;
-        this.status = status;
-        this.comment=null;
-    }
+//    public Issue(int issueNo, String issueTitle, String descriptionText, String cretor_user, String assignee_user, ArrayList<String> tag, Integer priority, String status) {
+//        this.issueNo = issueNo;
+//        this.issueTitle = issueTitle;
+//        this.descriptionText = descriptionText;
+//        this.timestamp = new java.util.Date();
+//        this.cretor_user = cretor_user;
+//        this.assignee_user = assignee_user;
+//        this.tag = tag;
+//        this.priority = priority;
+//        this.status = status;
+//        this.comment=null;
+//    }
 
-    public Issue(int issueNo, String issueTitle, String descriptionText,  String cretor_user, ArrayList comment, String tag, Integer priority, String status) {
+    public Issue(int issueNo, String issueTitle, String descriptionText,  String cretor_user, ArrayList comment, ArrayList<String> tag, Integer priority, String status) {
         this.issueNo = issueNo;
         this.issueTitle = issueTitle;
         this.descriptionText = descriptionText;
@@ -123,7 +123,7 @@ public class Issue implements Comparable<Issue> {
         this.assignee_user=null;
     }
 
-    public Issue(int issueNo, String issueTitle, String descriptionText,  String cretor_user, String assignee_user, ArrayList comment, String tag, Integer priority, String status) {
+    public Issue(int issueNo, String issueTitle, String descriptionText,  String cretor_user, String assignee_user, ArrayList comment, ArrayList<String> tag, Integer priority, String status) {
         this.issueNo = issueNo;
         this.issueTitle = issueTitle;
         this.descriptionText = descriptionText;
@@ -136,7 +136,7 @@ public class Issue implements Comparable<Issue> {
         this.status = status;
     }
     
-    public Issue(String issueTitle, String descriptionText,  String cretor_user, String assignee_user, ArrayList comment, String tag, Integer priority, String status) {
+    public Issue(String issueTitle, String descriptionText,  String cretor_user, String assignee_user, ArrayList comment, ArrayList<String> tag, Integer priority, String status) {
         this.issueNo =0;
         this.issueTitle = issueTitle;
         this.descriptionText = descriptionText;
@@ -197,11 +197,11 @@ public class Issue implements Comparable<Issue> {
         this.comment = comment;
     }
 
-    public String getTag() {
+    public ArrayList<String> getTag() {
         return tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(ArrayList<String> tag) {
         this.tag = tag;
     }
 
