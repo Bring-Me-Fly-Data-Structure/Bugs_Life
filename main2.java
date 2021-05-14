@@ -72,7 +72,7 @@ public class main2 {
         String description="";
         String cname="";
         String aname="";
-        String tag="";
+        ArrayList<String> tag=null;
         Integer priority=0;
         String status="";
         
@@ -123,7 +123,7 @@ public class main2 {
             input.nextLine();
             if(option2.equals("Y")||option2.equals("y")){
                 System.out.println("Add tag : ");
-                tag=input.nextLine();
+                tag.add(input.nextLine());
             }
             System.out.println("Add priority : ");
             priority=input.nextInt();
