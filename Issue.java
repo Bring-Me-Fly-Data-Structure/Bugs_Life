@@ -36,7 +36,7 @@ public class Issue implements Comparable<Issue> {
         this.issueNo = issueNo;
         this.issueTitle = issueTitle;
         this.descriptionText = descriptionText;
-        this.timestamp = timestamp;
+        this.timestamp = new java.util.Date();
         this.cretor_user = cretor_user;
         this.priority = priority;
         this.status = status;
