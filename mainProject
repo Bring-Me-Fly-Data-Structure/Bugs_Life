@@ -39,6 +39,7 @@ public class mainProject {
        
         ProjectDashboard board = new ProjectDashboard(projectName);
       
+        // able to add and remove project
         //board.addProject(name);
         //board.removeProject("The Coding");
         
