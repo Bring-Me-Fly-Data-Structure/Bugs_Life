@@ -78,7 +78,7 @@ public class Comment {
         this.user = user;
     }
 
-    //need to
+    //need to modify to become same as example
     @Override
     public String toString() {
         return "Comment{" + "commentId=" + commentId + ", text=" + text + ", react=" + react + ", timestamp=" + timestamp + ", user=" + user + '}';
