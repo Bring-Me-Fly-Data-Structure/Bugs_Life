@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package dsassignment;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
-/**
- *
- * @author User
- */
 public class DSassignment {
      public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -36,7 +27,7 @@ public class DSassignment {
         //System.out.println("Enter new project name: ");
         //String name= sc.nextLine();
         
-        
+        //havent complete
          ArrayList <String> issueTitle = new ArrayList<String>(){
             {
                 add(" Can't display the table    ");
@@ -67,8 +58,3 @@ public class DSassignment {
         int id=sc.nextInt();
         }
 }
-       
-  
-      
-
-
