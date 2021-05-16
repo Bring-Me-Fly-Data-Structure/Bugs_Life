@@ -3,7 +3,7 @@ package com.mycompany.mavenproject2;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.List;
-//import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -24,7 +24,7 @@ import java.util.Date;
     "timestamp",
     "comments"
 })
-//@Generated("jsonschema2pojo")
+
 public class Issue implements Comparable<Issue> {
 
     @JsonProperty("id")
@@ -48,6 +48,7 @@ public class Issue implements Comparable<Issue> {
     @JsonProperty("comments")
     private ArrayList<Comment> comments;
 
+    @JsonIgnore
     private java.util.Date timestampformat;
 
     public Issue() {
@@ -64,7 +65,10 @@ public class Issue implements Comparable<Issue> {
         this.createdBy = createdBy;
         this.assignee = assignee;
         this.comments = comments;
+        
         this.timestampformat = new java.util.Date();
+        Integer i = Math.toIntExact( new java.util.Date().getTime()/1000);
+        this.timestamp = i;
     }
 
     @JsonCreator
@@ -78,6 +82,7 @@ public class Issue implements Comparable<Issue> {
         this.descriptionText = descriptionText;
         this.createdBy = createdBy;
         this.assignee = assignee;
+        this.timestamp = timestamp;
         this.timestampformat = new java.util.Date((long) timestamp * 1000);
         this.comments = comments;
     }
