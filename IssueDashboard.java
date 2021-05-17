@@ -203,7 +203,8 @@ public class IssueDashboard {
     }
     
     public void search(ArrayList<String>b){
-     
+     //i just temporary put those issues available in json file
+     //not sure if this method ok
        System.out.print("Search the issues (by keyword): ");
        String ans=sc.nextLine();
       
