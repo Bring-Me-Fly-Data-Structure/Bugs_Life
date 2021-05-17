@@ -1,4 +1,5 @@
 
+
 package dsassignment;
 
 import java.util.ArrayList;
@@ -203,44 +204,43 @@ public class IssueDashboard {
     }
     
     public void search(ArrayList<String>b){
-     //i just temporary put those issues available in json file
-     //not sure if this method ok
+     //not sure is it okay to search in this way
        System.out.print("Search the issues (by keyword): ");
        String ans=sc.nextLine();
       
-       System.out.println("Issue board");
-       System.out.println("+------+----------------------------------+----------------+----------+-------------+-------------------+--------------+-------------+");
-       System.out.printf("%1s%3s%4s%18s%17s%9s%8s%7s%4s%11s%3s%11s%9s%11s%4s%10s%4s", "|","ID","|","Title", "|"," Status","|","Tag","|","Priority","|","Time","|","Assignee","|","CreatedBy","|");
        System.out.println();
-       System.out.println("+------+----------------------------------+----------------+----------+-------------+-------------------+--------------+-------------+");
+       System.out.println("+------+----------------------------------+-------------------------+---------------+");
+       System.out.printf("%1s%3s%4s%18s%17s%7s%8s%7s%6s", "|","ID","|","Title", "|","  Descriptive Text","|","  Comments","|");
+       System.out.println();
+       System.out.println("+------+----------------------------------+-------------------------+---------------+");
     
        for(int i=0;i<1;i++){  
          if(ans.equalsIgnoreCase("can't display")){
-            System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(0),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+            System.out.printf("%1s%3s%4s%18s%7s%18s%8s%10s%6s","|",(i+1),"|",b.get(0),"|",this.getDescriptiveText(),"|",this.getComment(),"|");               
          }
        
          if(ans.equalsIgnoreCase("can't open")){
-             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(1),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+            System.out.printf("%1s%3s%4s%18s%7s%18s%8s%10s%6s","|",(i+1),"|",b.get(1),"|",this.getDescriptiveText(),"|",this.getComment(),"|");               
          }
        
          if(ans.equalsIgnoreCase("flash")){
-             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(2),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+            System.out.printf("%1s%3s%4s%18s%7s%18s%8s%10s%6s","|",(i+1),"|",b.get(2),"|",this.getDescriptiveText(),"|",this.getComment(),"|");                          
          }
        
          if(ans.equalsIgnoreCase("unstyled content")){
-             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(2),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+            System.out.printf("%1s%3s%4s%18s%7s%18s%8s%10s%6s","|",(i+1),"|",b.get(2),"|",this.getDescriptiveText(),"|",this.getComment(),"|");               
          }
        
          if(ans.equalsIgnoreCase("trapped")){
-             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(3),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+            System.out.printf("%1s%3s%4s%18s%7s%18s%8s%10s%6s","|",(i+1),"|",b.get(3),"|",this.getDescriptiveText(),"|",this.getComment(),"|");                             
          }
        
          if(ans.equalsIgnoreCase("404 page")){
-             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(3),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+            System.out.printf("%1s%3s%4s%18s%7s%18s%8s%10s%6s","|",(i+1),"|",b.get(3),"|",this.getDescriptiveText(),"|",this.getComment(),"|");               
          }
          
          System.out.println();
-         System.out.println("+------+----------------------------------+----------------+----------+-------------+-------------------+--------------+-------------+");
+         System.out.println("+------+----------------------------------+-------------------------+---------------+");
         }
       
     }
