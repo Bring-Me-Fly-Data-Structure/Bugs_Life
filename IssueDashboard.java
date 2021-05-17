@@ -18,7 +18,7 @@ public class IssueDashboard {
     private String tag;
     private String assignee;
     private String creator;
-    private String title;
+    //private String title;
     private String descriptiveText;
     private ArrayList comment;
     
@@ -99,13 +99,13 @@ public class IssueDashboard {
         this.creator = creator;
     }
 
-    public String getTitle() {
+    /*public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
+    }*/
 
     public String getDescriptiveText() {
         return descriptiveText;
@@ -149,24 +149,21 @@ public class IssueDashboard {
         return result;
     }
   
-    public void display(){
-        int i=1;
+    public void display(ArrayList<String>b){
+      
         System.out.println("Issue board");
         System.out.println("+------+----------------------------------+----------------+----------+-------------+-------------------+--------------+-------------+");
         System.out.printf("%1s%3s%4s%18s%17s%9s%8s%7s%4s%11s%3s%11s%9s%11s%4s%10s%4s", "|","ID","|","Title", "|"," Status","|","Tag","|","Priority","|","Time","|","Assignee","|","CreatedBy","|");
         System.out.println();
         System.out.println("+------+----------------------------------+----------------+----------+-------------+-------------------+--------------+-------------+");
     
-        if(issueTitle.size()==0){
+        if(b.size()==0){
             System.out.printf("%1s%3s%4s%18s%17s%9s%8s%7s%4s%11s%3s%11s%9s%11s%4s%10s%4s", "|","-","|","-", "|","-","|","-","|","-","|","-","|","-","|","-","|");
         }else{
-            if(i< issueTitle.size()){
-             issueTitle.get(i);
-             //this.setIssueID(i);
-             System.out.printf("%1s%3s%4s%18s%7s%5s%6s%5s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",this.issueID,"|",this.getIssueTitle(),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");
-             i++;
-            }
-        System.out.println("\n+------+----------------------------------+----------------+----------+-------------+-------------------+--------------+-------------+");
+          for(int i=0;i<b.size();i++){ 
+             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(i),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");
+             System.out.println("\n+------+----------------------------------+----------------+----------+-------------+-------------------+--------------+-------------+");
+        }
         }
     }
     
@@ -205,21 +202,47 @@ public class IssueDashboard {
         }
     }
     
-    public boolean search(){
-        System.out.print("Option: 1.Search by title  2.Search by descriptive text  3.Search by comment");
-        int choice=sc.nextInt();
-        
-        if(choice==1){
-            //investigating
-        }else if (choice==2){
-            //investigating
-        }else if(choice==3){
-           //investigating 
-        }else{
-            System.out.println("Results not found");
+    public void search(ArrayList<String>b){
+     
+       System.out.print("Search the issues (by keyword): ");
+       String ans=sc.nextLine();
+      
+       System.out.println("Issue board");
+       System.out.println("+------+----------------------------------+----------------+----------+-------------+-------------------+--------------+-------------+");
+       System.out.printf("%1s%3s%4s%18s%17s%9s%8s%7s%4s%11s%3s%11s%9s%11s%4s%10s%4s", "|","ID","|","Title", "|"," Status","|","Tag","|","Priority","|","Time","|","Assignee","|","CreatedBy","|");
+       System.out.println();
+       System.out.println("+------+----------------------------------+----------------+----------+-------------+-------------------+--------------+-------------+");
+    
+       for(int i=0;i<1;i++){  
+         if(ans.equalsIgnoreCase("can't display")){
+            System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(0),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+         }
+       
+         if(ans.equalsIgnoreCase("can't open")){
+             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(1),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+         }
+       
+         if(ans.equalsIgnoreCase("flash")){
+             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(2),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+         }
+       
+         if(ans.equalsIgnoreCase("unstyled content")){
+             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(2),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+         }
+       
+         if(ans.equalsIgnoreCase("trapped")){
+             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(3),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+         }
+       
+         if(ans.equalsIgnoreCase("404 page")){
+             System.out.printf("%1s%3s%4s%18s%7s%11s%6s%8s%3s%9s%5s%8s%12s%9s%6s%8s%6s","|",(i+1),"|",b.get(3),"|",this.getStatus(),"|",this.getTag(),"|",this.getPriority(),"|",this.getTimestamp(),"|",this.getAssignee(),"|",this.getCreator(),"|");               
+         }
+         
+         System.out.println();
+         System.out.println("+------+----------------------------------+----------------+----------+-------------+-------------------+--------------+-------------+");
         }
-        return true;
+      
     }
     
-    
+
 }
