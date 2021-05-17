@@ -32,9 +32,8 @@ public class DSassignment {
             {
                add(" Can't display the table    ");
                add(" Can't open file            ");
-               add(" Can't access to the website");
-               add(" Calculation error          ");
-               add(" File not found             ");
+               add(" Flash of unstyled content  ");
+               add(" User is trapped on 404 page");
             }
         };
        
@@ -53,13 +52,13 @@ public class DSassignment {
         if(option==1){         
            board.sortAplhanumerically(projectName);
         }else{
-            System.out.println("sort by project ID");   //havent complete
+           board.sortProjectID(projectName);   //havent complete
         }
         
         System.out.print("Enter selected issue ID to check project: ");
         int issueID = sc.nextInt();
         board1.setIssueID(issueID);
-        board1.display();
+        board1.display(issueTitle);
         if(board1.getIssueID()==0){
             System.out.println("Enter 'c' to create issue: ");
             String c= sc.next();
@@ -75,15 +74,16 @@ public class DSassignment {
             if(choice.equals("c")){
                 //lead to one create issue method?    
             }else if(choice.equals("s")){
-                board1.search();
+                board1.search(issueTitle);
             }else{
                 
             }
         }
         
+        //the issues can be sorted by priority or timestamp
         System.out.println("The issues can be sorted by priority or timestamps");
-        System.out.print("Option: 1.sort by priority  2.sort by timestamp");
-        System.out.println("Your option: ");
+        System.out.println("Option: 1.sort by priority  2.sort by timestamp");
+        System.out.print("Your option: ");
         int choice1=sc.nextInt();
         
         if(choice1==1){
