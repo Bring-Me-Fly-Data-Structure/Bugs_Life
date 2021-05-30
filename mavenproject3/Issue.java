@@ -423,7 +423,7 @@ public class Issue implements Serializable {
         //String tag ="";
         Integer priority = 0;
         // String status = "";
-        ArrayList<React> b = new ArrayList<>();
+        //ArrayList<React> b = new ArrayList<>();
 
         System.out.println("Enter Title : ");
         title = input.nextLine();
