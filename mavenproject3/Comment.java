@@ -54,7 +54,7 @@ public class Comment implements Serializable {
     @JsonProperty("text")
     private String text;
 
-    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
 //    @Transient
     @JsonProperty("react")
     private List<React2> react = new ArrayList<>();
