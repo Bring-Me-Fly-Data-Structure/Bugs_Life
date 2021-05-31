@@ -45,7 +45,7 @@ public class Project implements Serializable  {
     @JsonProperty("name")
     private String name;
     
-    @OneToMany(mappedBy="project",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="project",fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
     @JsonProperty("issues")
     private List<Issue> issues = new ArrayList<>();
     
