@@ -98,7 +98,7 @@ public class Issue implements Serializable {
     @JsonProperty("timestamp")
     private Integer timestamp;
 
-    @OneToMany(mappedBy = "issue", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "issue", fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
     // @Transient
     @JsonProperty("comments")
     private List<Comment> comments = new ArrayList<>();
