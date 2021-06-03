@@ -45,7 +45,7 @@ public class Project implements Serializable  {
     @JsonProperty("name")
     private String name;
     
-    @OneToMany(mappedBy="project",fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
+    @OneToMany(mappedBy="project",fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
     @JsonProperty("issues")
     private List<Issue> issues = new ArrayList<>();
     
@@ -132,19 +132,6 @@ public class Project implements Serializable  {
     		// Get matching customer object and output
     		a = tq.getResultList();
  
-    	}
-    	catch(NoResultException ex) {
-    		ex.printStackTrace();
-    	}
-    	finally {
-    		em.close();
-    	}
-    //    ObjectMapper objM = new ObjectMapper();
-//        try {
-//
-//            Example base = objM.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json"), Example.class);
-//            ArrayList<Project> a = base.getProjects();
-
             e.addProject(a);
             System.out.println("Enter 'a' to sort Projects by alphanumerical \nor 'i' to sort by Project ID: ");
             String sortMethod = in.next();
@@ -165,6 +152,19 @@ public class Project implements Serializable  {
                 Project.setProjectID(id);
                 Issue.displayIssueBoard();
             }
+    	}
+    	catch(NoResultException ex) {
+    		ex.printStackTrace();
+    	}
+    	finally {
+    		em.close();
+    	}
+    //    ObjectMapper objM = new ObjectMapper();
+//        try {
+//
+//            Example base = objM.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json"), Example.class);
+//            ArrayList<Project> a = base.getProjects();
+
             // System.out.println("Enter selected project id to check project: ");
 //        } catch (JsonProcessingException ex) {
 //            System.out.println(" file input error");
