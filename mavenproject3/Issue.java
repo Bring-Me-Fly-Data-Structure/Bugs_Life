@@ -98,7 +98,7 @@ public class Issue implements Serializable {
     @JsonProperty("timestamp")
     private Integer timestamp;
 
-    @OneToMany(mappedBy = "issue", fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
+    @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
     // @Transient
     @JsonProperty("comments")
     private List<Comment> comments = new ArrayList<>();
@@ -580,14 +580,6 @@ public class Issue implements Serializable {
         try {
             // Get matching customer object and output
             projectList = tq.getResultList();
-            //testing
-//            System.out.println("***********");
-//            System.out.println(projectList.get(0).getIssues().get(0).getComments().get(0).getReact());
-        } catch (NoResultException ex) {
-            ex.printStackTrace();
-        } finally {
-            em.close();
-        }
         i.offer(projectList.get(Project.getProjectID() - 1).getIssues());
         System.out.println("Enter 'p' to sort Issues by priority\nor 't' to sort by timestamp\nor 'i' to sort by issue id");
         String sortMethod = input.next();
@@ -622,6 +614,12 @@ public class Issue implements Serializable {
         } else if (option.equals("b")) {
             Project.displayProject();
         }
+        } catch (NoResultException ex) {
+            ex.printStackTrace();
+        } finally {
+            em.close();
+        }
+
     }
 
     public static void setIssueStatus(String newStatus) throws IOException {
