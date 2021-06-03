@@ -20,26 +20,33 @@ import java.util.Scanner;
 public class tester {
     
     public static void main(String[] args) throws IOException {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Enter '1' to login, '2' to register");
-        int userInput = in.nextInt();
-        if(userInput==1){
-            User.login();
-        }else if(userInput==2){
-            User.register();
-            User.login();
-        } 
-        
-        while(!User.isLogin_status()){
-            System.out.println("Please login to proceed....");
-            User.login();
-        }
-        
-        Project.displayProject();
+       input();
+       Project.displayProject();
 
     }
 
+ public static void input() throws IOException {
+        Scanner in = new Scanner(System.in);
 
+              try {
+                System.out.println("Enter '1' to login, '2' to register");
+                int userInput = in.nextInt();
+                if (userInput == 1) {
+                    User.login();
+                } else if (userInput == 2) {
+                    User.register();
+                    User.login();
+                }
+                while (!User.isLogin_status()) {
+                    System.out.println("Please login to proceed....");
+                    User.login();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input, retry again.");
+                input();
+            }
+        
+    }
     
     
 
