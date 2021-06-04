@@ -134,7 +134,7 @@ public class Issuequeue {
                     String input = in.next();
                     switch (input) {
                         case "r":
-                            React.addReact();
+                            React2.addReact();
                            // displayIssueDetails(issueNum);
                             break;
                         case "c":
@@ -239,7 +239,7 @@ public class Issuequeue {
                     String input = in.next();
                     switch (input) {
                         case "r":
-                            React.addReact();
+                            React2.addReact();
                            // displayIssueDetails(issueNum);
                             break;
                         case "c":
@@ -285,7 +285,7 @@ public class Issuequeue {
                     String input = in.next();
                     switch (input) {
                         case "r":
-                            React.addReact();
+                            React2.addReact();
                             //displayIssueDetails(issueNum);
                             break;
                         case "c":
@@ -302,28 +302,6 @@ public class Issuequeue {
             }
             index++;
         }
-//
-//        System.out.println("Enter\n'r' to react\nor 'c' to comment\nor 'b' to issue dashboard");
-//        System.out.println("or 's' to change status: ");
-//        Scanner in = new Scanner(System.in);
-//        String input = in.next();
-////        if (input.equals("y")) {
-////            Comment.addComment();
-////        }
-//        switch (input) {
-//            case "r":
-//                React.addReact();
-//                break;
-//            case "c":
-//                Comment.addComment();
-//                break;
-//            case "b":
-//                Issue.displayIssueBoard();
-//                break;
-//            case "s":
-//              if(User.getLoginName().equals(temp.getAssignee()))
-//        }
-
     }
 
 }
