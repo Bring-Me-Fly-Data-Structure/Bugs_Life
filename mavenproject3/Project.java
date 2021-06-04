@@ -113,7 +113,7 @@ public class Project implements Serializable  {
         Project.projectID = projectID;
     }
 
-    //methods
+   //methods
     public static void displayProject() throws IOException {
    
         Example e = new Example();
@@ -155,17 +155,8 @@ public class Project implements Serializable  {
                     displayProject();
             }
             
-            System.out.println("Do you want create project or check project? ");
-            System.out.println("Enter 'c' to create new project.\nEnter 'id' to check project");
-            String input = in.next();
-            if (input.equals("c")) {
-                addProjectByUser();
-            } else if (Issue.isInteger(input)) {
-                int id = Integer.parseInt(input);
-                Project.setProjectID(id);
-                Issue.displayIssueBoard();
-            }
-    	}
+           project();
+   	}
     	catch(NoResultException ex) {
     		ex.printStackTrace();
     	}
@@ -182,6 +173,30 @@ public class Project implements Serializable  {
 //        } catch (JsonProcessingException ex) {
 //            System.out.println(" file input error");
 //        }
+    }
+    
+    
+    public static void project() throws IOException {
+        Scanner in = new Scanner(System.in);
+        try {
+            System.out.println("Do you want create project or check project? ");
+            System.out.println("Enter '0' to create new project.\nEnter 'id' to check project");
+            int input = in.nextInt();
+            if (input == 0) {
+                addProjectByUser();
+            } else {
+                Project.setProjectID(input);
+                Issue.displayIssueBoard();
+          }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please try again.");
+            System.out.println("");
+            project();
+        }catch (IndexOutOfBoundsException a){
+            System.out.println("Invalid input. Please try again.");
+            System.out.println("");
+            project();
+        }
     }
 
     public static void addProjectByUser() throws IOException {
