@@ -25,30 +25,30 @@ public class tester {
 
     }
 
- public static void input() throws IOException {
+public static void input() throws IOException {
         Scanner in = new Scanner(System.in);
 
-              try {
-                System.out.println("Enter '1' to login, '2' to register");
-                int userInput = in.nextInt();
-                if (userInput == 1) {
-                    User.login();
-                } else if (userInput == 2) {
-                    User.register();
-                    User.login();
-                }else if (userInput != 1 && userInput != 2) {
-                System.out.println("Invalid input, retry again.");
+        try {
+            System.out.println("Enter '1' to login, '2' to register");
+            int userInput = in.nextInt();
+            if (userInput == 1) {
+                User.login();
+            } else if (userInput == 2) {
+                User.register();
+                User.login();
+            } else if (userInput != 1 && userInput != 2) {
+                System.out.println("Invalid input, try again.");
                 input();
             }
-                while (!User.isLogin_status()) {
-                    System.out.println("Please login to proceed....");
-                    User.login();
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input, retry again.");
-                input();
+            while (!User.isLogin_status()) {
+                System.out.println("Please login to proceed....");
+                User.login();
             }
-        
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input, try again.");
+            input();
+        }
+
     }
     
     
