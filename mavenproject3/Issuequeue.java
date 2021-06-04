@@ -128,18 +128,20 @@ public class Issuequeue {
                 Scanner in = new Scanner(System.in);
                 if (User.getLoginName().equals(temp.getAssignee()) || User.getLoginName().equals(temp.getCreatedBy())) {
                     System.out.println("Enter\n'r' to react\nor 'c' to comment\nor 'b' to issue dashboard");
-                    System.out.println("or 's' to change status: ");
+                    System.out.println("or 's' to change status \nor 'e' to edit the issue ");
 
                     String input = in.next();
                     switch (input) {
                         case "r":
-                            React2.addReact();
+                            React.addReact();
+                           // displayIssueDetails(issueNum);
                             break;
                         case "c":
                             Comment.addComment();
+                            //displayIssueDetails(issueNum);
                             break;
                         case "b":
-                        //    Issue.displayIssueBoard();
+                            //Issue.displayIssueBoard();
                             break;
                         case "s":
                             if (User.getLoginName().equals(temp.getAssignee())) {
@@ -154,9 +156,9 @@ public class Issuequeue {
                                         break;
                                     case 3:
                                         Issue.setIssueStatus("Resolved");
-                                        User.setNumberSolved(User.getNumberSolved() + 1);
                                         break;
                                 }
+                                 //Issue.displayIssueBoard();
                             } else if (User.getLoginName().equals(temp.getCreatedBy())) {
                                 System.out.println("Enter '1' to Open, '2' to Close");
                                 int a = in.nextInt();
@@ -168,24 +170,132 @@ public class Issuequeue {
                                         Issue.setIssueStatus("Close");
                                         break;
                                 }
+                                 //Issue.displayIssueBoard();
+                            }break;
+                            
+                        case "e":
+                            System.out.println("Which part you want to edit ? ");
+                            System.out.println("Enter '1'--Title '2'--Description '3'--Assignee Name '4'--Priority '5--Tag'");
+                            int editoption=in.nextInt();
+                            in.nextLine();
+                            switch(editoption){
+                                case 1:
+                                    System.out.println("Enter new title : ");
+                                    String newTitle=in.nextLine();
+                                    Issue.setNewIssueTitle(newTitle);
+                                    break;
+                                case 2:
+                                    String newDescription="";
+                                    System.out.println("Enter new description text : ");
+                                    UndoRedoStack<String> a = new UndoRedoStack<>();
+                                    while (in.hasNext()) {
+                                        String s1 = in.nextLine();
+                                        if (s1.equals("end")) {
+                                            break;
+                                        } else if (s1.equals("undo")) {
+                                            a.undo();
+                                            System.out.println(a);
+                                        } else if (s1.equals("redo")) {
+                                            a.redo();
+                                            System.out.println(a);
+                                        } else {
+                                            a.push(s1);
+                                            System.out.println(a);
+                                        }
+
+                                    }
+                                    for (int i = 0; i < a.size(); i++) {
+                                        newDescription = newDescription +a.get(i)+"\n";
+                                    }
+                                    System.out.println(newDescription);
+                                    Issue.setNewDescription(newDescription);
+                                    break;
+                                case 3:
+                                    System.out.println("Enter new assignee name : ");
+                                    String newAssignee=in.nextLine();
+                                    Issue.setNewAssignee(newAssignee);
+                                    break;
+                                case 4:
+                                    System.out.println("Enter new priority : ");
+                                    int newPriority=in.nextInt();
+                                    Issue.setNewPriority(newPriority);
+                                    break;
+                                case 5:
+                                    ArrayList<String> tag = new ArrayList<>();
+                                    System.out.println("Enter new tag : ");
+                                    String newtag=in.nextLine();
+                                    tag.add(newtag);
+                                    Issue.setNewTag(tag);
+                                    break;
+                                    
                             }
                     }
-                     Issue.displayIssueBoard();
-                } else {
+                    Issue.displayIssueBoard();
+                }
+                else if (User.getLoginName().equals(temp.getAssignee()) || User.getLoginName().equals(temp.getCreatedBy())) {
+                    System.out.println("Enter\n'r' to react\nor 'c' to comment\nor 'b' to issue dashboard");
+                    System.out.println("or 's' to change status: ");
+                    String input = in.next();
+                    switch (input) {
+                        case "r":
+                            React.addReact();
+                           // displayIssueDetails(issueNum);
+                            break;
+                        case "c":
+                            Comment.addComment();
+                            //displayIssueDetails(issueNum);
+                            break;
+                        case "b":
+                            //Issue.displayIssueBoard();
+                            break;
+                        case "s":
+                            if (User.getLoginName().equals(temp.getAssignee())) {
+                                System.out.println("Enter '1' to Open, '2' to Close, '3' to Resolved");
+                                int a = in.nextInt();
+                                switch (a) {
+                                    case 1:
+                                        Issue.setIssueStatus("Open");
+                                        break;
+                                    case 2:
+                                        Issue.setIssueStatus("Close");
+                                        break;
+                                    case 3:
+                                        Issue.setIssueStatus("Resolved");
+                                        break;
+                                }
+                                 //Issue.displayIssueBoard();
+                            } else if (User.getLoginName().equals(temp.getCreatedBy())) {
+                                System.out.println("Enter '1' to Open, '2' to Close");
+                                int a = in.nextInt();
+                                switch (a) {
+                                    case 1:
+                                        Issue.setIssueStatus("Open");
+                                        break;
+                                    case 2:
+                                        Issue.setIssueStatus("Close");
+                                        break;
+                                }
+                                 //Issue.displayIssueBoard();
+                            }
+                    }
+                    Issue.displayIssueBoard();
+                }else {
                     System.out.println("Enter\n'r' to react\nor 'c' to comment\nor 'b' to issue dashboard");
                     String input = in.next();
                     switch (input) {
                         case "r":
-                            React2.addReact();
+                            React.addReact();
+                            //displayIssueDetails(issueNum);
                             break;
                         case "c":
                             Comment.addComment();
+                            //displayIssueDetails(issueNum);
                             break;
                         case "b":
-                          //  Issue.displayIssueBoard();
+                            //Issue.displayIssueBoard();
                             break;
                     }
-                     Issue.displayIssueBoard();
+                    Issue.displayIssueBoard();
                 }
                 break;
             }
