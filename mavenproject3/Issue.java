@@ -698,8 +698,8 @@ public class Issue implements Serializable {
        
     }
 
-    public static void setIssueStatus(String newStatus) throws IOException {
-        Scanner in = new Scanner(System.in);
+ public static void setIssueStatus(String newStatus) throws IOException {
+
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -708,10 +708,13 @@ public class Issue implements Serializable {
         // the lowercase c refers to the object
         // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
+        String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
         // Issue the query and get a matching Customer
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
+        List<Issue> issueList = new ArrayList<>();
         String projectName = "";
         int projectID = -1;
         String issueTitle = "";
@@ -720,11 +723,15 @@ public class Issue implements Serializable {
         try {
             // Get matching customer object and output
             projectList = tq.getResultList();
+            issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-            oldstatus = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getStatus();
+            issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
+            issueID = issueList.get(Issue.getIssueID() - 1).getId();
+            oldstatus = issueList.get(Issue.getIssueID() - 1).getStatus();
+//            issueTitle =projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get().getTitle();
+//            issueID =projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get().getId();
+//            oldstatus =projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get().getStatus();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
@@ -793,13 +800,14 @@ public class Issue implements Serializable {
         EntityTransaction et = null;
 
         Issue a = null;
-        // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
+        String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
         // Issue the query and get a matching Customer
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
+        List<Issue> issueList = new ArrayList<>();
         String projectName = "";
         int projectID = -1;
         String issueTitle = "";
@@ -810,9 +818,12 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            //issueTitle=projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-            oldTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID()).getTitle();
+            issueID = issueList.get(Issue.getIssueID() - 1).getId();
+            oldTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
+//            issueTitle=projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
+//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
+//            oldTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
@@ -877,7 +888,7 @@ public class Issue implements Serializable {
     }
 
     public static void setNewDescription(String newDescription) throws IOException {
-        Scanner in = new Scanner(System.in);
+
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -886,10 +897,13 @@ public class Issue implements Serializable {
         // the lowercase c refers to the object
         // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
+        String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
         // Issue the query and get a matching Customer
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
+        List<Issue> issueList = new ArrayList<>();
         String projectName = "";
         int projectID = -1;
         String issueTitle = "";
@@ -900,9 +914,12 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-            oldDescription = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getDescriptionText();
+            issueTitle = issueList.get(Issue.getIssueID()).getTitle();
+            issueID = issueList.get(Issue.getIssueID() - 1).getId();
+            oldDescription = issueList.get(Issue.getIssueID() - 1).getDescriptionText();
+//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
+//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
+//            oldDescription = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getDescriptionText();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
@@ -967,7 +984,7 @@ public class Issue implements Serializable {
     }
 
     public static void setNewAssignee(String newAssignee) throws IOException {
-        Scanner in = new Scanner(System.in);
+
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -976,10 +993,13 @@ public class Issue implements Serializable {
         // the lowercase c refers to the object
         // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
+        String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
         // Issue the query and get a matching Customer
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
+        List<Issue> issueList = new ArrayList<>();
         String projectName = "";
         int projectID = -1;
         String issueTitle = "";
@@ -990,9 +1010,12 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-            oldAssignee = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getAssignee();
+            issueTitle = issueList.get(Issue.getIssueID()).getTitle();
+            issueID = issueList.get(Issue.getIssueID() - 1).getId();
+            oldAssignee = issueList.get(Issue.getIssueID() - 1).getAssignee();
+//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
+//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
+//            oldAssignee = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getAssignee();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
@@ -1064,10 +1087,13 @@ public class Issue implements Serializable {
         // the lowercase c refers to the object
         // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
+        String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
         // Issue the query and get a matching Customer
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
+        List<Issue> issueList = new ArrayList<>();
         String projectName = "";
         int projectID = -1;
         String issueTitle = "";
@@ -1078,9 +1104,12 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-            oldPrio = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getPriority();
+            issueTitle = issueList.get(Issue.getIssueID()).getTitle();
+            issueID = issueList.get(Issue.getIssueID() - 1).getId();
+            oldPrio = issueList.get(Issue.getIssueID() - 1).getPriority();
+//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
+//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
+//            oldPrio = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getPriority();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
@@ -1145,37 +1174,42 @@ public class Issue implements Serializable {
     }
 
     public static void setNewTag(ArrayList newTag) throws IOException {
-         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
 
         Issue a = null;
         // the lowercase c refers to the object
         // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
+        String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
         // Issue the query and get a matching Customer
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
+        List<Issue> issueList = new ArrayList<>();
         String projectName = "";
         int projectID = -1;
         String issueTitle = "";
         int issueID = -1;
-       // String oldTag="";
+        // String oldTag="";
         ArrayList<String> oldTag = new ArrayList<>();
-        
+
         try {
             // Get matching customer object and output
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-            oldTag = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTag();
-            
+            issueTitle = issueList.get(Issue.getIssueID()).getTitle();
+            issueID = issueList.get(Issue.getIssueID() - 1).getId();
+            oldTag = issueList.get(Issue.getIssueID() - 1).getTag();
+//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
+//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
+//            oldTag = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTag();
+
 //            for (int i = 0; i < oldTag.size(); i++) {
 //                oldTag+=oldTag.get(i)+" ";
 //            }
-
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
