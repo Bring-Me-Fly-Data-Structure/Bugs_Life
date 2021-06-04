@@ -413,14 +413,12 @@ public class Issue implements Serializable {
         return list;
     }
 
-    public static Issue create(Scanner input) throws IOException {
+   public static Issue create(Scanner input) throws IOException {
 
         ArrayList<Comment> comment = new ArrayList<>();
         String title = "";
         String description = "";
         String cname = User.getLoginName();
-        String aname = "";
-        ArrayList<String> tag = new ArrayList<>();
         //String tag ="";
         Integer priority = 0;
         // String status = "";
@@ -452,27 +450,10 @@ public class Issue implements Serializable {
         System.out.println(description);
 //        System.out.println("Enter cretor name : ");
 //        cname = input.nextLine();
-        System.out.println("Do u want add assignee name ? input y if yes");
-        String option = input.next();
-        input.nextLine();
-        if (option.equals("Y") || option.equals("y")) {
-            System.out.println("Enter assignee name : ");
-            aname = input.nextLine();
-        }
 
-        System.out.println("Do u want add tag ? input y if yes");
-        String option3 = input.next();
-        //input.nextLine();
-        if (option3.equals("Y") || option3.equals("y")) {
-            System.out.println("Enter number of tag: ");
-            int numT = input.nextInt();
-            //buffer
-            input.nextLine();
-            for (int i = 0; i < numT; i++) {
-                System.out.println("Add tag : ");
-                tag.add(input.nextLine());
-            }
-        }
+            assigneeName();
+            tag();   
+        
         System.out.println("Add priority : ");
         priority = input.nextInt();
         input.nextLine();
@@ -523,7 +504,8 @@ public class Issue implements Serializable {
             et.begin();
 
             // Create and set values for new Issue
-            i = new Issue(title, priority, tag, description, cname, aname, comment);
+             i = new Issue(title, priority, tag(), description, cname, assigneeName(), comment);
+           // i = new Issue(title, priority, tag, description, cname, aname, comment);
             i.setProject(projectList.get(Project.getProjectID() - 1));
             //  projectList.get(Project.getProjectID() - 1).getIssues().add(i);
             // Save the customer object
@@ -545,6 +527,56 @@ public class Issue implements Serializable {
         System.out.println("Add issue successfully");
         return i;
     }
+    
+    public static String assigneeName(){
+        Scanner input=new Scanner(System.in);
+        String aname = "";
+        try{
+       
+        System.out.println("Do u want add assignee name ? input '1' if yes");
+        int option = input.nextInt();
+        input.nextLine();
+        if (option==1) {
+            System.out.println("Enter assignee name : ");
+            aname = input.nextLine();  
+        }else if(option!=1){
+            System.out.println("Invalid input, try again.");
+            assigneeName();
+        }
+        }catch(InputMismatchException e){
+            System.out.println("Invalid input, try again.");
+            assigneeName();
+        }
+          return aname;
+    }
+   
+    public static ArrayList tag(){
+          ArrayList<String> tag = new ArrayList<>();
+        Scanner input=new Scanner(System.in);
+        try{
+        System.out.println("Do u want add tag ? input '1' if yes");
+        int option3 = input.nextInt();
+        //input.nextLine();
+        if (option3==1) {
+            System.out.println("Enter number of tag: ");
+            int numT = input.nextInt();
+            //buffer
+            input.nextLine();
+            for (int i = 0; i < numT; i++) {
+                System.out.println("Add tag : ");
+                tag.add(input.nextLine());
+            }
+        }else if(option3!=1){
+             System.out.println("Invalid input, try again.");
+             tag();
+        }
+        }catch(InputMismatchException e){
+             System.out.println("Invalid input, try again.");
+             tag();
+        }
+        return tag;
+    }
+    
 
     public static boolean isInteger(String input) {
         try {
