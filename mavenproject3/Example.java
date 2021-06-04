@@ -1,50 +1,44 @@
-//package com.example;
+
 package mavenproject3;
 
 import java.util.List;
-//import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "projects",
     "users"
 })
-//@Generated("jsonschema2pojo")
+
 public class Example {
 
     @JsonProperty("projects")
-    private ArrayList<Project> projects = new ArrayList<>();
+    private List<Project> projects = new ArrayList<>();
     @JsonProperty("users")
-    private ArrayList<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     @JsonProperty("projects")
-    public ArrayList<Project> getProjects() {
+    public List<Project> getProjects() {
         return projects;
     }
 
     @JsonProperty("projects")
-    public void setProjects(ArrayList<Project> projects) {
+    public void setProjects(List<Project> projects) {
         this.projects = projects;
     }
 
     @JsonProperty("users")
-    public ArrayList<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
     @JsonProperty("users")
-    public void setUsers(ArrayList<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
