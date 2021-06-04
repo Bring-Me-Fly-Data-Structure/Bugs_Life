@@ -658,7 +658,7 @@ public class Issue implements Serializable {
 
         } else if (option.equals("b")) {
             Project.displayProject();
-        }else if (!option.equals("s") || !option.equals("c") || !option.equals("b")) {
+        }else if (!option.equals("s") || !option.equals("c") || !option.equals("b")||isInteger(option))  {
                 System.out.println("Invalid input. Please try again.");
                 System.out.println("");
                 function(i);
