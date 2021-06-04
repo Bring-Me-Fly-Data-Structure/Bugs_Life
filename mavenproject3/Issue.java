@@ -413,6 +413,9 @@ public class Issue implements Serializable {
         return list;
     }
 
+   private static Integer priority1 = 0;
+    private static String aname = "";
+    private static ArrayList<String>  tag1 = new ArrayList<>();
    public static Issue create(Scanner input) throws IOException {
 
         ArrayList<Comment> comment = new ArrayList<>();
@@ -420,7 +423,6 @@ public class Issue implements Serializable {
         String description = "";
         String cname = User.getLoginName();
         //String tag ="";
-        Integer priority = 0;
         // String status = "";
         //ArrayList<React> b = new ArrayList<>();
 
@@ -452,11 +454,9 @@ public class Issue implements Serializable {
 //        cname = input.nextLine();
 
             assigneeName();
-            tag();   
+            
         
-        System.out.println("Add priority : ");
-        priority = input.nextInt();
-        input.nextLine();
+       
 //        System.out.println("Add status : "); //no need input from user******
 //        status = input.nextLine();
 
@@ -504,7 +504,7 @@ public class Issue implements Serializable {
             et.begin();
 
             // Create and set values for new Issue
-             i = new Issue(title, priority, tag(), description, cname, assigneeName(), comment);
+             i = new Issue(title, priority1, tag1, description, cname, aname, comment);
            // i = new Issue(title, priority, tag, description, cname, aname, comment);
             i.setProject(projectList.get(Project.getProjectID() - 1));
             //  projectList.get(Project.getProjectID() - 1).getIssues().add(i);
@@ -528,60 +528,67 @@ public class Issue implements Serializable {
         return i;
     }
     
-    public static String assigneeName(){
-        Scanner input=new Scanner(System.in);
-        String aname = "";
-        try{
-       
-        System.out.println("Do u want add assignee name ? input '1' if yes");
-        int option = input.nextInt();
-        input.nextLine();
-        if (option==1) {
-            System.out.println("Enter assignee name : ");
-            aname = input.nextLine();  
-        }else if(option!=1){
-            System.out.println("Invalid input. Please try again.");
-            System.out.println("");
-            assigneeName();
-        }
-        }catch(InputMismatchException e){
-            System.out.println("Invalid input. Please try again.");
-            System.out.println("");
-            assigneeName();
-        }
-          return aname;
-    }
-   
-    public static ArrayList tag(){
-          ArrayList<String> tag = new ArrayList<>();
-        Scanner input=new Scanner(System.in);
-        try{
-        System.out.println("Do u want add tag ? input '1' if yes");
-        int option3 = input.nextInt();
-        //input.nextLine();
-        if (option3==1) {
-            System.out.println("Enter number of tag: ");
-            int numT = input.nextInt();
-            //buffer
+    public static void assigneeName() {
+        Scanner input = new Scanner(System.in);
+        try {
+
+            System.out.println("Do u want add assignee name ? input '1' if yes ,'2' if no");
+            int option = input.nextInt();
             input.nextLine();
-            for (int i = 0; i < numT; i++) {
-                System.out.println("Add tag : ");
-                tag.add(input.nextLine());
+            if (option == 1) {
+                System.out.println("Enter assignee name : ");
+                aname = input.nextLine();
+                tag();
+            } else if (option == 2) {
+                tag();
+            } else if (option != 1 && option != 2) {
+                System.out.println("Invalid input. Please try again.");
+                System.out.println("");
+                assigneeName();
             }
-        }else if(option3!=1){
-             System.out.println("Invalid input. Please try again.");
-             System.out.println("");
-             tag();
-        }
-        }catch(InputMismatchException e){
-             System.out.println("Invalid input. Please try again.");
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please try again.");
             System.out.println("");
-             tag();
+            assigneeName();
         }
-        return tag;
+    }
+
+    public static void tag() {
+        Scanner input = new Scanner(System.in);
+        try {
+            System.out.println("Do u want add tag ? input '1' if yes, '2' if no");
+            int option3 = input.nextInt();
+            //input.nextLine();
+            if (option3 == 1) {
+                System.out.println("Enter number of tag: ");
+                int numT = input.nextInt();
+                //buffer
+                input.nextLine();
+                for (int i = 0; i < numT; i++) {
+                    System.out.println("Add tag : ");
+                    tag1.add(input.nextLine());
+                }
+                System.out.println("Add priority : ");
+                priority1 = input.nextInt();
+                input.nextLine();
+
+            } else if (option3 == 2) {
+                System.out.println("Add priority : ");
+                priority1 = input.nextInt();
+                input.nextLine();
+
+            } else if (option3 != 1 && option3 != 2) {
+                System.out.println("Invalid input. Please try again.");
+                System.out.println("");
+                tag();
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please try again.");
+            System.out.println("");
+            tag();
+        }
     }
     
-
     public static boolean isInteger(String input) {
         try {
             Integer.parseInt(input);
