@@ -36,7 +36,10 @@ public class tester {
                 } else if (userInput == 2) {
                     User.register();
                     User.login();
-                }
+                }else if (userInput != 1 && userInput != 2) {
+                System.out.println("Invalid input, retry again.");
+                input();
+            }
                 while (!User.isLogin_status()) {
                     System.out.println("Please login to proceed....");
                     User.login();
