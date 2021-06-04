@@ -50,7 +50,7 @@ public class Example {
         Comparator<Project> alphabet = new Comparator<>() {
             @Override
             public int compare(Project s1, Project e2) {
-                return s1.getName().compareTo(e2.getName());
+                return s1.getName().compareToIgnoreCase(e2.getName());
             }
         };
          Collections.sort(a,alphabet);
