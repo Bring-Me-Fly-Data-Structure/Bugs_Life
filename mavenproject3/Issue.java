@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import javax.persistence.*;
 
@@ -582,10 +583,12 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
         i.offer(projectList.get(Project.getProjectID() - 1).getIssues());
         System.out.println("Enter 'p' to sort Issues by priority\nor 't' to sort by timestamp\nor 'i' to sort by issue id");
+     
         String sortMethod = input.next();
         switch (sortMethod) {
             case "p":
                 sortPriority(i);
+ 
                 break;
             case "t":
                 sortTime(i);
@@ -593,9 +596,15 @@ public class Issue implements Serializable {
             case "i":
                 sortID(i);
                 break;
+            default:
+                System.out.println("Invalid input. Please try again.");
+                displayIssueBoard();      
+                break;
         }
-        //System.out.println(projectList.get(Project.getProjectID() - 1).getIssues().get(0).getTimestampformat()); //testing
+        
         i.display();
+        //System.out.println(projectList.get(Project.getProjectID() - 1).getIssues().get(0).getTimestampformat()); //testing
+    
         System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'b' to return to project dashboard:");
         String option = input.next();
         input.nextLine();
