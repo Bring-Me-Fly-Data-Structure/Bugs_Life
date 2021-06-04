@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,7 +47,13 @@ public class Example {
     public void sortAplhanumerically(List<Project> a) {
         System.out.println("Project board");
         System.out.println("-------------");
-       // Collections.sort(a);
+        Comparator<Project> alphabet = new Comparator<>() {
+            @Override
+            public int compare(Project s1, Project e2) {
+                return s1.getName().compareTo(e2.getName());
+            }
+        };
+         Collections.sort(a,alphabet);
         System.out.println("+------+----------------------+--------+");
         System.out.printf("%1s%3s%4s%15s%8s%6s%2s", "|", "ID", "|", "Project Name", "|", " Issues", "|");
         System.out.println();
