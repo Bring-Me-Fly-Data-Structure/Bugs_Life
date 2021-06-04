@@ -540,11 +540,13 @@ public class Issue implements Serializable {
             System.out.println("Enter assignee name : ");
             aname = input.nextLine();  
         }else if(option!=1){
-            System.out.println("Invalid input, try again.");
+            System.out.println("Invalid input. Please try again.");
+            System.out.println("");
             assigneeName();
         }
         }catch(InputMismatchException e){
-            System.out.println("Invalid input, try again.");
+            System.out.println("Invalid input. Please try again.");
+            System.out.println("");
             assigneeName();
         }
           return aname;
@@ -567,11 +569,13 @@ public class Issue implements Serializable {
                 tag.add(input.nextLine());
             }
         }else if(option3!=1){
-             System.out.println("Invalid input, try again.");
+             System.out.println("Invalid input. Please try again.");
+             System.out.println("");
              tag();
         }
         }catch(InputMismatchException e){
-             System.out.println("Invalid input, try again.");
+             System.out.println("Invalid input. Please try again.");
+            System.out.println("");
              tag();
         }
         return tag;
