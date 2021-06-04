@@ -38,6 +38,7 @@ public static void input() throws IOException {
                 User.login();
             } else if (userInput != 1 && userInput != 2) {
                 System.out.println("Invalid input. Please try again.");
+                System.out.println("");
                 input();
             }
             while (!User.isLogin_status()) {
@@ -46,6 +47,7 @@ public static void input() throws IOException {
             }
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please try again.");
+            System.out.println("");
             input();
         }
 
