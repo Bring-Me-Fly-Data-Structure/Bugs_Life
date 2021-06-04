@@ -658,16 +658,44 @@ public class Issue implements Serializable {
 
         } else if (option.equals("b")) {
             Project.displayProject();
-        }else if (!option.equals("s") || !option.equals("c") || !option.equals("b")||isInteger(option))  {
+        } else if (!option.equals("s") || !option.equals("c") || !option.equals("b")||isInteger(option)) {
                 System.out.println("Invalid input. Please try again.");
                 System.out.println("");
+                function(i);
             }
+
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
             em.close();
         }
 
+    }
+    
+    public static void function(Issuequeue i) throws IOException {
+        Scanner input = new Scanner(System.in);
+        
+            System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'b' to return to project dashboard:");
+            String option = input.next();
+            input.nextLine();
+            if (isInteger(option)) {
+
+                int numIndex = Integer.parseInt(option);
+                Issue.setIssueID(numIndex);
+                i.displayIssueDetails(numIndex);
+            } else if (option.equals("s")) {
+
+                System.out.println("Sedang dikaji");
+            } else if (option.equals("c")) {
+                addIssue();
+            } else if (option.equals("b")) {
+                Project.displayProject();
+            } else if (!option.equals("s") || !option.equals("c") || !option.equals("b")||isInteger(option)) {
+                System.out.println("Invalid input. Please try again.");
+                System.out.println("");
+                function(i);
+            }
+       
     }
 
     public static void setIssueStatus(String newStatus) throws IOException {
