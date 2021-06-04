@@ -256,7 +256,6 @@ public class Comment implements Serializable {
         return result;
     }
 
-    //method
     public static void addComment() throws IOException {
         Scanner input = new Scanner(System.in);
 
@@ -285,21 +284,7 @@ public class Comment implements Serializable {
         System.out.println(sentence);
         String username = User.getLoginName();
 
-//        ObjectMapper mapper = new ObjectMapper();
-//        //read file
-//        Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json"), Example.class);
-//
-//        int commentId = root.getProjects().get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().size();
-//        Comment m = new Comment(commentId + 1, sentence, username);
-//        //Update value in object
-//        root.getProjects().get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().add(m);
-//        String json = mapper.writeValueAsString(root);
-//
-//        try (FileWriter file = new FileWriter("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json")) {
-//
-//            file.write(json);
-//            System.out.println("Successfully updated json object to file...!!");
-//        }
+
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
@@ -335,7 +320,8 @@ public class Comment implements Serializable {
 
             // Create and set values for new customer
             Comment m = new Comment(sentence, username);
-            m.setIssue(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1));
+          //  m.setIssue(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1));
+            m.setIssue(projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get());
             em.persist(m);
 
             // Save the customer object
@@ -356,20 +342,24 @@ public class Comment implements Serializable {
         initializeReact();
     }
 
-    public static void initializeReact() {
+       public static void initializeReact() {
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
+        String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
         // Issue the query and get a matching Customer
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
+        List<Issue> issueList = new ArrayList<>();
 
         try {
             // Get matching customer object and output
             projectList = tq.getResultList();
+            issueList = tq2.getResultList();
             //  userList = tq2.getResultList();
 
         } catch (NoResultException ex) {
@@ -390,13 +380,13 @@ public class Comment implements Serializable {
             React2 love = new React2("love", 0);
             React2 cry = new React2("cry", 0);
             // System.out.println(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().toString());
-            int commentIndex = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().size() - 1;
-            angry.setComment(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().get(commentIndex));
-            happy.setComment(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().get(commentIndex));
-            thumb.setComment(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().get(commentIndex));
-            smile.setComment(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().get(commentIndex));
-            love.setComment(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().get(commentIndex));
-            cry.setComment(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().get(commentIndex));
+            int commentIndex = issueList.get(Issue.getIssueID() - 1).getComments().size() - 1;
+            angry.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
+            happy.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
+            thumb.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
+            smile.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
+            love.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
+            cry.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             // Save the customer object
             em.persist(angry);
             em.persist(happy);
