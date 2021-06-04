@@ -136,12 +136,24 @@ public class Project implements Serializable  {
             System.out.println("Enter 'a' to sort Projects by alphanumerical \nor 'i' to sort by Project ID: ");
             String sortMethod = in.next();
 
-            if (sortMethod.equals("a")) {
+            /*if (sortMethod.equals("a")) {
                 e.sortAplhanumerically(a);
             } else if (sortMethod.equals("i")) {
                 e.sortProjectID(a);
-            }
+            }*/
            
+            switch(sortMethod){
+                case "a":
+                    e.sortAplhanumerically(a);
+                    break;
+                case "i":
+                    e.sortProjectID(a);
+                    break;
+                default:
+                    System.out.println("Invalid input. Please try again.");
+                    System.out.println();
+                    displayProject();
+            }
             
             System.out.println("Do you want create project or check project? ");
             System.out.println("Enter 'c' to create new project.\nEnter 'id' to check project");
