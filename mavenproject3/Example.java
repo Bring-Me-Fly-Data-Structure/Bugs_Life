@@ -58,10 +58,21 @@ public class Example {
         System.out.printf("%1s%3s%4s%15s%8s%6s%2s", "|", "ID", "|", "Project Name", "|", " Issues", "|");
         System.out.println();
         System.out.println("+------+----------------------+--------+");
-        for (int i = 0; i < a.size(); i++) {
-            System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", (a.get(i).getId()), "|", a.get(i).getName(), "|", a.get(i).getIssues().size(), "|");
-            System.out.println();
-            System.out.println("+------+----------------------+--------+");
+//         for (int i = 0; i < a.size(); i++) {
+//             System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", (a.get(i).getId()), "|", a.get(i).getName(), "|", a.get(i).getIssues().size(), "|");
+//             System.out.println();
+//             System.out.println("+------+----------------------+--------+");
+//         }
+        if(a.isEmpty()){
+                System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", "-", "|", "-", "|", "-", "|");
+                System.out.println();
+                System.out.println("+------+----------------------+--------+");
+        }else{
+            for (int i = 0; i < a.size(); i++) {
+                System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", (a.get(i).getId()), "|", a.get(i).getName(), "|", a.get(i).getIssues().size(), "|");
+                System.out.println();
+                System.out.println("+------+----------------------+--------+");
+            }
         }
     }
 
@@ -72,10 +83,21 @@ public class Example {
         System.out.printf("%1s%3s%4s%15s%8s%6s%2s", "|", "ID", "|", "Project Name", "|", " Issues", "|");
         System.out.println();
         System.out.println("+------+----------------------+--------+");
-        for (int i = 0; i < a.size(); i++) {
-            System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", (i + 1), "|", a.get(i).getName(), "|", a.get(i).getIssues().size(), "|");
-            System.out.println();
-            System.out.println("+------+----------------------+--------+");
+//         for (int i = 0; i < a.size(); i++) {
+//             System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", (i + 1), "|", a.get(i).getName(), "|", a.get(i).getIssues().size(), "|");
+//             System.out.println();
+//             System.out.println("+------+----------------------+--------+");
+//         }
+        if(a.isEmpty()){
+                System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", "-", "|", "-", "|", "-", "|");
+                System.out.println();
+                System.out.println("+------+----------------------+--------+");
+        }else{
+            for (int i = 0; i < a.size(); i++) {
+                System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", (i + 1), "|", a.get(i).getName(), "|", a.get(i).getIssues().size(), "|");
+                System.out.println();
+                System.out.println("+------+----------------------+--------+");
+            }
         }
     }
 
