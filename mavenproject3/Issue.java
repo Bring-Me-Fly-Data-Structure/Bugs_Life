@@ -428,16 +428,16 @@ public class Issue implements Serializable {
 
         System.out.println("Enter Title : ");
         title = input.nextLine();
-        System.out.println("Enter description text : ");
+       System.out.println("Enter description text : (Enter '$undo' for undo, '$redo' for redo, '$end' for end)");        
         UndoRedoStack<String> a = new UndoRedoStack<>();
-        while (input.hasNext()) {
+         while (input.hasNext()) {
             String s1 = input.nextLine();
-            if (s1.equals("end")) {
+            if (s1.equals("$end")) {
                 break;
-            } else if (s1.equals("undo")) {
+            } else if (s1.equals("$undo")) {
                 a.undo();
                 System.out.println(a);
-            } else if (s1.equals("redo")) {
+            } else if (s1.equals("$redo")) {
                 a.redo();
                 System.out.println(a);
             } else {
@@ -446,10 +446,18 @@ public class Issue implements Serializable {
             }
 
         }
-        for (int i = 0; i < a.size(); i++) {
-            description = description + "\n" + a.get(i);
+        System.out.println("------------------------------");
+        System.out.println("Description text");
+        System.out.println("------------------------------");
+        description=description+a.get(0)+"\n";
+        for (int i = 1; i < a.size()-1; i++) {
+            description = description+ a.get(i)+"\n";
         }
+        description=description+a.get(a.size()-1);
+        
         System.out.println(description);
+        System.out.println("------------------------------");
+
 //        System.out.println("Enter cretor name : ");
 //        cname = input.nextLine();
 
