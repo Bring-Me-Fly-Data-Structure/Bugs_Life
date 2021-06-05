@@ -692,7 +692,7 @@ public class Issue implements Serializable {
                 i.displayIssueDetails(numIndex);
             } else if (option.equals("s")) {
 
-                System.out.println("Sedang dikaji");
+                FuzzySearch.search();
             } else if (option.equals("c")) {
                 addIssue();
             } else if (option.equals("b")) {
