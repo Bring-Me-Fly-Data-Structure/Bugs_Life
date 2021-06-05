@@ -220,7 +220,7 @@ public class Issuequeue {
 
                                     System.out.println(newDescription);
                                     System.out.println("------------------------------");
-                                    System.out.println(newDescription);
+                             
                                     Issue.setNewDescription(newDescription);
                                     break;
                                 case 3:
