@@ -247,7 +247,7 @@ public class Comment implements Serializable {
                 result += String.format("%c", 0x00002764) + "x" + reactList.get(5).getCount() + "  ";
             }
             if (reactList.get(6).getCount() != 0) {
-                result += String.format("%c", 0x0001F62D) + "x" + reactList.get(5).getCount() + "  ";
+                result += String.format("%c", 0x0001F62D) + "x" + reactList.get(6).getCount() + "  ";
             }
             //result+=reactList.toString();
         } catch (NoResultException ex) {
