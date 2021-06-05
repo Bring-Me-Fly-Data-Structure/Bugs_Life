@@ -449,11 +449,15 @@ public class Issue implements Serializable {
         System.out.println("------------------------------");
         System.out.println("Description text");
         System.out.println("------------------------------");
+        if(a.size()>1){
         description=description+a.get(0)+"\n";
         for (int i = 1; i < a.size()-1; i++) {
             description = description+ a.get(i)+"\n";
         }
         description=description+a.get(a.size()-1);
+        }else{
+            description=description+a.get(0);
+        }
         
         System.out.println(description);
         System.out.println("------------------------------");
