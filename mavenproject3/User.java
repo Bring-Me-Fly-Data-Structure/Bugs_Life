@@ -259,16 +259,26 @@ public class User implements Serializable{
                     System.out.println("Incorrect password");
                 }
             } else {
-                System.out.println("username not found, Please register");
-                System.out.println("Do you want register ? Enter 'y' if yes");
+                 System.out.println("username not found, Please register");
+                Register();
+            }
+    }
+            
+            public static void Register ()throws IOException {
+                Scanner input = new Scanner(System.in);
+                System.out.println("Do you want register ? Enter 'y' if yes, 'n' if no");
                 String Doregister = input.next();
                 if (Doregister.equals("y")) {
                     register();
+                }else if(Doregister.equals("n")){
+                    System.out.println("You are signed out of the system");
+                    System.exit(0);
+                }else if(!Doregister.equals("y")&&!Doregister.equals("n")){
+                    System.out.println("Invalid input. Please try again");
+                    System.out.println("");
+                    Register();
                 }
             }
-
-         
-    }
 
     public static void logout() {
         setLogin_status(false);
