@@ -187,16 +187,16 @@ public class Issuequeue {
                                     break;
                                 case 2:
                                     String newDescription="";
-                                    System.out.println("Enter new description text : ");
+                                    System.out.println("Enter new description text : (Enter '$undo' for undo, '$redo' for redo, '$end' for end)");        
                                     UndoRedoStack<String> a = new UndoRedoStack<>();
-                                    while (in.hasNext()) {
+                                     while (in.hasNext()) {
                                         String s1 = in.nextLine();
-                                        if (s1.equals("end")) {
+                                        if (s1.equals("$end")) {
                                             break;
-                                        } else if (s1.equals("undo")) {
+                                        } else if (s1.equals("$undo")) {
                                             a.undo();
                                             System.out.println(a);
-                                        } else if (s1.equals("redo")) {
+                                        } else if (s1.equals("$redo")) {
                                             a.redo();
                                             System.out.println(a);
                                         } else {
@@ -205,9 +205,21 @@ public class Issuequeue {
                                         }
 
                                     }
-                                    for (int i = 0; i < a.size(); i++) {
-                                        newDescription = newDescription +a.get(i)+"\n";
-                                    }
+                                    System.out.println("------------------------------");
+                                    System.out.println("Description text");
+                                    System.out.println("------------------------------");
+                                    if(a.size()>1){
+                                        newDescription=newDescription+a.get(0)+"\n";
+                                        for (int i = 1; i < a.size()-1; i++) {
+                                            newDescription = newDescription+ a.get(i)+"\n";
+                                        }
+                                        newDescription=newDescription+a.get(a.size()-1);
+                                        }else{
+                                            newDescription=newDescription+a.get(0);
+                                        }
+
+                                    System.out.println(newDescription);
+                                    System.out.println("------------------------------");
                                     System.out.println(newDescription);
                                     Issue.setNewDescription(newDescription);
                                     break;
