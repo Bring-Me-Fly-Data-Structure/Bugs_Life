@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package mavenproject3;
-import java.util.*;
+
+import java.util.Stack;
+
 
 public class UndoRedoStack<E> extends Stack<E> {
     private Stack undoStack;
@@ -38,7 +40,7 @@ public class UndoRedoStack<E> extends Stack<E> {
         boolean result=false;
         if(undoStack.size()<1){
             System.out.println("--Unable to undo--");
-            undoStack.push("push");
+            //undoStack.push("push");
             //redoStack.push("");
           
             result=false;
@@ -51,12 +53,8 @@ public class UndoRedoStack<E> extends Stack<E> {
     // pre : canUndo() (throws IllegalStateException if not)
     // post: undoes the last stack push or pop command
     public void undo() {
-        if (!canUndo()) {
-      
-             E empty=(E)"";
-            super.push(empty);
-            
-        }
+        if (canUndo()) {
+  
         Object action = undoStack.pop();
         if (action.equals("push")) {
             E value = super.pop();
@@ -66,6 +64,7 @@ public class UndoRedoStack<E> extends Stack<E> {
             E value = (E) undoStack.pop();         
             super.push(value);
             redoStack.push("pop");
+        }
         }
     }
 
