@@ -271,7 +271,6 @@ public class User implements Serializable{
                 if (Doregister.equals("y")) {
                     register();
                 }else if(Doregister.equals("n")){
-                    System.out.println("You are signed out of the system");
                     System.exit(0);
                 }else if(!Doregister.equals("y")&&!Doregister.equals("n")){
                     System.out.println("Invalid input. Please try again");
