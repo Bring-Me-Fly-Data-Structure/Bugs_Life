@@ -235,16 +235,19 @@ public class Comment implements Serializable {
                 result += String.format("%c", 0x0001F601) + "x" + reactList.get(1).getCount() + "  ";
             }
             if (reactList.get(2).getCount() != 0) {
-                result += String.format("%c", 0x0001F620) + "x" + reactList.get(2).getCount() + "  ";
+                result += String.format("%c", 0x0001F44D) + "x" + reactList.get(2).getCount() + "  ";
             }
             if (reactList.get(3).getCount() != 0) {
-                result += String.format("%c", 0x0001F601) + "x" + reactList.get(3).getCount() + "  ";
+                result += String.format("%c", 0x0001F60A) + "x" + reactList.get(3).getCount() + "  ";
             }
             if (reactList.get(4).getCount() != 0) {
-                result += String.format("%c", 0x0001F44D) + "x" + reactList.get(4).getCount() + "  ";
+                result += String.format("%c", 0x0001F622) + "x" + reactList.get(4).getCount() + "  ";
             }
             if (reactList.get(5).getCount() != 0) {
-                result += String.format("%c", 0x0001F620) + "x" + reactList.get(5).getCount() + "  ";
+                result += String.format("%c", 0x00002764) + "x" + reactList.get(5).getCount() + "  ";
+            }
+            if (reactList.get(6).getCount() != 0) {
+                result += String.format("%c", 0x0001F62D) + "x" + reactList.get(5).getCount() + "  ";
             }
             //result+=reactList.toString();
         } catch (NoResultException ex) {
@@ -377,6 +380,7 @@ public class Comment implements Serializable {
             React2 happy = new React2("happy", 0);
             React2 thumb = new React2("thumb up", 0);
             React2 smile = new React2("smile", 0);
+            React2 sad = new React2("sad", 0);
             React2 love = new React2("love", 0);
             React2 cry = new React2("cry", 0);
             // System.out.println(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().toString());
@@ -385,6 +389,7 @@ public class Comment implements Serializable {
             happy.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             thumb.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             smile.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
+            sad.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             love.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             cry.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             // Save the customer object
@@ -392,6 +397,7 @@ public class Comment implements Serializable {
             em.persist(happy);
             em.persist(thumb);
             em.persist(smile);
+            em.persist(sad);
             em.persist(love);
             em.persist(cry);
 
