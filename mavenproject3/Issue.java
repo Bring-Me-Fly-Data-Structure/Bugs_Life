@@ -825,7 +825,7 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = issueList.get(Issue.getIssueID()).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID() -1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
 //            issueTitle=projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
@@ -921,7 +921,7 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = issueList.get(Issue.getIssueID()).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID() -1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldDescription = issueList.get(Issue.getIssueID() - 1).getDescriptionText();
 //            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
@@ -1017,7 +1017,7 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = issueList.get(Issue.getIssueID()).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID() -1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldAssignee = issueList.get(Issue.getIssueID() - 1).getAssignee();
 //            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
@@ -1111,7 +1111,7 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = issueList.get(Issue.getIssueID()).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID() -1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldPrio = issueList.get(Issue.getIssueID() - 1).getPriority();
 //            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
@@ -1207,7 +1207,7 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = issueList.get(Issue.getIssueID()).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID() -1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldTag = issueList.get(Issue.getIssueID() - 1).getTag();
 //            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
