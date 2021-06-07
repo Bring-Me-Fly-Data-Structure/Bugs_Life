@@ -83,6 +83,49 @@ public class JSON_IMPORT_EXPORT {
         ObjectMapper mapper = new ObjectMapper();
         //read file
         Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\import.json"), Example.class);
+        int sizeProject = root.getProjects().size();
+        for (int i = 0; i < sizeProject; i++) {
+            int sizeIssue = root.getProjects().get(i).getIssues().size();
+            for (int j = 0; j < sizeIssue; j++) {
+                String title=root.getProjects().get(i).getIssues().get(j).getTitle();
+                String ctime=root.getProjects().get(i).getIssues().get(j).changeDateFormat();
+                String cname=root.getProjects().get(i).getIssues().get(j).getCreatedBy();
+                String allowedEdittor = cname;
+                String viewer = "All User";
+                String aname=root.getProjects().get(i).getIssues().get(j).getAssignee();
+                String changeStatus="";
+                if(aname.equals("")||aname.equals(" ")){
+                    changeStatus = cname;
+                }else{
+                    changeStatus = aname + " & " + cname;
+                }
+                Connection userSQL = new Connection();
+                try {
+
+                    //? is unspecified value, to substitute in an integer, string, double or blob value.
+                    String register = "INSERT INTO access_control (creator,issueTitle,timestamp,allowed_edittor,allowed_viewer,allowed_changeStatus) VALUES(?,?,?,?,?,?)";
+
+                    //insert record of register 
+                    pS = userSQL.getConnection().prepareStatement(register);
+
+                    // create the mysql insert preparedstatement
+                    //.setString : placeholders that are only replaced with the actual values inside the system
+                    pS.setString(1, cname);
+                    pS.setString(2, title);
+                    pS.setString(3, ctime);
+                    pS.setString(4, allowedEdittor);
+                    pS.setString(5, viewer);
+                    pS.setString(6, changeStatus);
+
+                    pS.executeUpdate(); //return int value
+
+                    System.out.println("Access Control List update successfully ");
+
+                } catch (SQLException e) {
+                    System.out.println("Failed to update Access COntrol List. Try again!");
+                }
+            }
+        }
         List<Project> projectList = root.getProjects();
         List<User> userList = root.getUsers();
 //        for (int i = 0; i < projectList.size(); i++) {
