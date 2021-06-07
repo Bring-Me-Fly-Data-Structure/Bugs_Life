@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Scanner;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.persistence.*;
 
@@ -25,35 +26,33 @@ import javax.persistence.*;
 })
 @Entity
 @Table(name = "user")
-public class User implements Serializable{
-    
+public class User implements Serializable {
 
-
-  //  @OneToMany(mappedBy="userComment",fetch = FetchType.EAGER)
+    //  @OneToMany(mappedBy="userComment",fetch = FetchType.EAGER)
     @JsonIgnore
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_ID")  
+    @Column(name = "user_ID")
     @JsonProperty("userid")
     private Integer userid;
-    
-    @Column(name = "username") 
+
+    @Column(name = "username")
     @JsonProperty("username")
     private String username;
-    
-    @Column(name = "password") 
+
+    @Column(name = "password")
     @JsonProperty("password")
     private String password;
 
     @Transient
     @JsonIgnore
     public static String loginName;
-    
-    @Transient    
+
+    @Transient
     @JsonIgnore
     public static boolean login_status = false;
-    
+
     @Transient
     @JsonIgnore
     public static int numberSolved;
@@ -61,10 +60,14 @@ public class User implements Serializable{
     @JsonIgnore
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("hibernateTest");
 
+    @Transient
+    @JsonIgnore
+    private static PreparedStatement pS;
+
     public User() {
     }
 
-    @JsonCreator 
+    @JsonCreator
     public User(@JsonProperty("userid") Integer userid, @JsonProperty("username") String username, @JsonProperty("password") String password) {
         this.userid = userid;
         this.username = username;
@@ -76,7 +79,6 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    
     @JsonProperty("userid")
     public Integer getUserid() {
         return userid;
@@ -140,27 +142,25 @@ public class User implements Serializable{
 //        Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\data6.json"), Example.class);
 //        List<User> userList = root.getUsers();
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-    	String strQuery = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
-    	
-    	// Issue the query and get a matching User
-    	TypedQuery<User> tq = em.createQuery(strQuery, User.class);
-    	List<User> userList = new ArrayList<>();
-    	try {
-    		// Get matching user objects
-    		userList = tq.getResultList();
- 
-    	}
-    	catch(NoResultException ex) {
-    		ex.printStackTrace();
-    	}
-    	finally {
-    		//em.close();
-    	}
+        String strQuery = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
 
+        // Issue the query and get a matching User
+        TypedQuery<User> tq = em.createQuery(strQuery, User.class);
+        List<User> userList = new ArrayList<>();
+        try {
+            // Get matching user objects
+            userList = tq.getResultList();
+
+        } catch (NoResultException ex) {
+            ex.printStackTrace();
+        } finally {
+            //em.close();
+        }
 
         System.out.println("Enter username: ");
         String username = in.nextLine();
 
+        //
         while (true) {
             //obtain the first object from userlist with same username
             User obj = findUsername(userList, username);
@@ -168,20 +168,45 @@ public class User implements Serializable{
             if (userList.contains(obj)) {
                 System.out.println("Username has been taken, please input new username: ");
                 username = in.next();
+                java.util.Date date = new java.util.Date();
+                SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                String newtimestamp = ft.format(date);
+                String status = "Register Failed";
+                String reason = "Username has been taken";
+                Connection userSQL = new Connection();
+                try {
+
+                    //? is unspecified value, to substitute in an integer, string, double or blob value.
+                    String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+
+                    //insert record of register 
+                    pS = userSQL.getConnection().prepareStatement(register);
+
+                    // create the mysql insert preparedstatement
+                    //.setString : placeholders that are only replaced with the actual values inside the system
+                    pS.setString(1, username);
+                    pS.setString(2, newtimestamp);
+                    pS.setString(3, status);
+                    pS.setString(4, reason);
+
+                    pS.executeUpdate(); //return int value
+
+                    System.out.println("Admin Log update successfully ");
+
+                } catch (SQLException e) {
+                    System.out.println("Failed to update Admin Log. Try again!");
+                }
             } else {
                 System.out.println("Enter password: ");
                 String password = in.next();
 //                User a = new User(userList.size() + 1, username, password);
-                  // Create and set values for new user
-                  User b = new User( username, password);
+                // Create and set values for new user
+                User b = new User(username, password);
 
                 //Update value in object
 //                root.getUsers().add(a);
 //                String json = mapper.writeValueAsString(root);
-                
-                
                 // The EntityManager class allows operations such as create, read, update, delete
-
                 // Used to issue transactions on the EntityManager
                 EntityTransaction et = null;
 
@@ -189,7 +214,6 @@ public class User implements Serializable{
                     // Get transaction and start
                     et = em.getTransaction();
                     et.begin();
-
 
                     // Save the user object
                     em.persist(b);
@@ -201,6 +225,34 @@ public class User implements Serializable{
                     }
                     ex.printStackTrace();
                 } finally {
+                    java.util.Date date = new java.util.Date();
+                    SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                    String newtimestamp = ft.format(date);
+                    String status = "Register successfully";
+                    String reason = "-";
+                    Connection userSQL = new Connection();
+                    try {
+
+                        //? is unspecified value, to substitute in an integer, string, double or blob value.
+                        String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+
+                        //insert record of register 
+                        pS = userSQL.getConnection().prepareStatement(register);
+
+                        // create the mysql insert preparedstatement
+                        //.setString : placeholders that are only replaced with the actual values inside the system
+                        pS.setString(1, username);
+                        pS.setString(2, newtimestamp);
+                        pS.setString(3, status);
+                        pS.setString(4, reason);
+
+                        pS.executeUpdate(); //return int value
+
+                        System.out.println("Admin Log update successfully ");
+
+                    } catch (SQLException e) {
+                        System.out.println("Failed to update Admin Log. Try again!");
+                    }
                     System.out.println("Successfully registered into database.");
                     // Close EntityManager
                     em.close();
@@ -223,63 +275,307 @@ public class User implements Serializable{
         System.out.println("Enter password: ");
         String password = input.nextLine();
         ObjectMapper objM = new ObjectMapper();
-        
-    	EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-    	
-    	// the lowercase c refers to the object
-    	// :custID is a parameterized query thats value is set below
-    	String strQuery = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
-    	
-    	// Issue the query and get a matching User
-    	TypedQuery<User> tq = em.createQuery(strQuery, User.class);
-    	List<User> userList = new ArrayList<>();
-    	try {
-    		// Get matching user objects
-    		userList = tq.getResultList();
- 
-    	}
-    	catch(NoResultException ex) {
-    		ex.printStackTrace();
-    	}
-    	finally {
-    		em.close();
-    	}
+
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+
+        // the lowercase c refers to the object
+        // :custID is a parameterized query thats value is set below
+        String strQuery = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
+
+        // Issue the query and get a matching User
+        TypedQuery<User> tq = em.createQuery(strQuery, User.class);
+        List<User> userList = new ArrayList<>();
+        try {
+            // Get matching user objects
+            userList = tq.getResultList();
+
+        } catch (NoResultException ex) {
+            ex.printStackTrace();
+        } finally {
+            em.close();
+        }
 //            Example base = objM.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\data6.json"), Example.class);
 //            List<User> userList = base.getUsers();
 //
-              //obtain the first object from userlist with same username
-             User obj = findUsername(userList, username);
+        //obtain the first object from userlist with same username
+        User obj = findUsername(userList, username);
 
-            if (userList.contains(obj)) {
-                if (obj.getPassword().equals(password)) {
-                    System.out.println("Welcome back " + userList.get(userList.indexOf(obj)).getUsername());
-                    setLogin_status(true);
-                    setLoginName(userList.get(userList.indexOf(obj)).getUsername());
-                } else {
-                    System.out.println("Incorrect password");
+        if (userList.contains(obj)) {
+            if (obj.getPassword().equals(password)) {
+                System.out.println("Welcome back " + userList.get(userList.indexOf(obj)).getUsername());
+                setLogin_status(true);
+                setLoginName(userList.get(userList.indexOf(obj)).getUsername());
+                java.util.Date date = new java.util.Date();
+                SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                String newtimestamp = ft.format(date);
+                String status = "Login successfully";
+                String reason = "-";
+                Connection userSQL = new Connection();
+                try {
+
+                    //? is unspecified value, to substitute in an integer, string, double or blob value.
+                    String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+
+                    //insert record of register 
+                    pS = userSQL.getConnection().prepareStatement(register);
+
+                    // create the mysql insert preparedstatement
+                    //.setString : placeholders that are only replaced with the actual values inside the system
+                    pS.setString(1, userList.get(userList.indexOf(obj)).getUsername());
+                    pS.setString(2, newtimestamp);
+                    pS.setString(3, status);
+                    pS.setString(4, reason);
+
+                    pS.executeUpdate(); //return int value
+
+                    System.out.println("Admin Log update successfully ");
+
+                } catch (SQLException e) {
+                    System.out.println("Failed to update Admin Log. Try again!");
                 }
             } else {
-                 System.out.println("username not found, Please register");
-                Register();
-            }
-    }
-            
-            public static void Register ()throws IOException {
-                Scanner input = new Scanner(System.in);
-                System.out.println("Do you want register ? Enter 'y' if yes, 'n' if no");
-                String Doregister = input.next();
-                if (Doregister.equals("y")) {
-                    register();
-                }else if(Doregister.equals("n")){
-                    System.exit(0);
-                }else if(!Doregister.equals("y")&&!Doregister.equals("n")){
-                    System.out.println("Invalid input. Please try again");
-                    System.out.println("");
-                    Register();
+//                int tries = 1;
+//                java.util.Date date = new java.util.Date();
+//                SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+//                String newtimestamp = ft.format(date);
+//                String status = "Login failed";
+//                String reason = "Incorrect Password";
+//                Connection userSQL = new Connection();
+//                try {
+//
+//                    //? is unspecified value, to substitute in an integer, string, double or blob value.
+//                    String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+//
+//                    //insert record of register 
+//                    pS = userSQL.getConnection().prepareStatement(register);
+//
+//                    // create the mysql insert preparedstatement
+//                    //.setString : placeholders that are only replaced with the actual values inside the system
+//                    pS.setString(1, userList.get(userList.indexOf(obj)).getUsername());
+//                    pS.setString(2, newtimestamp);
+//                    pS.setString(3, status);
+//                    pS.setString(4, reason);
+//
+//                    pS.executeUpdate(); //return int value
+//
+//                    System.out.println("Admin Log update successfully ");
+//
+//                } catch (SQLException e) {
+//                    System.out.println("Failed to update Admin Log. Try again!");
+//                }
+                int tries = 1;
+                while (!obj.getPassword().equals(password)) {
+                    System.out.println("Incorrect password");
+                    tries++;
+                    if (tries <= 3&& tries > 0) {
+                        java.util.Date date = new java.util.Date();
+                        SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                        String newtimestamp = ft.format(date);
+                        String status = "Login failed";
+                        String reason = "Incorrect Password";
+                        Connection userSQL = new Connection();
+                        try {
+
+                            //? is unspecified value, to substitute in an integer, string, double or blob value.
+                            String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+
+                            //insert record of register 
+                            pS = userSQL.getConnection().prepareStatement(register);
+
+                            // create the mysql insert preparedstatement
+                            //.setString : placeholders that are only replaced with the actual values inside the system
+                            pS.setString(1, userList.get(userList.indexOf(obj)).getUsername());
+                            pS.setString(2, newtimestamp);
+                            pS.setString(3, status);
+                            pS.setString(4, reason);
+
+                            pS.executeUpdate(); //return int value
+
+                            System.out.println("Admin Log update successfully ");
+
+                        } catch (SQLException e) {
+                            System.out.println("Failed to update Admin Log. Try again!");
+                        }
+                    }
+                    System.out.println("Enter password: ");
+                    password = input.nextLine();
+                    if (obj.getPassword().equals(password)) {
+                        java.util.Date date = new java.util.Date();
+                        SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                        String newtimestamp = ft.format(date);
+                        String status = "Login successfully";
+                        String reason = "-";
+                        Connection userSQL = new Connection();
+                        try {
+
+                            //? is unspecified value, to substitute in an integer, string, double or blob value.
+                            String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+
+                            //insert record of register 
+                            pS = userSQL.getConnection().prepareStatement(register);
+
+                            // create the mysql insert preparedstatement
+                            //.setString : placeholders that are only replaced with the actual values inside the system
+                            pS.setString(1, userList.get(userList.indexOf(obj)).getUsername());
+                            pS.setString(2, newtimestamp);
+                            pS.setString(3, status);
+                            pS.setString(4, reason);
+
+                            pS.executeUpdate(); //return int value
+
+                            System.out.println("Admin Log update successfully ");
+
+                        } catch (SQLException e) {
+                            System.out.println("Failed to update Admin Log. Try again!");
+                        }
+                        System.out.println("Welcome back " + userList.get(userList.indexOf(obj)).getUsername());
+                        setLogin_status(true);
+                        setLoginName(userList.get(userList.indexOf(obj)).getUsername());
+                        tries--;
+                    } else {
+                        if (tries > 2) {
+                            java.util.Date date = new java.util.Date();
+                            SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                            String newtimestamp = ft.format(date);
+                            String status = "Login abnormal";
+                            String reason = "Incorrect password, number of tries = " + tries;
+                            Connection userSQL = new Connection();
+                            try {
+
+                                //? is unspecified value, to substitute in an integer, string, double or blob value.
+                                String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+
+                                //insert record of register 
+                                pS = userSQL.getConnection().prepareStatement(register);
+
+                                // create the mysql insert preparedstatement
+                                //.setString : placeholders that are only replaced with the actual values inside the system
+                                pS.setString(1, username);
+                                pS.setString(2, newtimestamp);
+                                pS.setString(3, status);
+                                pS.setString(4, reason);
+
+                                pS.executeUpdate(); //return int value
+
+                                System.out.println("Admin Log update successfully ");
+
+                            } catch (SQLException e) {
+                                System.out.println("Failed to update Admin Log. Try again!");
+                            }
+                        }
+                    }
+
                 }
+//                if (tries > 2) {
+//                    java.util.Date date = new java.util.Date();
+//                    SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+//                    String newtimestamp = ft.format(date);
+//                    String status = "Login abnormal";
+//                    String reason = "Incorrect password, number of tries = " + tries;
+//                    Connection userSQL = new Connection();
+//                    try {
+//
+//                        //? is unspecified value, to substitute in an integer, string, double or blob value.
+//                        String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+//
+//                        //insert record of register 
+//                        pS = userSQL.getConnection().prepareStatement(register);
+//
+//                        // create the mysql insert preparedstatement
+//                        //.setString : placeholders that are only replaced with the actual values inside the system
+//                        pS.setString(1, username);
+//                        pS.setString(2, newtimestamp);
+//                        pS.setString(3, status);
+//                        pS.setString(4, reason);
+//
+//                        pS.executeUpdate(); //return int value
+//
+//                        System.out.println("Admin Log update successfully ");
+//
+//                    } catch (SQLException e) {
+//                        System.out.println("Failed to update Admin Log. Try again!");
+//                    }
+//                }
             }
+        } else {
+            System.out.println("username not found, Please register");
+            java.util.Date date = new java.util.Date();
+            SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+            String newtimestamp = ft.format(date);
+            String status = "Login failed";
+            String reason = "Username not found";
+            Connection userSQL = new Connection();
+            try {
+
+                //? is unspecified value, to substitute in an integer, string, double or blob value.
+                String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+
+                //insert record of register 
+                pS = userSQL.getConnection().prepareStatement(register);
+
+                // create the mysql insert preparedstatement
+                //.setString : placeholders that are only replaced with the actual values inside the system
+                pS.setString(1, username);
+                pS.setString(2, newtimestamp);
+                pS.setString(3, status);
+                pS.setString(4, reason);
+
+                pS.executeUpdate(); //return int value
+
+                System.out.println("Admin Log update successfully ");
+
+            } catch (SQLException e) {
+                System.out.println("Failed to update Admin Log. Try again!");
+            }
+            Register();
+        }
+    }
+
+    public static void Register() throws IOException {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Do you want register ? Enter 'y' if yes, 'n' if no");
+        String Doregister = input.next();
+        if (Doregister.equals("y")) {
+            register();
+        } else if (Doregister.equals("n")) {
+            System.exit(0);
+        } else if (!Doregister.equals("y") && !Doregister.equals("n")) {
+            System.out.println("Invalid input. Please try again");
+            System.out.println("");
+            Register();
+        }
+    }
 
     public static void logout() {
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        String newtimestamp = ft.format(date);
+        String status = "Logout successfully";
+        String reason = "-";
+        Connection userSQL = new Connection();
+        try {
+
+            //? is unspecified value, to substitute in an integer, string, double or blob value.
+            String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+
+            //insert record of register 
+            pS = userSQL.getConnection().prepareStatement(register);
+
+            // create the mysql insert preparedstatement
+            //.setString : placeholders that are only replaced with the actual values inside the system
+            pS.setString(1, User.getLoginName());
+            pS.setString(2, newtimestamp);
+            pS.setString(3, status);
+            pS.setString(4, reason);
+
+            pS.executeUpdate(); //return int value
+
+            System.out.println("Admin Log update successfully ");
+
+        } catch (SQLException e) {
+            System.out.println("Failed to update Admin Log. Try again!");
+        }
+
         setLogin_status(false);
         setLoginName(null);
     }
