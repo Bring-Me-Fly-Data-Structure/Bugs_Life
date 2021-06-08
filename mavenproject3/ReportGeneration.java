@@ -70,9 +70,6 @@ public class ReportGeneration {
                 }
 
             }
-            for (int j = 0; j < numSolvedbyAssignee.length; j++) {
-                System.out.println(numSolvedbyAssignee[j]);
-            }
 
             //find the index of highest solved , then the use the index to determine the top performer
             long max = numSolvedbyAssignee[0];
