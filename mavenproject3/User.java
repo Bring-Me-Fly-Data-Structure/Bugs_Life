@@ -578,6 +578,7 @@ public class User implements Serializable {
 
         setLogin_status(false);
         setLoginName(null);
+        tester.homepage();
     }
 
     public static User findUsername(List<User> list, String username) {
