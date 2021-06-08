@@ -98,6 +98,10 @@ public class Issue implements Serializable {
     @Column(name = "timestamp")
     @JsonProperty("timestamp")
     private Integer timestamp;
+    
+    @Column(name = "statusTimestamp")
+    @JsonIgnore
+    private Integer statusTimestamp;
 
     @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
     // @Transient
@@ -141,6 +145,7 @@ public class Issue implements Serializable {
         this.timestampformat = new java.util.Date();
         Integer i = Math.toIntExact(new java.util.Date().getTime() / 1000);
         this.timestamp = i;
+        this.statusTimestamp = i;
 
     }
 
@@ -156,6 +161,7 @@ public class Issue implements Serializable {
         this.createdBy = createdBy;
         this.assignee = assignee;
         this.timestamp = timestamp;
+        this.statusTimestamp = timestamp;
         this.timestampformat = new java.util.Date((long) timestamp * 1000);
         for (int i = 0; i < tag.size(); i++) {
             this.tag2 += tag.get(i) + " ";
@@ -265,6 +271,14 @@ public class Issue implements Serializable {
 
     public Date getTimestampformat() {
         return timestampformat;
+    }
+    
+    public Integer getStatusTimestamp() {
+        return statusTimestamp;
+    }
+
+    public void setStatusTimestamp(Integer statusTimestamp) {
+        this.statusTimestamp = statusTimestamp;
     }
 
     @PostLoad //it will auto call when reading data from mysql 
@@ -763,6 +777,8 @@ public class Issue implements Serializable {
             // Find customer and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setStatus(newStatus);
+            Integer i = Math.toIntExact(new java.util.Date().getTime() / 1000);
+            a.setStatusTimestamp(i);
 
             // Save the customer object
             em.persist(a);
