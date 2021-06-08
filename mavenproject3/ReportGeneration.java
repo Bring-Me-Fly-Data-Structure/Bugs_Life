@@ -131,11 +131,11 @@ public class ReportGeneration {
     }
 
     public static long findWeeklyStatus(List<Issue> list, String status) {
-        return list.stream().filter(listObj -> status.equals(listObj.getStatus()) && (checkThisWeek(listObj.getTimestamp()))).count();
+        return list.stream().filter(listObj -> status.equals(listObj.getStatus()) && (checkThisWeek(listObj.getStatusTimestamp()))).count();
     }
 
     public static long findTopPerformer(List<Issue> list, String usersname, String status) {
-        return list.stream().filter(listObj -> status.equals(listObj.getStatus()) && (listObj.getAssignee().equals(usersname)) && (checkThisWeek(listObj.getTimestamp()))).count();
+        return list.stream().filter(listObj -> status.equals(listObj.getStatus()) && (listObj.getAssignee().equals(usersname)) && (checkThisWeek(listObj.getStatusTimestamp()))).count();
     }
 
     public static void findTag(List<String> outer, List<Issue> list) {
