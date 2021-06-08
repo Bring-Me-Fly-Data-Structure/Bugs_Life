@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mavenproject3;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +7,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
@@ -26,17 +22,28 @@ import javax.persistence.TypedQuery;
  * @author richi
  */
 public class JSON_IMPORT_EXPORT {
+
     private static PreparedStatement pS;
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("hibernateTest");
 
-    public static void main(String[] args) throws IOException {
-        System.out.println("Enter '1' to import JSON to MySQL Database, '2' to export data from MySQL to JSON file");
+    public static void importExport() throws IOException {
         Scanner in = new Scanner(System.in);
-        int input = in.nextInt();
-        if(input==1){
-            importJson();
-        }else if(input ==2){
-            exportJson();
+        while (true) {
+
+            try {
+                System.out.println("Enter '1' to import JSON to MySQL Database, '2' to export data from MySQL to JSON file");
+                int input = in.nextInt();
+                if (input == 1) {
+                    importJson();
+                    break;
+                } else if (input == 2) {
+                    exportJson();
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid value!\n");
+                in.next();
+            }
         }
     }
 
@@ -89,16 +96,16 @@ public class JSON_IMPORT_EXPORT {
         for (int i = 0; i < sizeProject; i++) {
             int sizeIssue = root.getProjects().get(i).getIssues().size();
             for (int j = 0; j < sizeIssue; j++) {
-                String title=root.getProjects().get(i).getIssues().get(j).getTitle();
-                String ctime=root.getProjects().get(i).getIssues().get(j).changeDateFormat();
-                String cname=root.getProjects().get(i).getIssues().get(j).getCreatedBy();
+                String title = root.getProjects().get(i).getIssues().get(j).getTitle();
+                String ctime = root.getProjects().get(i).getIssues().get(j).changeDateFormat();
+                String cname = root.getProjects().get(i).getIssues().get(j).getCreatedBy();
                 String allowedEdittor = cname;
                 String viewer = "All User";
-                String aname=root.getProjects().get(i).getIssues().get(j).getAssignee();
-                String changeStatus="";
-                if(aname.equals("")||aname.equals(" ")){
+                String aname = root.getProjects().get(i).getIssues().get(j).getAssignee();
+                String changeStatus = "";
+                if (aname.equals("") || aname.equals(" ")) {
                     changeStatus = cname;
-                }else{
+                } else {
                     changeStatus = aname + " & " + cname;
                 }
                 Connection userSQL = new Connection();
@@ -134,19 +141,32 @@ public class JSON_IMPORT_EXPORT {
 //            
 //        }
 //projectList.forEach(project-> project.getIssues().forEach(issue-> issue.getComments().forEach(comment -> comment.getReact().forEach(react -> react.setComment(comment)) )));
-       
-                EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
- 
+
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
-             projectList.forEach(project -> project.getIssues().forEach(issue -> {issue.setProject(project); issue.getComments().forEach(comment -> {comment.setIssue(issue); comment.getReact().forEach(react -> react.setComment(comment));comment.setCommentId(null);}); issue.setId(null);}));
-             projectList.forEach(project ->{project.setId(null);em.persist(project);});
-             userList.forEach(user->{user.setUserid(null); em.persist(user);});
-             
+            projectList.forEach(project -> project.getIssues().forEach(issue -> {
+                issue.setProject(project);
+                issue.getComments().forEach(comment -> {
+                    comment.setIssue(issue);
+                    comment.getReact().forEach(react -> react.setComment(comment));
+                    comment.setCommentId(null);
+                });
+                issue.setId(null);
+            }));
+            projectList.forEach(project -> {
+                project.setId(null);
+                em.persist(project);
+            });
+            userList.forEach(user -> {
+                user.setUserid(null);
+                em.persist(user);
+            });
 
             // Save the customer object
             //em.persist(a);
@@ -162,6 +182,6 @@ public class JSON_IMPORT_EXPORT {
             System.out.println("json data imported into database");
             em.close();
         }
-        
+
     }
 }
