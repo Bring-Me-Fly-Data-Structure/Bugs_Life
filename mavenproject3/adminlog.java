@@ -1,22 +1,115 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package mavenproject3;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  *
  * @author richi
  */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+    "adminlog_id",
+    "username",
+    "timestamp",
+    "status",
+    "reason"
+})
+
 public class adminlog {
 
-    private static PreparedStatement pS;
+    @JsonProperty("adminlog_id")
+    private Integer adminlogId;
+    @JsonProperty("username")
+    private String username;
+    @JsonProperty("timestamp")
+    private String timestamp;
+    @JsonProperty("status")
+    private String status;
+    @JsonProperty("reason")
+    private String reason;
 
+    @JsonIgnore
+    private static PreparedStatement pS;
+    @JsonIgnore
     private static ResultSet result;
-    
+
+    public adminlog() {
+    }
+
+    @JsonCreator
+    public adminlog(@JsonProperty("adminlog_id") Integer adminlogId, @JsonProperty("username") String username, @JsonProperty("timestamp") String timestamp, @JsonProperty("status") String status, @JsonProperty("reason") String reason) {
+        this.adminlogId = adminlogId;
+        this.username = username;
+        this.timestamp = timestamp;
+        this.status = status;
+        this.reason = reason;
+    }
+
+    @JsonProperty("adminlog_id")
+    public Integer getAdminlogId() {
+        return adminlogId;
+    }
+
+    @JsonProperty("adminlog_id")
+    public void setAdminlogId(Integer adminlogId) {
+        this.adminlogId = adminlogId;
+    }
+
+    @JsonProperty("username")
+    public String getUsername() {
+        return username;
+    }
+
+    @JsonProperty("username")
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @JsonProperty("timestamp")
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    @JsonProperty("timestamp")
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @JsonProperty("status")
+    public String getStatus() {
+        return status;
+    }
+
+    @JsonProperty("status")
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @JsonProperty("reason")
+    public String getReason() {
+        return reason;
+    }
+
+    @JsonProperty("reason")
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     public static void adminLogReport() {
         System.out.println("******Admin Log******");
-                try {
+        try {
             Connection adminlogSQL = new Connection();
 
             String searchAdminLOG = "SELECT * FROM `adminlog`";
@@ -24,20 +117,16 @@ public class adminlog {
             result = pS.executeQuery();
             while (result.next()) {
                 String username = result.getString("username");
-                String timestamp=result.getString("timestamp");
-                String status=result.getString("status");
-                String reason=result.getString("reason");
-                
-                System.out.println("Login/Register Time : "+timestamp+"\nUsername : "+username+"\nStatus : "+status+"\nReason : "+reason);;
+                String timestamp = result.getString("timestamp");
+                String status = result.getString("status");
+                String reason = result.getString("reason");
+
+                System.out.println("Login/Register Time : " + timestamp + "\nUsername : " + username + "\nStatus : " + status + "\nReason : " + reason);;
                 System.out.println("");
             }
             adminlogSQL.getConnection().close();
         } catch (SQLException ex) {
             System.out.println("myvideodisplay error");
         }
-    }
-    
-    public static void main(String[] args) {
-        adminLogReport();
     }
 }
