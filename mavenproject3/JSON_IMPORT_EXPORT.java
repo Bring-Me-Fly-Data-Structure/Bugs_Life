@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -24,6 +25,9 @@ import javax.persistence.TypedQuery;
 public class JSON_IMPORT_EXPORT {
 
     private static PreparedStatement pS;
+
+    private static ResultSet result;
+
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("hibernateTest");
 
     public static void importExport() throws IOException {
@@ -63,17 +67,62 @@ public class JSON_IMPORT_EXPORT {
         //TypedQuery<React2> tq3 = em.createQuery(strQuery3, React2.class);
         List<Project> projectList = new ArrayList<>();
         List<User> listU = new ArrayList<>();
+        List<changelog> listC = new ArrayList<>();
+        List<adminlog> listA = new ArrayList<>();
         //List<React2> listR = new ArrayList<>();
         try {
             // Get matching customer object and output
             projectList = tq.getResultList();
             listU = tq2.getResultList();
+            try {
+                Connection changelogSQL = new Connection();
+
+                String searchChangeLOG = "SELECT * FROM `changelog`";
+                pS = changelogSQL.getConnection().prepareStatement(searchChangeLOG);
+                result = pS.executeQuery();
+                while (result.next()) {
+                    int changelog_id = result.getInt("changelog_id");
+                    String edit_time = result.getString("edit_time");
+                    String edittor = result.getString("edittor");
+                    String projectName = result.getString("project_name");
+                    int projectID = result.getInt("project_id");
+                    String issueName = result.getString("issue_name");
+                    int issueID = result.getInt("issue_id");
+                    String detail = result.getString("detail");
+                    listC.add(new changelog(changelog_id, projectName, projectID, issueName, issueID, detail, edit_time, edittor));
+
+                }
+                changelogSQL.getConnection().close();
+            } catch (SQLException ex) {
+                System.out.println("export changelog error");
+            }
+            try {
+                Connection changelogSQL = new Connection();
+
+                String searchAdminLog = "SELECT * FROM `adminlog`";
+                pS = changelogSQL.getConnection().prepareStatement(searchAdminLog);
+                result = pS.executeQuery();
+                while (result.next()) {
+                    int adminlog_id = result.getInt("adminlog_id");
+                    String username = result.getString("username");
+                    String timestamp = result.getString("timestamp");
+                    String status = result.getString("status");
+                    String reason = result.getString("reason");
+                    listA.add(new adminlog(adminlog_id,username,timestamp,status,reason));
+
+                }
+                changelogSQL.getConnection().close();
+            } catch (SQLException ex) {
+                System.out.println("export adminlog error");
+            }
             // listR = tq3.getResultList();
             ObjectMapper mapper = new ObjectMapper();
 
             Example root = new Example();
             root.setProjects(projectList);
             root.setUsers(listU);
+            root.setChangelogList(listC);
+            root.setAdminlogList(listA);
             String json = mapper.writeValueAsString(root);
             try (FileWriter file = new FileWriter("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final2.json")) {
 
@@ -91,7 +140,7 @@ public class JSON_IMPORT_EXPORT {
     public static void importJson() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         //read file
-        Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\import.json"), Example.class);
+        Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final2.json"), Example.class);
         int sizeProject = root.getProjects().size();
         for (int i = 0; i < sizeProject; i++) {
             int sizeIssue = root.getProjects().get(i).getIssues().size();
@@ -137,10 +186,60 @@ public class JSON_IMPORT_EXPORT {
         }
         List<Project> projectList = root.getProjects();
         List<User> userList = root.getUsers();
-//        for (int i = 0; i < projectList.size(); i++) {
-//            
-//        }
-//projectList.forEach(project-> project.getIssues().forEach(issue-> issue.getComments().forEach(comment -> comment.getReact().forEach(react -> react.setComment(comment)) )));
+        List<changelog> cList = root.getChangelogList();
+        List<adminlog> aList = root.getAdminlogList();
+        Connection userSQL = new Connection();
+        for (int i = 0; i < cList.size(); i++) {
+            try {
+
+                //? is unspecified value, to substitute in an integer, string, double or blob value.
+                String register = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
+
+                //insert record of register 
+                pS = userSQL.getConnection().prepareStatement(register);
+
+                // create the mysql insert preparedstatement
+                //.setString : placeholders that are only replaced with the actual values inside the system
+                pS.setString(1, cList.get(i).getProjectName());
+                pS.setInt(2, cList.get(i).getProjectId());
+                pS.setString(3, cList.get(i).getIssueName());
+                pS.setInt(4, cList.get(i).getIssueId());
+                pS.setString(5, cList.get(i).getDetail());
+                pS.setString(6, cList.get(i).getEditTime());
+                pS.setString(7, cList.get(i).getEdittor());
+
+                pS.executeUpdate(); //return int value
+
+                System.out.println("change log update (assignee) Successfully ");
+
+            } catch (SQLException e) {
+                System.out.println("Failed to update changelog (assignee). Try again!");
+            }
+        }
+        for (int i = 0; i < aList.size(); i++) {
+            try {
+
+                //? is unspecified value, to substitute in an integer, string, double or blob value.
+                String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
+
+                //insert record of register 
+                pS = userSQL.getConnection().prepareStatement(register);
+
+                // create the mysql insert preparedstatement
+                //.setString : placeholders that are only replaced with the actual values inside the system
+                pS.setString(1, aList.get(i).getUsername());
+                pS.setString(2, aList.get(i).getTimestamp());
+                pS.setString(3, aList.get(i).getStatus());
+                pS.setString(4, aList.get(i).getReason());
+
+                pS.executeUpdate(); //return int value
+
+                System.out.println("change log update (assignee) Successfully ");
+
+            } catch (SQLException e) {
+                System.out.println("Failed to update changelog (assignee). Try again!");
+            }
+        }
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
