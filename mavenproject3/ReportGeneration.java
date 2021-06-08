@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mavenproject3;
 
-import java.io.IOException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,15 +26,11 @@ public class ReportGeneration {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("hibernateTest");
 
-    public static void main(String[] args) throws IOException {
+    public static void generateReport() {
         long numResolved = 0;
         long numInProgress = 0;
         long numOpen = 0;
 
-//        // long numFront = 0;
-//        ObjectMapper mapper = new ObjectMapper();
-//        //read file
-//        Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json"), Example.class);
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
@@ -73,8 +65,13 @@ public class ReportGeneration {
 
                 //loop through each issue, find number of issue solved by each user, store it in array 
                 for (int j = 0; j < usersName.size(); j++) {
-                    numSolvedbyAssignee[j] = findTopPerformer(projectList.get(i).getIssues(), usersName.get(j), "Resolved");
+                    numSolvedbyAssignee[j] += findTopPerformer(projectList.get(i).getIssues(), usersName.get(j), "Resolved");
+                    //System.out.println("**"+findTopPerformer(projectList.get(i).getIssues(), usersName.get(j), "Resolved"));
                 }
+
+            }
+            for (int j = 0; j < numSolvedbyAssignee.length; j++) {
+                System.out.println(numSolvedbyAssignee[j]);
             }
 
             //find the index of highest solved , then the use the index to determine the top performer
@@ -119,7 +116,7 @@ public class ReportGeneration {
                         keys.add(entry.getKey());
                     }
                 }
-                System.out.println(occurrences);
+                //  System.out.println(occurrences);
                 System.out.print("Most frequent label of the week: ");
                 for (int i = 0; i < keys.size(); i++) {
                     System.out.print("\"" + keys.get(i) + "\" ");
@@ -130,7 +127,6 @@ public class ReportGeneration {
         } finally {
             em.close();
         }
-
     }
 
     public static long findStatus(List<Issue> list, String status) {
@@ -142,7 +138,6 @@ public class ReportGeneration {
     }
 
     public static long findTopPerformer(List<Issue> list, String usersname, String status) {
-
         return list.stream().filter(listObj -> status.equals(listObj.getStatus()) && (listObj.getAssignee().equals(usersname)) && (checkThisWeek(listObj.getTimestamp()))).count();
     }
 
