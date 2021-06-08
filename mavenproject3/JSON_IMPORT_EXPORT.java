@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -24,7 +26,7 @@ import javax.persistence.TypedQuery;
  * @author richi
  */
 public class JSON_IMPORT_EXPORT {
-
+    private static PreparedStatement pS;
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("hibernateTest");
 
     public static void main(String[] args) throws IOException {
