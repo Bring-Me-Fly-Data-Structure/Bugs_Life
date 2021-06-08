@@ -180,11 +180,16 @@ public class Project implements Serializable  {
         Scanner in = new Scanner(System.in);
         try {
             System.out.println("Do you want create project or check project? ");
-            System.out.println("Enter '0' to create new project.\nEnter 'id' to check project");
+            System.out.println("Enter '0' to create new project.\nEnter 'id' to check project\nEnter '-1' to view changelog\nEnter '-2' to logout");
             int input = in.nextInt();
             if (input == 0) {
                 addProjectByUser();
-            } else {
+            }else if(input.equals("-1")){
+                changelog.viewChangelog();
+                displayProject();
+            }else if(input.equals("-2")){
+                User.logout();
+            }else {
                 Project.setProjectID(input);
                 Issue.displayIssueBoard();
           }
