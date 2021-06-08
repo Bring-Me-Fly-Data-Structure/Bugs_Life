@@ -25,7 +25,7 @@ public class tester {
         while (true) {
 
             try {
-                System.out.println("Enter '1' to login, '2' to register");
+                System.out.println("Enter '1' to login, '2' to register, '3' to exit program");
                 int userInput = in.nextInt();
                 if (userInput == 1) {
                     User.login();
@@ -33,6 +33,9 @@ public class tester {
                 } else if (userInput == 2) {
                     User.register();
                     break;
+                } else if(userInput == 3){
+                    System.out.println("Good bye "+User.getLoginName()+", we hope to see you again soon.");
+                    System.exit(0);
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid value!\n");
