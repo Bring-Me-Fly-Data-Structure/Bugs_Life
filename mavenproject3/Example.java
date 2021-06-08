@@ -14,7 +14,9 @@ import java.util.Comparator;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "projects",
-    "users"
+    "users",
+    "changelog",
+    "adminlog"
 })
 
 public class Example {
@@ -23,6 +25,10 @@ public class Example {
     private List<Project> projects = new ArrayList<>();
     @JsonProperty("users")
     private List<User> users = new ArrayList<>();
+    @JsonProperty("changelog")
+    private List<changelog> changelogList = new ArrayList<>();
+    @JsonProperty("adminlog")
+    private List<adminlog> adminlogList = new ArrayList<>();
 
     @JsonProperty("projects")
     public List<Project> getProjects() {
@@ -42,6 +48,26 @@ public class Example {
     @JsonProperty("users")
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    @JsonProperty("changelog")
+    public List<changelog> getChangelogList() {
+        return changelogList;
+    }
+
+    @JsonProperty("changelog")
+    public void setChangelogList(List<changelog> changelogList) {
+        this.changelogList = changelogList;
+    }
+
+    @JsonProperty("adminlog")
+    public List<adminlog> getAdminlogList() {
+        return adminlogList;
+    }
+
+    @JsonProperty("adminlog")
+    public void setAdminlogList(List<adminlog> adminlogList) {
+        this.adminlogList = adminlogList;
     }
 
     public void sortAplhanumerically(List<Project> a) {
