@@ -184,10 +184,10 @@ public class Project implements Serializable  {
             int input = in.nextInt();
             if (input == 0) {
                 addProjectByUser();
-            }else if(input.equals("-1")){
+            }else if(input == -1){
                 changelog.viewChangelog();
                 displayProject();
-            }else if(input.equals("-2")){
+            }else if(input == -2){
                 User.logout();
             }else {
                 Project.setProjectID(input);
