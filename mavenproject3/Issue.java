@@ -672,7 +672,7 @@ public class Issue implements Serializable {
         i.display();
         //System.out.println(projectList.get(Project.getProjectID() - 1).getIssues().get(0).getTimestampformat()); //testing
     
-        System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'b' to return to project dashboard:");
+        System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'h' to check the changelog \nor 'b' to return to project dashboard:");
         String option = input.next();
         input.nextLine();
         if (isInteger(option)) {
@@ -689,7 +689,51 @@ public class Issue implements Serializable {
 
         } else if (option.equals("b")) {
             Project.displayProject();
-        } else if (!option.equals("s") || !option.equals("c") || !option.equals("b")||isInteger(option)) {
+         } else if (option.equals("h")) {
+                try {
+                    Connection changelogSQL = new Connection();
+                    //? is unspecified value, to substitute in an integer, string, double or blob value.
+                    String getChangelog = "SELECT * FROM `changelog` WHERE `project_id`= ? ";
+
+                    //insert record of register 
+                    pS = changelogSQL.getConnection().prepareStatement(getChangelog);
+
+                    pS.setInt(1, Project.getProjectID());
+                    result = pS.executeQuery();
+                    // create the mysql insert preparedstatement
+                    //.setString : placeholders that are only replaced with the actual values inside the system
+                    while (result.next()) {
+                        String edit_time = result.getString("edit_time");
+                        String edittor = result.getString("edittor");
+                        String projectName = result.getString("project_name");
+                        int projectID = result.getInt("project_id");
+                        String issueName = result.getString("issue_name");
+                        int issueID = result.getInt("issue_id");
+                        String detail = result.getString("detail");
+
+                        System.out.println("Editted Time : " + edit_time + "\nEdittor : " + edittor + "\nProject Name : " + projectName + "   Project ID : " + projectID + "\nIssue Name : " + issueName + "   Issue ID : " + issueID + "\nDetail : \n" + detail);
+                        System.out.println("");
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("displaychangelog error");
+                }
+                while (true) {
+                    try {
+                        System.out.println("Enter ‘1’ to return issue dashboard");
+                        int userInput = input.nextInt();
+                        if (userInput == 1) {
+                            i.display();
+                            function(i);
+                            //break;
+                        } else {
+                            System.out.println("Invalid input. Please try again.");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid input. Please try again.");
+                        input.next();
+                    }
+                }
+        } else if (!option.equals("s") || !option.equals("c") || !option.equals("b")|| !option.equals("h") ||isInteger(option)) {
                 System.out.println("Invalid input. Please try again.");
                 System.out.println("");
                 function(i);
@@ -706,7 +750,7 @@ public class Issue implements Serializable {
     public static void function(Issuequeue i) throws IOException {
         Scanner input = new Scanner(System.in);
         
-            System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'b' to return to project dashboard:");
+            System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'h' to check the changelog \nor 'b' to return to project dashboard:");
             String option = input.next();
             input.nextLine();
             if (isInteger(option)) {
@@ -721,7 +765,51 @@ public class Issue implements Serializable {
                 addIssue();
             } else if (option.equals("b")) {
                 Project.displayProject();
-            } else if (!option.equals("s") || !option.equals("c") || !option.equals("b")||isInteger(option)) {
+            } else if (option.equals("h")) {
+            try {
+                Connection changelogSQL = new Connection();
+                //? is unspecified value, to substitute in an integer, string, double or blob value.
+                String getChangelog = "SELECT * FROM `changelog` WHERE `project_id`= ? ";
+
+                //insert record of register 
+                pS = changelogSQL.getConnection().prepareStatement(getChangelog);
+
+                pS.setInt(1, Project.getProjectID());
+                result = pS.executeQuery();
+                // create the mysql insert preparedstatement
+                //.setString : placeholders that are only replaced with the actual values inside the system
+                while (result.next()) {
+                    String edit_time = result.getString("edit_time");
+                    String edittor = result.getString("edittor");
+                    String projectName = result.getString("project_name");
+                    int projectID = result.getInt("project_id");
+                    String issueName = result.getString("issue_name");
+                    int issueID = result.getInt("issue_id");
+                    String detail = result.getString("detail");
+
+                    System.out.println("Editted Time : " + edit_time + "\nEdittor : " + edittor + "\nProject Name : " + projectName + "   Project ID : " + projectID + "\nIssue Name : " + issueName + "   Issue ID : " + issueID + "\nDetail : \n" + detail);
+                    System.out.println("");
+                }
+            } catch (SQLException ex) {
+                System.out.println("displaychangelog error");
+            }
+            while (true) {
+                try {
+                    System.out.println("Enter ‘1’ to return issue dashboard");
+                    int userInput = input.nextInt();
+                    if (userInput == 1) {
+                        i.display();
+                        function(i);
+                        break;
+                    } else {
+                        System.out.println("Invalid input. Please try again.");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please try again.");
+                    input.next();
+                }
+            }
+            } else if (!option.equals("s") || !option.equals("c") || !option.equals("b")|| !option.equals("h")||isInteger(option)) {
                 System.out.println("Invalid input. Please try again.");
                 System.out.println("");
                 function(i);
