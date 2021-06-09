@@ -58,7 +58,7 @@ public class tester {
         Scanner in = new Scanner(System.in);
         while (true) {
             try {
-                System.out.println("\nEnter '1' to view access control list\nOr '2' to trace the abnormal activities\n'3' to generate report\n'4' to Import or Export JSON data\n'5' to view projects and issues");
+                System.out.println("\nEnter '1' to view access control list\nOr '2' to trace the abnormal activities\n'3' to generate report\n'4' to Import or Export JSON data\n'5' to view projects and issues \n'-1' to logout");
 
                 int userInput = in.nextInt();
                 if (userInput == 1) {
@@ -79,6 +79,9 @@ public class tester {
                     break;
                 } else if (userInput == 5) {
                     Project.displayProject();
+                    break;
+                }else if (userInput == -1) {
+                    User.logout();
                     break;
                 }
             } catch (InputMismatchException e) {
