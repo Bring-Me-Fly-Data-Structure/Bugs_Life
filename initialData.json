@@ -304,26 +304,21 @@
     "users": [
         {
             "userid": 1,
-            "username": "admin",
-            "password": "password"
-        },
-        {
-            "userid": 2,
             "username": "jhoe",
             "password": "password"
         },
         {
-            "userid": 3,
+            "userid": 2,
             "username": "btan",
             "password": "password"
         },
         {
-            "userid": 4,
+            "userid": 3,
             "username": "liew",
             "password": "password"
         },
         {
-            "userid": 5,
+            "userid": 4,
             "username": "ang",
             "password": "password"
         }
