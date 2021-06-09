@@ -40,7 +40,8 @@ import javax.persistence.*;
     "createdBy",
     "assignee",
     "timestamp",
-    "comments"
+    "comments",
+    "statusTimestamp"
 })
 @Entity
 @Table(name = "issue_table")
@@ -100,7 +101,7 @@ public class Issue implements Serializable {
     private Integer timestamp;
     
     @Column(name = "statusTimestamp")
-    @JsonIgnore
+    @JsonProperty("statusTimestamp")
     private Integer statusTimestamp;
 
     @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
@@ -151,7 +152,7 @@ public class Issue implements Serializable {
 
     @JsonCreator
     //constructor for reading data.json
-    public Issue(@JsonProperty("id") Integer id, @JsonProperty("title") String title, @JsonProperty("priority") Integer priority, @JsonProperty("status") String status, @JsonProperty("tag") ArrayList<String> tag, @JsonProperty("descriptionText") String descriptionText, @JsonProperty("createdBy") String createdBy, @JsonProperty("assignee") String assignee, @JsonProperty("timestamp") Integer timestamp, @JsonProperty("comments") ArrayList<Comment> comments) {
+    public Issue(@JsonProperty("id") Integer id, @JsonProperty("title") String title, @JsonProperty("priority") Integer priority, @JsonProperty("status") String status, @JsonProperty("tag") ArrayList<String> tag, @JsonProperty("descriptionText") String descriptionText, @JsonProperty("createdBy") String createdBy, @JsonProperty("assignee") String assignee, @JsonProperty("timestamp") Integer timestamp, @JsonProperty("comments") ArrayList<Comment> comments, @JsonProperty("statusTimestamp") Integer statusTimestamp) {
         this.id = id;
         this.title = title;
         this.priority = priority;
@@ -161,7 +162,7 @@ public class Issue implements Serializable {
         this.createdBy = createdBy;
         this.assignee = assignee;
         this.timestamp = timestamp;
-        this.statusTimestamp = timestamp;
+        this.statusTimestamp = statusTimestamp;
         this.timestampformat = new java.util.Date((long) timestamp * 1000);
         for (int i = 0; i < tag.size(); i++) {
             this.tag2 += tag.get(i) + " ";
@@ -273,10 +274,12 @@ public class Issue implements Serializable {
         return timestampformat;
     }
     
+    @JsonProperty("statusTimestamp")
     public Integer getStatusTimestamp() {
         return statusTimestamp;
     }
 
+    @JsonProperty("statusTimestamp")
     public void setStatusTimestamp(Integer statusTimestamp) {
         this.statusTimestamp = statusTimestamp;
     }
