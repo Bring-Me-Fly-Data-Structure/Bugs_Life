@@ -137,10 +137,7 @@ public class User implements Serializable {
     public static void register() throws IOException {
 
         Scanner in = new Scanner(System.in);
-//        ObjectMapper mapper = new ObjectMapper();
-//        //read file
-//        Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\data6.json"), Example.class);
-//        List<User> userList = root.getUsers();
+
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         String strQuery = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
 
@@ -160,7 +157,7 @@ public class User implements Serializable {
         System.out.println("Enter username: ");
         String username = in.nextLine();
 
-        //
+        
         while (true) {
             //obtain the first object from userlist with same username
             User obj = findUsername(userList, username);
@@ -199,13 +196,10 @@ public class User implements Serializable {
             } else {
                 System.out.println("Enter password: ");
                 String password = in.next();
-//                User a = new User(userList.size() + 1, username, password);
+
                 // Create and set values for new user
                 User b = new User(username, password);
 
-                //Update value in object
-//                root.getUsers().add(a);
-//                String json = mapper.writeValueAsString(root);
                 // The EntityManager class allows operations such as create, read, update, delete
                 // Used to issue transactions on the EntityManager
                 EntityTransaction et = null;
@@ -257,11 +251,7 @@ public class User implements Serializable {
                     // Close EntityManager
                     em.close();
                 }
-//                //store
-//                try (FileWriter file = new FileWriter("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\data6.json")) {
-//                    file.write(json);
-//                    System.out.println("Successfully updated json object to file...!!");
-//                }
+
                 break;
             }
 
@@ -294,9 +284,7 @@ public class User implements Serializable {
         } finally {
             em.close();
         }
-//            Example base = objM.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\data6.json"), Example.class);
-//            List<User> userList = base.getUsers();
-//
+
         //obtain the first object from userlist with same username
         User obj = findUsername(userList, username);
 
@@ -334,35 +322,7 @@ public class User implements Serializable {
                     System.out.println("Failed to update Admin Log. Try again!");
                 }
             } else {
-//                int tries = 1;
-//                java.util.Date date = new java.util.Date();
-//                SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-//                String newtimestamp = ft.format(date);
-//                String status = "Login failed";
-//                String reason = "Incorrect Password";
-//                Connection userSQL = new Connection();
-//                try {
-//
-//                    //? is unspecified value, to substitute in an integer, string, double or blob value.
-//                    String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
-//
-//                    //insert record of register 
-//                    pS = userSQL.getConnection().prepareStatement(register);
-//
-//                    // create the mysql insert preparedstatement
-//                    //.setString : placeholders that are only replaced with the actual values inside the system
-//                    pS.setString(1, userList.get(userList.indexOf(obj)).getUsername());
-//                    pS.setString(2, newtimestamp);
-//                    pS.setString(3, status);
-//                    pS.setString(4, reason);
-//
-//                    pS.executeUpdate(); //return int value
-//
-//                    System.out.println("Admin Log update successfully ");
-//
-//                } catch (SQLException e) {
-//                    System.out.println("Failed to update Admin Log. Try again!");
-//                }
+
                 int tries = 1;
                 while (!obj.getPassword().equals(password)) {
                     System.out.println("Incorrect password");
@@ -466,36 +426,7 @@ public class User implements Serializable {
                     }
 
                 }
-//                if (tries > 2) {
-//                    java.util.Date date = new java.util.Date();
-//                    SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-//                    String newtimestamp = ft.format(date);
-//                    String status = "Login abnormal";
-//                    String reason = "Incorrect password, number of tries = " + tries;
-//                    Connection userSQL = new Connection();
-//                    try {
-//
-//                        //? is unspecified value, to substitute in an integer, string, double or blob value.
-//                        String register = "INSERT INTO adminlog (username,timestamp,status,reason) VALUES(?,?,?,?)";
-//
-//                        //insert record of register 
-//                        pS = userSQL.getConnection().prepareStatement(register);
-//
-//                        // create the mysql insert preparedstatement
-//                        //.setString : placeholders that are only replaced with the actual values inside the system
-//                        pS.setString(1, username);
-//                        pS.setString(2, newtimestamp);
-//                        pS.setString(3, status);
-//                        pS.setString(4, reason);
-//
-//                        pS.executeUpdate(); //return int value
-//
-//                        System.out.println("Admin Log update successfully ");
-//
-//                    } catch (SQLException e) {
-//                        System.out.println("Failed to update Admin Log. Try again!");
-//                    }
-//                }
+
             }
         } else {
             System.out.println("username not found, Please register");
