@@ -1,4 +1,3 @@
-//package com.example;
 package mavenproject3;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -45,8 +44,10 @@ import javax.persistence.*;
 })
 @Entity
 @Table(name = "issue_table")
+// Issue class that implements Serializable library
 public class Issue implements Serializable {
 
+    // instant variable
     @JsonIgnore
     @Transient
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
@@ -99,13 +100,13 @@ public class Issue implements Serializable {
     @Column(name = "timestamp")
     @JsonProperty("timestamp")
     private Integer timestamp;
-    
+
     @Column(name = "statusTimestamp")
     @JsonProperty("statusTimestamp")
     private Integer statusTimestamp;
 
-    @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
-    // @Transient
+    @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+
     @JsonProperty("comments")
     private List<Comment> comments = new ArrayList<>();
 
@@ -125,11 +126,16 @@ public class Issue implements Serializable {
     @JsonIgnore
     private static ResultSet result;
 
+    private static Integer priority1 = 0;
+    private static String aname = "";
+    private static ArrayList<String> tag1 = new ArrayList<>();
+
+    // empty constructor
     public Issue() {
 
     }
 
-    //constructor for user input data
+    // constructor for user input data
     public Issue(String title, Integer priority, ArrayList<String> tag, String descriptionText, String createdBy, String assignee, ArrayList<Comment> comments) {
         // this.id = id;
         this.title = title;
@@ -170,6 +176,7 @@ public class Issue implements Serializable {
         this.comments = comments;
     }
 
+    //----- accessor and mutator-----
     @JsonProperty("id")
     public Integer getId() {
         return id;
@@ -273,7 +280,7 @@ public class Issue implements Serializable {
     public Date getTimestampformat() {
         return timestampformat;
     }
-    
+
     @JsonProperty("statusTimestamp")
     public Integer getStatusTimestamp() {
         return statusTimestamp;
@@ -284,12 +291,14 @@ public class Issue implements Serializable {
         this.statusTimestamp = statusTimestamp;
     }
 
-    @PostLoad //it will auto call when reading data from mysql 
+    // it will auto call when reading data from mysql 
+    @PostLoad
     public void SQLtoPOJO() {
         this.timestampformat = new java.util.Date((long) this.timestamp * 1000);
         this.tag = new ArrayList<>(Arrays.asList(this.tag2.split(" ")));
     }
 
+    // change the date format 
     public String changeDateFormat() {
         SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
         return ft.format(getTimestampformat());
@@ -310,73 +319,21 @@ public class Issue implements Serializable {
     public static void setIssueID(int issueID) {
         Issue.issueID = issueID;
     }
-//
-//    @Override
-//    public int compareTo(Issue object) {
-//        int result = 0;
-//        if (this.getPriority() < object.getPriority()) {
-//            result = 2;
-//        } else if (this.getPriority() > object.getPriority()) {
-//            result = -1;
-//        } else if (this.getPriority() == object.getPriority()) {
-//            if (this.getTimestampformat().compareTo(object.getTimestampformat()) > 0) {
-//                result = 1;
-//            } else {
-//                result = 0;
-//            }
-//        }
-//        return result;
-//    }
 
-    //main method call addIssue() enough
+    // add Issue after created by the create method
     public static void addIssue() throws IOException {
-        //declare variable
         Scanner input = new Scanner(System.in);
-
-        //display issue board
         Issuequeue i = new Issuequeue();
-//        ObjectMapper objM = new ObjectMapper();
-//        try {
-//
-//            Example base = objM.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json"), Example.class);
-//            List<Issue> a = base.getProjects().get(Project.getProjectID() - 1).getIssues();
-//            i.offer(a);
-//            // i.display(1);
-//        } catch (JsonProcessingException ex) {
-//            System.out.println(" file input error");
-//        }
-//        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-//
-//        // the lowercase c refers to the object
-//        // :custID is a parameterized query thats value is set below
-//        String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
-//
-//        // Issue the query and get a matching Customer
-//        TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
-//        List<Project> projectList;
-//        List<Issue> a = new ArrayList<>();
-//        try {
-//            // Get matching customer object and output
-//            projectList = tq.getResultList();
-//            a = projectList.get(Project.getProjectID() - 1).getIssues();
-//            i.offer(a);
-//        } catch (NoResultException ex) {
-//            ex.printStackTrace();
-//        } finally {
-//            em.close();
-//        }
-
-        //action for issue board
         i.offer(create(input));
         displayIssueBoard();
     }
 
+    // sort the Issues in the issuequeue by timestamp
     public static Issuequeue sortTime(Issuequeue list) {
         ArrayList<Issue> sortList = new ArrayList<>();
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
-        // Collections.sort(sortList);
         Comparator<Issue> timeOrder = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
@@ -390,12 +347,12 @@ public class Issue implements Serializable {
         return list;
     }
 
+    // sort the Issues in the issuequeue by issue id
     public static Issuequeue sortID(Issuequeue list) {
         ArrayList<Issue> sortList = new ArrayList<>();
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
-        // Collections.sort(sortList);
         Comparator<Issue> timeOrder = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
@@ -409,12 +366,12 @@ public class Issue implements Serializable {
         return list;
     }
 
+    // sort the Issues in the issuequeue by priority
     public static Issuequeue sortPriority(Issuequeue list) {
         ArrayList<Issue> sortList = new ArrayList<>();
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
-        // Collections.sort(sortList);
         Comparator<Issue> timeOrder = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
@@ -428,24 +385,17 @@ public class Issue implements Serializable {
         return list;
     }
 
-   private static Integer priority1 = 0;
-    private static String aname = "";
-    private static ArrayList<String>  tag1 = new ArrayList<>();
-   public static Issue create(Scanner input) throws IOException {
-
+    // create the Issue by the user input
+    public static Issue create(Scanner input) throws IOException {
         ArrayList<Comment> comment = new ArrayList<>();
         String title = "";
         String description = "";
         String cname = User.getLoginName();
-        //String tag ="";
-        // String status = "";
-        //ArrayList<React> b = new ArrayList<>();
-
         System.out.println("Enter Title : ");
         title = input.nextLine();
-       System.out.println("Enter description text : (Enter '$undo' for undo, '$redo' for redo, '$end' for end)");        
+        System.out.println("Enter description text : (Enter '$undo' for undo, '$redo' for redo, '$end' for end)");
         UndoRedoStack<String> a = new UndoRedoStack<>();
-         while (input.hasNext()) {
+        while (input.hasNext()) {
             String s1 = input.nextLine();
             if (s1.equals("$end")) {
                 break;
@@ -459,48 +409,24 @@ public class Issue implements Serializable {
                 a.push(s1);
                 System.out.println(a);
             }
-
         }
         System.out.println("------------------------------");
         System.out.println("Description text");
         System.out.println("------------------------------");
-        if(a.size()>1){
-        description=description+a.get(0)+"\n";
-        for (int i = 1; i < a.size()-1; i++) {
-            description = description+ a.get(i)+"\n";
+        if (a.size() > 1) {
+            description = description + a.get(0) + "\n";
+            for (int i = 1; i < a.size() - 1; i++) {
+                description = description + a.get(i) + "\n";
+            }
+            description = description + a.get(a.size() - 1);
+        } else {
+            description = description + a.get(0);
         }
-        description=description+a.get(a.size()-1);
-        }else{
-            description=description+a.get(0);
-        }
-        
+
         System.out.println(description);
         System.out.println("------------------------------");
+        assigneeName();
 
-//        System.out.println("Enter cretor name : ");
-//        cname = input.nextLine();
-
-            assigneeName();
-            
-        
-       
-//        System.out.println("Add status : "); //no need input from user******
-//        status = input.nextLine();
-
-//        ObjectMapper mapper = new ObjectMapper();
-//        //read file
-//        Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json"), Example.class);
-//        int issueID = root.getProjects().get(Project.getProjectID() - 1).getIssues().size();
-//        Issue i = new Issue(issueID + 1, title, priority, tag, description, cname, aname, comment);
-//        //Update value in object
-//        root.getProjects().get(Project.getProjectID() - 1).getIssues().add(i);
-//        String json = mapper.writeValueAsString(root);
-////          List<Issue> a =root.getProjects().get(0).getIssues();
-//        try (FileWriter file = new FileWriter("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json")) {
-//
-//            file.write(json);
-//            System.out.println("Successfully updated json object to file...!!");
-//        }
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
@@ -508,18 +434,17 @@ public class Issue implements Serializable {
         // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
         List<Project> projectList = new ArrayList<>();
 
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
-            //em.close();
         }
 
         // Used to issue transactions on the EntityManager
@@ -530,14 +455,12 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Create and set values for new Issue
-             i = new Issue(title, priority1, tag1, description, cname, aname, comment);
-           // i = new Issue(title, priority, tag, description, cname, aname, comment);
+            // Create and set values for new Issue 
+            i = new Issue(title, priority1, tag1, description, cname, aname, comment);
             i.setProject(projectList.get(Project.getProjectID() - 1));
-            //  projectList.get(Project.getProjectID() - 1).getIssues().add(i);
+
             // Save the customer object
             em.persist(i);
-            // em.persist(projectList.get(Project.getProjectID() - 1)); //not sure
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes
@@ -555,6 +478,7 @@ public class Issue implements Serializable {
         return i;
     }
     
+    // recursion method for adding assignee name used when user invalid input
     public static void assigneeName() {
         Scanner input = new Scanner(System.in);
         try {
@@ -580,12 +504,12 @@ public class Issue implements Serializable {
         }
     }
 
+    // recursion method for adding tag and priority when user invalid input
     public static void tag() {
         Scanner input = new Scanner(System.in);
         try {
             System.out.println("Do u want add tag ? input '1' if yes, '2' if no");
             int option3 = input.nextInt();
-            //input.nextLine();
             if (option3 == 1) {
                 System.out.println("Enter number of tag: ");
                 int numT = input.nextInt();
@@ -615,7 +539,8 @@ public class Issue implements Serializable {
             tag();
         }
     }
-    
+
+    // determine whether value of string is an integer
     public static boolean isInteger(String input) {
         try {
             Integer.parseInt(input);
@@ -624,82 +549,64 @@ public class Issue implements Serializable {
             return false;
         }
     }
-
+    
+    // display Issue Board
     public static void displayIssueBoard() throws IOException {
         Scanner input = new Scanner(System.in);
-        //display issue board
         Issuequeue i = new Issuequeue();
-//        ObjectMapper objM = new ObjectMapper();
-//        try {
-//
-//            Example base = objM.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json"), Example.class);
-//            List<Issue> a = base.getProjects().get(Project.getProjectID() - 1).getIssues();
-//            i.offer(a);
-//            // i.display(1);
-//        } catch (JsonProcessingException ex) {
-//            System.out.println(" file input error");
-//        }
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
         // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
         List<Project> projectList = new ArrayList<>();
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
-        i.offer(projectList.get(Project.getProjectID() - 1).getIssues());
-        System.out.println("Enter 'p' to sort Issues by priority\nor 't' to sort by timestamp\nor 'i' to sort by issue id");
-     
-        String sortMethod = input.next();
-        switch (sortMethod) {
-            case "p":
-                sortPriority(i);
- 
-                break;
-            case "t":
-                sortTime(i);
-                break;
-            case "i":
-                sortID(i);
-                break;
-            default:
-                System.out.println("Invalid input. Please try again.");
-                displayIssueBoard();      
-                break;
-        }
-        
-        i.display();
-        //System.out.println(projectList.get(Project.getProjectID() - 1).getIssues().get(0).getTimestampformat()); //testing
-    
-        System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'h' to check the changelog \nor 'b' to return to project dashboard:");
-        String option = input.next();
-        input.nextLine();
-        if (isInteger(option)) {
+            i.offer(projectList.get(Project.getProjectID() - 1).getIssues());
+            System.out.println("Enter 'p' to sort Issues by priority\nor 't' to sort by timestamp\nor 'i' to sort by issue id");
 
-            int numIndex = Integer.parseInt(option);
-            Issue.setIssueID(numIndex);
-            i.displayIssueDetails(numIndex);
-        } else if (option.equals("s")) {
-
-            FuzzySearch.search();
-        } else if (option.equals("c")) {
-
-            addIssue();
-
-        } else if (option.equals("b")) {
-            Project.displayProject();
-         } else if (option.equals("h")) {
+            String sortMethod = input.next();
+            switch (sortMethod) {
+                case "p":
+                    sortPriority(i);
+                    break;
+                case "t":
+                    sortTime(i);
+                    break;
+                case "i":
+                    sortID(i);
+                    break;
+                default:
+                    System.out.println("Invalid input. Please try again.");
+                    displayIssueBoard();
+                    break;
+            }
+            i.display();
+            System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'h' to check the changelog \nor 'b' to return to project dashboard:");
+            String option = input.next();
+            input.nextLine();
+            if (isInteger(option)) {
+                int numIndex = Integer.parseInt(option);
+                Issue.setIssueID(numIndex);
+                i.displayIssueDetails(numIndex);
+            } else if (option.equals("s")) {
+                FuzzySearch.search();
+            } else if (option.equals("c")) {
+                addIssue();
+            } else if (option.equals("b")) {
+                Project.displayProject();
+            } else if (option.equals("h")) {
                 try {
                     Connection changelogSQL = new Connection();
                     //? is unspecified value, to substitute in an integer, string, double or blob value.
-                    String getChangelog = "SELECT * FROM `changelog` WHERE `project_id`= ? ";
+                    String changelog = "SELECT * FROM `changelog` WHERE `project_id`= ? ";
 
-                    //insert record of register 
-                    pS = changelogSQL.getConnection().prepareStatement(getChangelog);
+                    //insert record of changelog 
+                    pS = changelogSQL.getConnection().prepareStatement(changelog);
 
                     pS.setInt(1, Project.getProjectID());
                     result = pS.executeQuery();
@@ -713,7 +620,6 @@ public class Issue implements Serializable {
                         String issueName = result.getString("issue_name");
                         int issueID = result.getInt("issue_id");
                         String detail = result.getString("detail");
-
                         System.out.println("Editted Time : " + edit_time + "\nEdittor : " + edittor + "\nProject Name : " + projectName + "   Project ID : " + projectID + "\nIssue Name : " + issueName + "   Issue ID : " + issueID + "\nDetail : \n" + detail);
                         System.out.println("");
                     }
@@ -727,7 +633,6 @@ public class Issue implements Serializable {
                         if (userInput == 1) {
                             i.display();
                             function(i);
-                            //break;
                         } else {
                             System.out.println("Invalid input. Please try again.");
                         }
@@ -736,7 +641,7 @@ public class Issue implements Serializable {
                         input.next();
                     }
                 }
-        } else if (!option.equals("s") || !option.equals("c") || !option.equals("b")|| !option.equals("h") ||isInteger(option)) {
+            } else if (!option.equals("s") || !option.equals("c") || !option.equals("b") || !option.equals("h") || isInteger(option)) {
                 System.out.println("Invalid input. Please try again.");
                 System.out.println("");
                 function(i);
@@ -747,36 +652,31 @@ public class Issue implements Serializable {
         } finally {
             em.close();
         }
-
     }
     
+    // recursion method for Issue Board if invalid input from user
     public static void function(Issuequeue i) throws IOException {
         Scanner input = new Scanner(System.in);
-        
-            System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'h' to check the changelog \nor 'b' to return to project dashboard:");
-            String option = input.next();
-            input.nextLine();
-            if (isInteger(option)) {
-
-                int numIndex = Integer.parseInt(option);
-                Issue.setIssueID(numIndex);
-                i.displayIssueDetails(numIndex);
-            } else if (option.equals("s")) {
-
-                FuzzySearch.search();
-            } else if (option.equals("c")) {
-                addIssue();
-            } else if (option.equals("b")) {
-                Project.displayProject();
-            } else if (option.equals("h")) {
+        System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'h' to check the changelog \nor 'b' to return to project dashboard:");
+        String option = input.next();
+        input.nextLine();
+        if (isInteger(option)) {
+            int numIndex = Integer.parseInt(option);
+            Issue.setIssueID(numIndex);
+            i.displayIssueDetails(numIndex);
+        } else if (option.equals("s")) {
+            FuzzySearch.search();
+        } else if (option.equals("c")) {
+            addIssue();
+        } else if (option.equals("b")) {
+            Project.displayProject();
+        } else if (option.equals("h")) {
             try {
                 Connection changelogSQL = new Connection();
                 //? is unspecified value, to substitute in an integer, string, double or blob value.
-                String getChangelog = "SELECT * FROM `changelog` WHERE `project_id`= ? ";
-
-                //insert record of register 
-                pS = changelogSQL.getConnection().prepareStatement(getChangelog);
-
+                String changelog = "SELECT * FROM `changelog` WHERE `project_id`= ? ";
+                //insert record of changelog
+                pS = changelogSQL.getConnection().prepareStatement(changelog);
                 pS.setInt(1, Project.getProjectID());
                 result = pS.executeQuery();
                 // create the mysql insert preparedstatement
@@ -789,7 +689,6 @@ public class Issue implements Serializable {
                     String issueName = result.getString("issue_name");
                     int issueID = result.getInt("issue_id");
                     String detail = result.getString("detail");
-
                     System.out.println("Editted Time : " + edit_time + "\nEdittor : " + edittor + "\nProject Name : " + projectName + "   Project ID : " + projectID + "\nIssue Name : " + issueName + "   Issue ID : " + issueID + "\nDetail : \n" + detail);
                     System.out.println("");
                 }
@@ -812,16 +711,16 @@ public class Issue implements Serializable {
                     input.next();
                 }
             }
-            } else if (!option.equals("s") || !option.equals("c") || !option.equals("b")|| !option.equals("h")||isInteger(option)) {
-                System.out.println("Invalid input. Please try again.");
-                System.out.println("");
-                function(i);
-            }
-       
+        } else if (!option.equals("s") || !option.equals("c") || !option.equals("b") || !option.equals("h") || isInteger(option)) {
+            System.out.println("Invalid input. Please try again.");
+            System.out.println("");
+            function(i);
+        }
+
     }
 
- public static void setIssueStatus(String newStatus) throws IOException {
-
+    // change the old status to new status of selected issue
+    public static void setIssueStatus(String newStatus) throws IOException {
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -832,8 +731,9 @@ public class Issue implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+         // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -843,7 +743,7 @@ public class Issue implements Serializable {
         int issueID = -1;
         String oldstatus = "";
         try {
-            // Get matching customer object and output
+            // Get matching project object, issue object and output
             projectList = tq.getResultList();
             issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
@@ -851,27 +751,22 @@ public class Issue implements Serializable {
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldstatus = issueList.get(Issue.getIssueID() - 1).getStatus();
-//            issueTitle =projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get().getTitle();
-//            issueID =projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get().getId();
-//            oldstatus =projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get().getStatus();
-
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
-            //  em.close();
         }
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setStatus(newStatus);
             Integer i = Math.toIntExact(new java.util.Date().getTime() / 1000);
             a.setStatusTimestamp(i);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -895,10 +790,10 @@ public class Issue implements Serializable {
         try {
 
             //? is unspecified value, to substitute in an integer, string, double or blob value.
-            String register = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
+            String changelog = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
 
-            //insert record of register 
-            pS = userSQL.getConnection().prepareStatement(register);
+            // insert record of changelog 
+            pS = userSQL.getConnection().prepareStatement(changelog);
 
             // create the mysql insert preparedstatement
             //.setString : placeholders that are only replaced with the actual values inside the system
@@ -909,16 +804,14 @@ public class Issue implements Serializable {
             pS.setString(5, detail);
             pS.setString(6, newtimestamp);
             pS.setString(7, User.getLoginName());
-
-            pS.executeUpdate(); //return int value
-
+            pS.executeUpdate(); 
             System.out.println("change log update (status) Successfully ");
-
         } catch (SQLException e) {
             System.out.println("Failed to update changelog (status). Try again!");
         }
     }
-
+    
+    // change the old issue title to new issue title of selected issue
     public static void setNewIssueTitle(String newTitle) throws IOException {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -927,8 +820,9 @@ public class Issue implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -938,32 +832,27 @@ public class Issue implements Serializable {
         int issueID = -1;
         String oldTitle = "";
         try {
-            // Get matching customer object and output
+            // Get matching project object, issue object and output
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = issueList.get(Issue.getIssueID() -1).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
-//            issueTitle=projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-//            oldTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
-            //  em.close();
         }
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find Issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setTitle(newTitle);
 
-            // Save the customer object
+            // Save the Issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -987,10 +876,10 @@ public class Issue implements Serializable {
         try {
 
             //? is unspecified value, to substitute in an integer, string, double or blob value.
-            String register = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
+            String changelog = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
 
-            //insert record of register 
-            pS = userSQL.getConnection().prepareStatement(register);
+            //insert record of changelog 
+            pS = userSQL.getConnection().prepareStatement(changelog);
 
             // create the mysql insert preparedstatement
             //.setString : placeholders that are only replaced with the actual values inside the system
@@ -1002,7 +891,7 @@ public class Issue implements Serializable {
             pS.setString(6, newtimestamp);
             pS.setString(7, User.getLoginName());
 
-            pS.executeUpdate(); //return int value
+            pS.executeUpdate(); 
 
             System.out.println("change log update (title) Successfully ");
 
@@ -1010,9 +899,9 @@ public class Issue implements Serializable {
             System.out.println("Failed to update changelog (title). Try again!");
         }
     }
-
+    
+    // change the old description to new description of selected issue
     public static void setNewDescription(String newDescription) throws IOException {
-
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -1038,13 +927,9 @@ public class Issue implements Serializable {
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = issueList.get(Issue.getIssueID() -1).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldDescription = issueList.get(Issue.getIssueID() - 1).getDescriptionText();
-//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-//            oldDescription = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getDescriptionText();
-
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
@@ -1055,11 +940,11 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setDescriptionText(newDescription);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -1083,10 +968,10 @@ public class Issue implements Serializable {
         try {
 
             //? is unspecified value, to substitute in an integer, string, double or blob value.
-            String register = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
+            String changelog = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
 
-            //insert record of register 
-            pS = userSQL.getConnection().prepareStatement(register);
+            //insert record of changelog 
+            pS = userSQL.getConnection().prepareStatement(changelog);
 
             // create the mysql insert preparedstatement
             //.setString : placeholders that are only replaced with the actual values inside the system
@@ -1098,7 +983,7 @@ public class Issue implements Serializable {
             pS.setString(6, newtimestamp);
             pS.setString(7, User.getLoginName());
 
-            pS.executeUpdate(); //return int value
+            pS.executeUpdate();
 
             System.out.println("change log update (description) Successfully ");
 
@@ -1106,9 +991,9 @@ public class Issue implements Serializable {
             System.out.println("Failed to update changelog (description). Try again!");
         }
     }
-
+    
+    // change the old assignee name to new assignee name or add on assignee name of selected issue
     public static void setNewAssignee(String newAssignee) throws IOException {
-
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -1119,8 +1004,9 @@ public class Issue implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -1130,17 +1016,13 @@ public class Issue implements Serializable {
         int issueID = -1;
         String oldAssignee = "";
         try {
-            // Get matching customer object and output
+            // Get matching project object, issue project and output
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = issueList.get(Issue.getIssueID() -1).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldAssignee = issueList.get(Issue.getIssueID() - 1).getAssignee();
-//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-//            oldAssignee = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getAssignee();
-
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
@@ -1151,11 +1033,11 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setAssignee(newAssignee);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -1179,10 +1061,10 @@ public class Issue implements Serializable {
         try {
 
             //? is unspecified value, to substitute in an integer, string, double or blob value.
-            String register = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
+            String changelog = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
 
-            //insert record of register 
-            pS = userSQL.getConnection().prepareStatement(register);
+            //insert record of changelog 
+            pS = userSQL.getConnection().prepareStatement(changelog);
 
             // create the mysql insert preparedstatement
             //.setString : placeholders that are only replaced with the actual values inside the system
@@ -1194,7 +1076,7 @@ public class Issue implements Serializable {
             pS.setString(6, newtimestamp);
             pS.setString(7, User.getLoginName());
 
-            pS.executeUpdate(); //return int value
+            pS.executeUpdate(); 
 
             System.out.println("change log update (assignee) Successfully ");
 
@@ -1202,7 +1084,8 @@ public class Issue implements Serializable {
             System.out.println("Failed to update changelog (assignee). Try again!");
         }
     }
-
+    
+    // change the old priority to new priority of selected issue
     public static void setNewPriority(int newPriority) throws IOException {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -1213,8 +1096,9 @@ public class Issue implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -1224,17 +1108,13 @@ public class Issue implements Serializable {
         int issueID = -1;
         int oldPrio = -1;
         try {
-            // Get matching customer object and output
+            // Get matching project object, issue object and output
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = issueList.get(Issue.getIssueID() -1).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldPrio = issueList.get(Issue.getIssueID() - 1).getPriority();
-//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-//            oldPrio = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getPriority();
-
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
@@ -1245,11 +1125,11 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setPriority(newPriority);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -1273,10 +1153,10 @@ public class Issue implements Serializable {
         try {
 
             //? is unspecified value, to substitute in an integer, string, double or blob value.
-            String register = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
+            String changelog = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
 
-            //insert record of register 
-            pS = userSQL.getConnection().prepareStatement(register);
+            //insert record of changelog 
+            pS = userSQL.getConnection().prepareStatement(changelog);
 
             // create the mysql insert preparedstatement
             //.setString : placeholders that are only replaced with the actual values inside the system
@@ -1288,7 +1168,7 @@ public class Issue implements Serializable {
             pS.setString(6, newtimestamp);
             pS.setString(7, User.getLoginName());
 
-            pS.executeUpdate(); //return int value
+            pS.executeUpdate(); 
 
             System.out.println("change log update (assignee) Successfully ");
 
@@ -1296,7 +1176,8 @@ public class Issue implements Serializable {
             System.out.println("Failed to update changelog (assignee). Try again!");
         }
     }
-
+    
+    // change the old tag to new tag of selected issue
     public static void setNewTag(ArrayList newTag) throws IOException {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -1307,8 +1188,9 @@ public class Issue implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+         // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -1316,24 +1198,16 @@ public class Issue implements Serializable {
         int projectID = -1;
         String issueTitle = "";
         int issueID = -1;
-        // String oldTag="";
         ArrayList<String> oldTag = new ArrayList<>();
 
         try {
-            // Get matching customer object and output
+            // Get matching project object, issue object and output
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
-            issueTitle = issueList.get(Issue.getIssueID() -1).getTitle();
+            issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldTag = issueList.get(Issue.getIssueID() - 1).getTag();
-//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-//            oldTag = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTag();
-
-//            for (int i = 0; i < oldTag.size(); i++) {
-//                oldTag+=oldTag.get(i)+" ";
-//            }
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
@@ -1344,11 +1218,11 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setTag(newTag);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -1372,10 +1246,10 @@ public class Issue implements Serializable {
         try {
 
             //? is unspecified value, to substitute in an integer, string, double or blob value.
-            String register = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
+            String changelog = "INSERT INTO changelog (project_name,project_id,issue_name,issue_id,detail,edit_time,edittor) VALUES(?, ?,?,?,?,?,?)";
 
-            //insert record of register 
-            pS = userSQL.getConnection().prepareStatement(register);
+            //insert record of changelog 
+            pS = userSQL.getConnection().prepareStatement(changelog);
 
             // create the mysql insert preparedstatement
             //.setString : placeholders that are only replaced with the actual values inside the system
@@ -1387,7 +1261,7 @@ public class Issue implements Serializable {
             pS.setString(6, newtimestamp);
             pS.setString(7, User.getLoginName());
 
-            pS.executeUpdate(); //return int value
+            pS.executeUpdate(); 
 
             System.out.println("change log update (assignee) Successfully ");
 
