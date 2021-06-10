@@ -1,21 +1,21 @@
-
 package mavenproject3;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+// testor class
 public class tester {
 
+    // main method
     public static void main(String[] args) throws IOException {
         homepage();
     }
 
+    // show the homepage action
     public static void homepage() throws IOException {
         Scanner in = new Scanner(System.in);
-
         while (true) {
-
             try {
                 System.out.println("Enter '1' to login, '2' to register, '3' to exit program");
                 int userInput = in.nextInt();
@@ -25,8 +25,8 @@ public class tester {
                 } else if (userInput == 2) {
                     User.register();
                     break;
-                } else if(userInput == 3){
-                    System.out.println("Good bye "+User.getLoginName()+", we hope to see you again soon.");
+                } else if (userInput == 3) {
+                    System.out.println("Good bye " + User.getLoginName() + ", we hope to see you again soon.");
                     System.exit(0);
                 }
             } catch (InputMismatchException e) {
@@ -46,6 +46,7 @@ public class tester {
         }
     }
 
+    // show the admin homepage action
     public static void adminHomepage() throws IOException {
         Scanner in = new Scanner(System.in);
         while (true) {
@@ -72,7 +73,7 @@ public class tester {
                 } else if (userInput == 5) {
                     Project.displayProject();
                     break;
-                }else if (userInput == -1) {
+                } else if (userInput == -1) {
                     User.logout();
                     break;
                 }
@@ -82,5 +83,4 @@ public class tester {
             }
         }
     }
-
 }
