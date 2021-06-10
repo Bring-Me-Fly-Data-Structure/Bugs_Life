@@ -19,6 +19,7 @@ import java.util.Comparator;
     "adminlog"
 })
 
+//outer class for JSON import export
 public class Example {
 
     @JsonProperty("projects")
@@ -30,6 +31,8 @@ public class Example {
     @JsonProperty("adminlog")
     private List<adminlog> adminlogList = new ArrayList<>();
 
+    
+    //getters and setters
     @JsonProperty("projects")
     public List<Project> getProjects() {
         return projects;
@@ -70,6 +73,7 @@ public class Example {
         this.adminlogList = adminlogList;
     }
 
+    //sort and display Aplhanumerically
     public void sortAplhanumerically(List<Project> a) {
         System.out.println("Project board");
         System.out.println("-------------");
@@ -84,11 +88,7 @@ public class Example {
         System.out.printf("%1s%3s%4s%15s%8s%6s%2s", "|", "ID", "|", "Project Name", "|", " Issues", "|");
         System.out.println();
         System.out.println("+------+----------------------+--------+");
-//         for (int i = 0; i < a.size(); i++) {
-//             System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", (a.get(i).getId()), "|", a.get(i).getName(), "|", a.get(i).getIssues().size(), "|");
-//             System.out.println();
-//             System.out.println("+------+----------------------+--------+");
-//         }
+
         if(a.isEmpty()){
                 System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", "-", "|", "-", "|", "-", "|");
                 System.out.println();
@@ -102,6 +102,8 @@ public class Example {
         }
     }
 
+    
+    //display based on ID
     public void sortProjectID(List<Project> a) {
         System.out.println("Project board");
         System.out.println("-------------");
@@ -109,11 +111,7 @@ public class Example {
         System.out.printf("%1s%3s%4s%15s%8s%6s%2s", "|", "ID", "|", "Project Name", "|", " Issues", "|");
         System.out.println();
         System.out.println("+------+----------------------+--------+");
-//         for (int i = 0; i < a.size(); i++) {
-//             System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", (i + 1), "|", a.get(i).getName(), "|", a.get(i).getIssues().size(), "|");
-//             System.out.println();
-//             System.out.println("+------+----------------------+--------+");
-//         }
+
         if(a.isEmpty()){
                 System.out.printf("%1s%3s%4s%15s%8s%4s%5s", "|", "-", "|", "-", "|", "-", "|");
                 System.out.println();
@@ -140,6 +138,7 @@ public class Example {
             projects.add(str.get(i));
         }
     }
+
 
     public boolean removeProject(Project str) {
         if (projects.remove(str)) {
