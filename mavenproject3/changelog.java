@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mavenproject3;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -48,7 +44,7 @@ public class changelog {
     public changelog() {
     }
 
-    @JsonCreator
+    @JsonCreator //constructor for json read and write
     public changelog(@JsonProperty("changelog_id") Integer changelogId, @JsonProperty("project_name") String projectName, @JsonProperty("project_id") Integer projectId, @JsonProperty("issue_name") String issueName, @JsonProperty("issue_id") Integer issueId, @JsonProperty("detail") String detail, @JsonProperty("edit_time") String editTime, @JsonProperty("edittor") String edittor) {
         this.changelogId = changelogId;
         this.projectName = projectName;
@@ -60,6 +56,7 @@ public class changelog {
         this.edittor = edittor;
     }
 
+    //getters and setters
     @JsonProperty("changelog_id")
     public Integer getChangelogId() {
         return changelogId;
@@ -144,11 +141,13 @@ public class changelog {
     @JsonIgnore
     private static ResultSet result;
 
+    //method to display change history
     public static void viewChangelog() {
         System.out.println("******Change History******");
         try {
             Connection changelogSQL = new Connection();
 
+            //get data from mysql database
             String searchChangeLOG = "SELECT * FROM `changelog`";
             pS = changelogSQL.getConnection().prepareStatement(searchChangeLOG);
             result = pS.executeQuery();
@@ -166,7 +165,7 @@ public class changelog {
             }
             changelogSQL.getConnection().close();
         } catch (SQLException ex) {
-            System.out.println("display changelog error");
+            System.out.println("display changelog error MySQL");
         }
     }
 
