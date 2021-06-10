@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 // Issuequeue class used to store issue list
 public class Issuequeue {
-    // instant variable
+    // instant variables
     private String queuename;
     private ArrayList<Issue> list = new ArrayList<>();
     
