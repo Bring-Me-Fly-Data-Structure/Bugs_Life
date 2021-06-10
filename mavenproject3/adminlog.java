@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mavenproject3;
 
-/**
- *
- * @author richi
- */
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -48,7 +41,7 @@ public class adminlog {
     public adminlog() {
     }
 
-    @JsonCreator
+    @JsonCreator //constructor for json read and write
     public adminlog(@JsonProperty("adminlog_id") Integer adminlogId, @JsonProperty("username") String username, @JsonProperty("timestamp") String timestamp, @JsonProperty("status") String status, @JsonProperty("reason") String reason) {
         this.adminlogId = adminlogId;
         this.username = username;
@@ -57,6 +50,7 @@ public class adminlog {
         this.reason = reason;
     }
 
+    //getter and setters
     @JsonProperty("adminlog_id")
     public Integer getAdminlogId() {
         return adminlogId;
@@ -107,11 +101,13 @@ public class adminlog {
         this.reason = reason;
     }
 
+    //method to display admin log (for tracing abnormal activities)
     public static void adminLogReport() {
         System.out.println("******Admin Log******");
         try {
             Connection adminlogSQL = new Connection();
 
+            //getting data from mysql
             String searchAdminLOG = "SELECT * FROM `adminlog`";
             pS = adminlogSQL.getConnection().prepareStatement(searchAdminLOG);
             result = pS.executeQuery();
@@ -126,7 +122,7 @@ public class adminlog {
             }
             adminlogSQL.getConnection().close();
         } catch (SQLException ex) {
-            System.out.println("myvideodisplay error");
+            System.out.println("adminlog MySQL error");
         }
     }
 }
