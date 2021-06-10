@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mavenproject3;
 
 import java.io.IOException;
@@ -15,72 +10,75 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
-/**
- *
- * @author Asus User
- */
+// Issuequeue class used to store issue list
 public class Issuequeue {
-
+    // instant variable
     private String queuename;
-    //private PriorityQueue<Issue> list=new PriorityQueue<>();
     private ArrayList<Issue> list = new ArrayList<>();
-
+    
+    // empty constructor
     public Issuequeue() {
     }
-
-    Issuequeue(String queuename) {
+    
+    // constructor for user input queue name
+    public Issuequeue(String queuename) {
         this.queuename = queuename;
     }
-
-    public boolean offer( String title, Integer priority,  ArrayList<String> tag, String descriptionText, String createdBy, String assignee, ArrayList<Comment> comments) {
-        Issue obj = new Issue( title, priority, tag, descriptionText, createdBy, assignee, comments);
-        //return list.offer(obj);
+    
+    // add an issue into the arraylist of issue together with its title
+    public boolean offer(String title, Integer priority, ArrayList<String> tag, String descriptionText, String createdBy, String assignee, ArrayList<Comment> comments) {
+        Issue obj = new Issue(title, priority, tag, descriptionText, createdBy, assignee, comments);
         return list.add(obj);
     }
-
+    
+    // add an issue into the arraylist of issue
     public void offer(Issue a) {
-        //list.offer(a);
         list.add(a);
     }
 
-    //storing data.json issue 
+    // store a list of issues into the arraylist of issue
     public void offer(List<Issue> a) {
-        //list.offer(a);
         for (int i = 0; i < a.size(); i++) {
             list.add(a.get(i));
         }
     }
 
+    // remove an issue
     public boolean remove(Issue a) {
         return list.remove(a);
     }
 
+    // get the first issue of the arraylist
     public Issue peek() {
-        //return list.peek();
         return list.get(0);
     }
-
+    
+    // remove the first issue of the arraylist
     public Issue poll() {
         return list.remove(0);
     }
 
+    // delete all the issue of the arraylist
     public void clear() {
         list.clear();
     }
-
+    
+    // return the size of the arraylist
     public int getSize() {
         return list.size();
     }
 
+    // check the existance of an issue from the arraylist
     public boolean contains(Issue a) {
         return list.contains(a);
     }
 
+    // check either the arraylist is empty
     public boolean isEmpty() {
         return list.isEmpty();
-
     }
 
+    // display the issue board 
     public void display() {
         int index = 0;
         System.out.println("Issue board");
@@ -99,9 +97,9 @@ public class Issuequeue {
             }
         }
     }
-
+    
+    // display selected index issue details and following actions
     public void displayIssueDetails(int issueNum) throws IOException {
-
         int index = 0;
         while (index < list.size()) {
             Issue temp = list.get(index);
@@ -109,7 +107,7 @@ public class Issuequeue {
                 if (User.loginName.equals(temp.getAssignee())) {
                     Issue.setIssueStatus("In Progress");
                 }
-                System.out.println("Issue ID: " + temp.getId() + "\tStatus: " + temp.getStatus());
+                System.out.println("Issue ID: " + (temp.getId()) + "\tStatus: " + temp.getStatus());
                 System.out.println("Tag: " + temp.getTag() + "\tPriority: " + temp.getPriority() + "\tCreated On: " + temp.changeDateFormat());
                 System.out.println(temp.getTitle());
                 System.out.println("Assigned to: " + temp.getAssignee() + "\tCreated By: " + temp.getCreatedBy());
@@ -118,31 +116,23 @@ public class Issuequeue {
                 System.out.println(temp.getDescriptionText());
                 System.out.println("\nComments");
                 System.out.println("---------");
-                //System.out.println(temp.getComments());
                 for (int i = 0; i < temp.getComments().size(); i++) {
-                    
-                    System.out.print("#"+(i+1));
+                    System.out.print("#" + (i + 1));
                     System.out.println(temp.getComments().get(i));
-                   // System.out.println(temp.getComments().get(i).getReact());
                 }
-
                 Scanner in = new Scanner(System.in);
-                if (User.getLoginName().equals(temp.getAssignee()) || User.getLoginName().equals(temp.getCreatedBy())) {
+                if (User.getLoginName().equals(temp.getCreatedBy())) {
                     System.out.println("Enter\n'r' to react\nor 'c' to comment\nor 'b' to issue dashboard");
                     System.out.println("or 's' to change status \nor 'e' to edit the issue ");
-
                     String input = in.next();
                     switch (input) {
                         case "r":
                             React2.addReact();
-                           // displayIssueDetails(issueNum);
                             break;
                         case "c":
                             Comment.addComment();
-                            //displayIssueDetails(issueNum);
                             break;
                         case "b":
-                            //Issue.displayIssueBoard();
                             break;
                         case "s":
                             if (User.getLoginName().equals(temp.getAssignee())) {
@@ -159,7 +149,6 @@ public class Issuequeue {
                                         Issue.setIssueStatus("Resolved");
                                         break;
                                 }
-                                 //Issue.displayIssueBoard();
                             } else if (User.getLoginName().equals(temp.getCreatedBy())) {
                                 System.out.println("Enter '1' to Open, '2' to Close");
                                 int a = in.nextInt();
@@ -171,25 +160,24 @@ public class Issuequeue {
                                         Issue.setIssueStatus("Close");
                                         break;
                                 }
-                                 //Issue.displayIssueBoard();
-                            }break;
-                            
+                            }
+                            break;
                         case "e":
                             System.out.println("Which part you want to edit ? ");
                             System.out.println("Enter '1'--Title '2'--Description '3'--Assignee Name '4'--Priority '5--Tag'");
-                            int editoption=in.nextInt();
+                            int editoption = in.nextInt();
                             in.nextLine();
-                            switch(editoption){
+                            switch (editoption) {
                                 case 1:
                                     System.out.println("Enter new title : ");
-                                    String newTitle=in.nextLine();
+                                    String newTitle = in.nextLine();
                                     Issue.setNewIssueTitle(newTitle);
                                     break;
                                 case 2:
-                                    String newDescription="";
-                                    System.out.println("Enter new description text : (Enter '$undo' for undo, '$redo' for redo, '$end' for end)");        
+                                    String newDescription = "";
+                                    System.out.println("Enter new description text : (Enter '$undo' for undo, '$redo' for redo, '$end' for end)");
                                     UndoRedoStack<String> a = new UndoRedoStack<>();
-                                     while (in.hasNext()) {
+                                    while (in.hasNext()) {
                                         String s1 = in.nextLine();
                                         if (s1.equals("$end")) {
                                             break;
@@ -203,63 +191,55 @@ public class Issuequeue {
                                             a.push(s1);
                                             System.out.println(a);
                                         }
-
                                     }
                                     System.out.println("------------------------------");
                                     System.out.println("Description text");
                                     System.out.println("------------------------------");
-                                    if(a.size()>1){
-                                        newDescription=newDescription+a.get(0)+"\n";
-                                        for (int i = 1; i < a.size()-1; i++) {
-                                            newDescription = newDescription+ a.get(i)+"\n";
+                                    if (a.size() > 1) {
+                                        newDescription = newDescription + a.get(0) + "\n";
+                                        for (int i = 1; i < a.size() - 1; i++) {
+                                            newDescription = newDescription + a.get(i) + "\n";
                                         }
-                                        newDescription=newDescription+a.get(a.size()-1);
-                                        }else{
-                                            newDescription=newDescription+a.get(0);
-                                        }
-
+                                        newDescription = newDescription + a.get(a.size() - 1);
+                                    } else {
+                                        newDescription = newDescription + a.get(0);
+                                    }
                                     System.out.println(newDescription);
                                     System.out.println("------------------------------");
-                             
                                     Issue.setNewDescription(newDescription);
                                     break;
                                 case 3:
                                     System.out.println("Enter new assignee name : ");
-                                    String newAssignee=in.nextLine();
+                                    String newAssignee = in.nextLine();
                                     Issue.setNewAssignee(newAssignee);
                                     break;
                                 case 4:
                                     System.out.println("Enter new priority : ");
-                                    int newPriority=in.nextInt();
+                                    int newPriority = in.nextInt();
                                     Issue.setNewPriority(newPriority);
                                     break;
                                 case 5:
                                     ArrayList<String> tag = new ArrayList<>();
                                     System.out.println("Enter new tag : ");
-                                    String newtag=in.nextLine();
+                                    String newtag = in.nextLine();
                                     tag.add(newtag);
                                     Issue.setNewTag(tag);
                                     break;
-                                    
                             }
                     }
                     Issue.displayIssueBoard();
-                }
-                else if (User.getLoginName().equals(temp.getAssignee()) || User.getLoginName().equals(temp.getCreatedBy())) {
+                } else if (User.getLoginName().equals(temp.getAssignee()) || User.getLoginName().equals(temp.getCreatedBy())) {
                     System.out.println("Enter\n'r' to react\nor 'c' to comment\nor 'b' to issue dashboard");
                     System.out.println("or 's' to change status: ");
                     String input = in.next();
                     switch (input) {
                         case "r":
                             React2.addReact();
-                           // displayIssueDetails(issueNum);
                             break;
                         case "c":
                             Comment.addComment();
-                            //displayIssueDetails(issueNum);
                             break;
                         case "b":
-                            //Issue.displayIssueBoard();
                             break;
                         case "s":
                             if (User.getLoginName().equals(temp.getAssignee())) {
@@ -276,7 +256,6 @@ public class Issuequeue {
                                         Issue.setIssueStatus("Resolved");
                                         break;
                                 }
-                                 //Issue.displayIssueBoard();
                             } else if (User.getLoginName().equals(temp.getCreatedBy())) {
                                 System.out.println("Enter '1' to Open, '2' to Close");
                                 int a = in.nextInt();
@@ -288,24 +267,20 @@ public class Issuequeue {
                                         Issue.setIssueStatus("Close");
                                         break;
                                 }
-                                 //Issue.displayIssueBoard();
                             }
                     }
                     Issue.displayIssueBoard();
-                }else {
+                } else {
                     System.out.println("Enter\n'r' to react\nor 'c' to comment\nor 'b' to issue dashboard");
                     String input = in.next();
                     switch (input) {
                         case "r":
                             React2.addReact();
-                            //displayIssueDetails(issueNum);
                             break;
                         case "c":
                             Comment.addComment();
-                            //displayIssueDetails(issueNum);
                             break;
                         case "b":
-                            //Issue.displayIssueBoard();
                             break;
                     }
                     Issue.displayIssueBoard();
@@ -315,5 +290,4 @@ public class Issuequeue {
             index++;
         }
     }
-
 }
