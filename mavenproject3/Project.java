@@ -1,10 +1,8 @@
-
 package mavenproject3;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -29,34 +27,39 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "project_table")
-public class Project implements Serializable  {
-        @JsonIgnore @Transient
-        private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
+// Project class that implements Serializable library.
+public class Project implements Serializable {
+    // instant variables
+    @JsonIgnore
+    @Transient
+    private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("hibernateTest");
     @JsonIgnore
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "project_id")  
+    @Column(name = "project_id")
     @JsonProperty("id")
     private Integer id;
-    
-    @Column(name = "project_name")  
+
+    @Column(name = "project_name")
     @JsonProperty("name")
     private String name;
-    
-    @OneToMany(mappedBy="project",fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonProperty("issues")
     private List<Issue> issues = new ArrayList<>();
-    
+
     @Transient
     @JsonIgnore
     private static int projectID;
 
+    // empty constructor
     public Project() {
-
+    
     }
-
+    
+    // constructor for reading data.json
     @JsonCreator
     public Project(@JsonProperty("id") Integer id, @JsonProperty("name") String name, @JsonProperty("issues") ArrayList<Issue> issues) {
         this.id = id;
@@ -64,12 +67,13 @@ public class Project implements Serializable  {
         this.issues = issues;
     }
 
-    public Project( String name) {
- 
+    // constructor for user input data
+    public Project(String name) {
         this.name = name;
         this.issues = issues;
     }
 
+    // -----accessor & mutator-----
     @JsonProperty("id")
     public Integer getId() {
         return id;
@@ -108,30 +112,26 @@ public class Project implements Serializable  {
         Project.projectID = projectID;
     }
 
-   //methods
+    // display project dashboard
     public static void displayProject() throws IOException {
-   
         Example e = new Example();
         Scanner in = new Scanner(System.in);
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-    	
-    	// the lowercase c refers to the object
-    	// :custID is a parameterized query thats value is set below
-    	String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
 
-    	// Issue the query and get a matching Customer
-    	TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
-    	List<Project> a= new ArrayList<>();
-    	try {
- 
-    		// Get matching customer object and output
-    		a = tq.getResultList();
- 
+        // the lowercase c refers to the object
+        // :ID is a parameterized query thats value is set below
+        String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
+
+        // Issue the query and get a matching Project
+        TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        List<Project> a = new ArrayList<>();
+        try {
+            // Get matching project object and output
+            a = tq.getResultList();
             e.addProject(a);
             System.out.println("Enter 'a' to sort Projects by alphanumerical \nor 'i' to sort by Project ID: ");
             String sortMethod = in.next();
-           
-            switch(sortMethod){
+            switch (sortMethod) {
                 case "a":
                     e.sortAplhanumerically(a);
                     break;
@@ -143,18 +143,16 @@ public class Project implements Serializable  {
                     System.out.println();
                     displayProject();
             }
-            
-           project();
-   	}
-    	catch(NoResultException ex) {
-    		ex.printStackTrace();
-    	}
-    	finally {
-    		em.close();
-    	}
+            project();
+        } catch (NoResultException ex) {
+            ex.printStackTrace();
+        } finally {
+            em.close();
+        }
 
     }
-    
+
+    // provide action for project dashboard
     public static void project() throws IOException {
         Scanner in = new Scanner(System.in);
         try {
@@ -162,24 +160,25 @@ public class Project implements Serializable  {
             System.out.println("Enter '0' to create new project.\nEnter 'id' to check project\nEnter '-1' to logout");
             int input = in.nextInt();
             if (input == 0) {
-                addProjectByUser()；
-            }else if(input == -1){
+                addProjectByUser();
+            }else if (input == -1) {
                 User.logout();
-            }else {
+            } else {
                 Project.setProjectID(input);
                 Issue.displayIssueBoard();
-          }
+            }
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please try again.");
             System.out.println("");
             project();
-        }catch (IndexOutOfBoundsException a){
+        } catch (IndexOutOfBoundsException a) {
             System.out.println("Invalid input. Please try again.");
             System.out.println("");
             project();
         }
     }
 
+    // allow user to create a new project
     public static void addProjectByUser() throws IOException {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter project name: ");
@@ -189,16 +188,16 @@ public class Project implements Serializable  {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
- 
+
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
- 
-            // Create and set values for new customer
-            Project c = new Project( projectName);
- 
-            // Save the customer object
+
+            // Create and set values for new project
+            Project c = new Project(projectName);
+
+            // Save the project object
             em.persist(c);
             et.commit();
         } catch (Exception ex) {
@@ -212,7 +211,6 @@ public class Project implements Serializable  {
             System.out.println("New project added into database");
             em.close();
         }
-        displayProject() ;
+        displayProject();
     }
-    
 }
