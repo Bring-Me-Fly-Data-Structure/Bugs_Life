@@ -18,10 +18,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-/**
- *
- * @author richi
- */
 public class JSON_IMPORT_EXPORT {
 
     private static PreparedStatement pS;
@@ -30,6 +26,7 @@ public class JSON_IMPORT_EXPORT {
 
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("hibernateTest");
 
+    //method to prompt user whether they want import or export
     public static void importExport() throws IOException {
         Scanner in = new Scanner(System.in);
         while (true) {
@@ -51,27 +48,28 @@ public class JSON_IMPORT_EXPORT {
         }
     }
 
+    //method to export mysql data into json data
     public static void exportJson() throws IOException {
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
-        // String strQuery3 = "SELECT c FROM React2 c WHERE c.react_id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+
+        // Issue the query and get a matching project and user
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
         TypedQuery<User> tq2 = em.createQuery(strQuery2, User.class);
-        //TypedQuery<React2> tq3 = em.createQuery(strQuery3, React2.class);
+
         List<Project> projectList = new ArrayList<>();
         List<User> listU = new ArrayList<>();
         List<changelog> listC = new ArrayList<>();
         List<adminlog> listA = new ArrayList<>();
-        //List<React2> listR = new ArrayList<>();
+
         try {
-            // Get matching customer object and output
+            // Get matching project and user object and output
             projectList = tq.getResultList();
             listU = tq2.getResultList();
             try {
@@ -115,7 +113,7 @@ public class JSON_IMPORT_EXPORT {
             } catch (SQLException ex) {
                 System.out.println("export adminlog error");
             }
-            // listR = tq3.getResultList();
+
             ObjectMapper mapper = new ObjectMapper();
 
             Example root = new Example();
@@ -137,9 +135,10 @@ public class JSON_IMPORT_EXPORT {
 
     }
 
+    //method to import json data into mysql database 
     public static void importJson() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        //read file
+        //read file from json
         Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final2.json"), Example.class);
         int sizeProject = root.getProjects().size();
         for (int i = 0; i < sizeProject; i++) {
@@ -158,6 +157,7 @@ public class JSON_IMPORT_EXPORT {
                     changeStatus = aname + " & " + cname;
                 }
                 Connection userSQL = new Connection();
+                //importing access_control data
                 try {
 
                     //? is unspecified value, to substitute in an integer, string, double or blob value.
@@ -190,6 +190,7 @@ public class JSON_IMPORT_EXPORT {
         List<adminlog> aList = root.getAdminlogList();
         Connection userSQL = new Connection();
         for (int i = 0; i < cList.size(); i++) {
+            //importing changelog data
             try {
 
                 //? is unspecified value, to substitute in an integer, string, double or blob value.
@@ -217,6 +218,7 @@ public class JSON_IMPORT_EXPORT {
             }
         }
         for (int i = 0; i < aList.size(); i++) {
+            //importing adminlog data
             try {
 
                 //? is unspecified value, to substitute in an integer, string, double or blob value.
@@ -245,6 +247,7 @@ public class JSON_IMPORT_EXPORT {
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
 
+        //importing core functions like project, issue, comment, react, user
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -267,8 +270,7 @@ public class JSON_IMPORT_EXPORT {
                 em.persist(user);
             });
 
-            // Save the customer object
-            //em.persist(a);
+
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes
@@ -278,7 +280,6 @@ public class JSON_IMPORT_EXPORT {
             ex.printStackTrace();
         } finally {
             // Close EntityManager
-            System.out.println("json data imported into database");
             em.close();
         }
 
