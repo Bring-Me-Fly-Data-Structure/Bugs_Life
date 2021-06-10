@@ -51,11 +51,11 @@ public class React implements Serializable {
     @JsonProperty("count")
     private Integer count;
 
-    public React2() {
+    public React() {
     }
 
     @JsonCreator
-    public React2(@JsonProperty("reaction") String reaction, @JsonProperty("count") Integer count) {
+    public React(@JsonProperty("reaction") String reaction, @JsonProperty("count") Integer count) {
         this.reaction = reaction;
         this.count = count;
     }
