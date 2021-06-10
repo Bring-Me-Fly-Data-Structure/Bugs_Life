@@ -1,24 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mavenproject3;
 
 import java.util.Stack;
 
-
+// class for undo redo feature
 public class UndoRedoStack<E> extends Stack<E> {
     private Stack undoStack;
     private Stack redoStack;
 
-    // post: constructs an empty UndoRedoStack
+    // constructs an empty UndoRedoStack
     public UndoRedoStack() {
         undoStack = new Stack();
         redoStack = new Stack();
     }
 
-    // post: pushes and returns the given value on top of the stack
+    // pushes and returns the given value on top of the stack
     public E push(E value) {
         super.push(value);
         undoStack.push("push");
@@ -26,7 +21,7 @@ public class UndoRedoStack<E> extends Stack<E> {
         return value;
     }
 
-    // post: pops and returns the value at the top of the stack
+    // pops and returns the value at the top of the stack
     public E pop() {
         E value = super.pop();
         undoStack.push(value);
@@ -35,14 +30,11 @@ public class UndoRedoStack<E> extends Stack<E> {
         return value;
     }
 
-    // post: returns whether or not an undo can be done
+    // returns whether or not an undo can be done
     public boolean canUndo() {
         boolean result=false;
         if(undoStack.size()<1){
             System.out.println("--Unable to undo--");
-            //undoStack.push("push");
-            //redoStack.push("");
-          
             result=false;
         }else{
             result= true;
@@ -50,8 +42,7 @@ public class UndoRedoStack<E> extends Stack<E> {
         return result;
     }
     
-    // pre : canUndo() (throws IllegalStateException if not)
-    // post: undoes the last stack push or pop command
+    // undoes the last stack push or pop command if canUndo method returns true
     public void undo() {
         if (canUndo()) {
   
@@ -68,13 +59,12 @@ public class UndoRedoStack<E> extends Stack<E> {
         }
     }
 
-    // post: returns whether or not a redo can be done
+    // returns whether or not a redo can be done
     public boolean canRedo() {
         return !redoStack.isEmpty();
     }
 
-    // pre : canRedo() (throws IllegalStateException if not)
-    // post: redoes the last undone operation
+    // redoes the last undone operation if canRedo method returns true
     public void redo() {
         
         if (!canRedo()) {
