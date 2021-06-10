@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mavenproject3;
 
 import java.io.IOException;
@@ -19,10 +15,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Transient;
 import javax.persistence.TypedQuery;
 
-/**
- *
- * @author richi
- */
+
 public class FuzzySearch {
 
     @Transient
@@ -37,16 +30,12 @@ public class FuzzySearch {
         System.out.println("Enter keyword: ");
         s.nextLine();
         String keyword = s.nextLine();
-//        keyword = keyword.replaceAll("[^a-zA-Z0-9]", "");
-//        keyword = keyword.replaceAll("\\s", "");
-//        keyword = keyword.toLowerCase();
-        //ArrayList <Issue>storedValue=new ArrayList();
+
         Issuequeue matches = new Issuequeue();
         int countMatch = 0;
-//         ObjectMapper mapper = new ObjectMapper();
+
         //read file
         System.out.println("==========");
-//        Example root = mapper.readValue(new File("C:\\Users\\kerxi\\OneDrive\\Desktop\\WIA1002 DATA STRUCTURE\\data.json"), Example.class);
 
         if (searchStatus == 1) {
 
@@ -300,7 +289,7 @@ public class FuzzySearch {
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
-        // Collections.sort(sortList);
+    
         Comparator<Issue> similarity = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
@@ -325,7 +314,7 @@ public class FuzzySearch {
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
-        // Collections.sort(sortList);
+
         Comparator<Issue> similarity = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
@@ -350,7 +339,7 @@ public class FuzzySearch {
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
-        // Collections.sort(sortList);
+ 
         Comparator<Issue> similarity = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
