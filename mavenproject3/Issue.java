@@ -431,7 +431,7 @@ public class Issue implements Serializable {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
 
         // Issue the query and get a matching Project
@@ -459,7 +459,7 @@ public class Issue implements Serializable {
             i = new Issue(title, priority1, tag1, description, cname, aname, comment);
             i.setProject(projectList.get(Project.getProjectID() - 1));
 
-            // Save the customer object
+            // Save the issue object
             em.persist(i);
             et.commit();
         } catch (Exception ex) {
@@ -557,7 +557,7 @@ public class Issue implements Serializable {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
 
         // Issue the query and get a matching Project
@@ -727,7 +727,7 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
@@ -908,12 +908,13 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -923,7 +924,7 @@ public class Issue implements Serializable {
         int issueID = -1;
         String oldDescription = "";
         try {
-            // Get matching customer object and output
+            // Get matching project object, issue object and output
             projectList = tq.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
@@ -1000,7 +1001,7 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
@@ -1092,7 +1093,7 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
@@ -1184,7 +1185,7 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
