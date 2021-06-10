@@ -1,29 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mavenproject3;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- *
- * @author Asus User
- */
 public class access_control {
 
     private static PreparedStatement pS;
 
     private static ResultSet result;
     
+    //method to display the access control list
     public static void adminLogReport() {
         System.out.println("******Access Control List******");
                 try {
             Connection access = new Connection();
 
+            //get data from mysql database
             String searchAccess = "SELECT * FROM `access_control`";
             pS = access.getConnection().prepareStatement(searchAccess);
             result = pS.executeQuery();
@@ -40,11 +34,9 @@ public class access_control {
             }
             access.getConnection().close();
         } catch (SQLException ex) {
-            System.out.println("myvideodisplay error");
+            System.out.println("access control list MYSQL error");
         }
     }
     
-    public static void main(String[] args) {
-        adminLogReport();
-    }
+
 }
