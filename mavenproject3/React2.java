@@ -23,7 +23,7 @@ import javax.transaction.Transactional;
 @Transactional
 @Entity
 @Table(name = "reaction")
-public class React2 implements Serializable {
+public class React implements Serializable {
 
     @JsonIgnore    // Create an EntityManagerFactory when you start the application
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
