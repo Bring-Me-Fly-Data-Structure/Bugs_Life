@@ -17,15 +17,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-/**
- *
- * @author richi
- */
 public class ReportGeneration {
 
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("hibernateTest");
 
+    //weekly report generation method
     public static void generateReport() {
         long numResolved = 0;
         long numInProgress = 0;
@@ -34,17 +31,16 @@ public class ReportGeneration {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching project, user
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
         TypedQuery<User> tq2 = em.createQuery(strQuery2, User.class);
         List<Project> projectList = new ArrayList<>();
         List<User> listU = new ArrayList<>();
         try {
-            // Get matching customer object and output
+            // Get matching project and user objects and output
             projectList = tq.getResultList();
             listU = tq2.getResultList();
             ArrayList<String> usersName = new ArrayList<>();
@@ -66,7 +62,6 @@ public class ReportGeneration {
                 //loop through each issue, find number of issue solved by each user, store it in array 
                 for (int j = 0; j < usersName.size(); j++) {
                     numSolvedbyAssignee[j] += findTopPerformer(projectList.get(i).getIssues(), usersName.get(j), "Resolved");
-                    //System.out.println("**"+findTopPerformer(projectList.get(i).getIssues(), usersName.get(j), "Resolved"));
                 }
 
             }
@@ -91,8 +86,8 @@ public class ReportGeneration {
             c.set(Calendar.MILLISECOND, 0);
             Date monday = c.getTime();
             long numUnresolved = numOpen + numInProgress;
-            System.out.println("***************Weekly Report***************");
-            System.out.println("From " + changeDateFormat(monday) + " to " + changeDateFormat(new Date()) + "\n*******************************************");
+            System.out.println("\n***************Weekly Report***************");
+            System.out.println("From " + changeDateFormat(monday) + " to " + changeDateFormat(new Date()) + "\n*******************************************\n");
             System.out.println("Number of resolved issues: " + numResolved);
             System.out.println("Number of In Progress issues: " + numInProgress);
             System.out.println("Number of unresolved issues: " + numUnresolved);
@@ -101,10 +96,10 @@ public class ReportGeneration {
             } else {
                 System.out.println("Top performer of the week: " + usersName.get(maxIndex));
             }
-            //   System.out.println(outer.toString());
             if (outer.isEmpty()) {
                 System.out.println("Most frequent label of the week: no label found");
             } else {
+                //get the occurences for each tag
                 Map<String, Long> occurrences = outer.stream().collect(Collectors.groupingBy(w -> w, Collectors.counting()));
                 long maxKey = Collections.max(occurrences.values());
                 List<String> keys = new ArrayList<>();
@@ -113,7 +108,6 @@ public class ReportGeneration {
                         keys.add(entry.getKey());
                     }
                 }
-                //  System.out.println(occurrences);
                 System.out.print("Most frequent label of the week: ");
                 for (int i = 0; i < keys.size(); i++) {
                     System.out.print("\"" + keys.get(i) + "\" ");
@@ -126,29 +120,29 @@ public class ReportGeneration {
         }
     }
 
+    //method to count total number of a specific status in all issues
     public static long findStatus(List<Issue> list, String status) {
         return list.stream().filter(listObj -> status.equals(listObj.getStatus())).count();
     }
 
+    //method to count total number of a specific status in all issues in current week
     public static long findWeeklyStatus(List<Issue> list, String status) {
         return list.stream().filter(listObj -> status.equals(listObj.getStatus()) && (checkThisWeek(listObj.getStatusTimestamp()))).count();
     }
 
+    //method to count total number of resolved issues for a user in current week
     public static long findTopPerformer(List<Issue> list, String usersname, String status) {
         return list.stream().filter(listObj -> status.equals(listObj.getStatus()) && (listObj.getAssignee().equals(usersname)) && (checkThisWeek(listObj.getStatusTimestamp()))).count();
     }
 
+    //method to find all the tag used in current week
     public static void findTag(List<String> outer, List<Issue> list) {
-
-        // list.stream().filter(listObj -> listObj.getTag());
-        //list.stream().forEach(listObj -> outer.addAll(listObj.getTag()));
         list.stream().filter(listObj -> checkThisWeek(listObj.getTimestamp())).forEach(listObj -> outer.addAll(listObj.getTag()));
     }
 
+    //method to check if the timestamp is this week or not
     public static boolean checkThisWeek(long unixtimestamp) {
         Calendar c = Calendar.getInstance();
-//        System.out.println(c.getTime().getTime()/1000);
-//        System.out.println(new Date().getTime()/1000);
         c.setFirstDayOfWeek(Calendar.MONDAY);
         c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -157,12 +151,12 @@ public class ReportGeneration {
         c.set(Calendar.MILLISECOND, 0);
         Date monday = c.getTime();
         Date nextMonday = new Date(monday.getTime() + 7 * 24 * 60 * 60 * 1000);
-        //  System.out.println(nextMonday);
         Date today = new Date((long) unixtimestamp * 1000);
 
         return today.after(monday) && today.before(nextMonday);
     }
 
+    //method to change date format
     public static String changeDateFormat(Date a) {
         SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
         return ft.format(a);
