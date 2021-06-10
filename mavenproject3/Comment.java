@@ -41,9 +41,6 @@ public class Comment implements Serializable {
     @JoinColumn(name = "issue_id", nullable = false)
     private Issue issue;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_ID", nullable = false)
-//    private User userComment;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
@@ -55,7 +52,6 @@ public class Comment implements Serializable {
     private String text;
 
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
-//    @Transient
     @JsonProperty("react")
     private List<React2> react = new ArrayList<>();
 
@@ -104,20 +100,11 @@ public class Comment implements Serializable {
 
     //constructor for user input
     public Comment(String text, String user) {
-        // this.commentId = commentId;
         this.text = text;
         this.user = user;
         this.timestampformat = new java.util.Date();
         Integer i = Math.toIntExact(new java.util.Date().getTime() / 1000);
         this.timestamp = i;
-        //"like","smile","happy","sad","cry","angry","love"
-//        this.react.add(new React("angry", 0));
-//        this.react.add(new React("happy", 0));
-//        this.react.add(new React("thumb up", 0));
-//        this.react.add(new React("smile", 0));
-//        this.react.add(new React("sad", 0));
-//        this.react.add(new React("love", 0));
-//        this.react.add(new React("cry", 0));
     }
 
     @JsonProperty("comment_id")
@@ -178,13 +165,6 @@ public class Comment implements Serializable {
         this.issue = issue;
     }
 
-//    public User getUserComment() {
-//        return userComment;
-//    }
-//
-//    public void setUserComment(User userComment) {
-//        this.userComment = userComment;
-//    }
     public static int getCommentID() {
         return commentID;
     }
@@ -229,27 +209,27 @@ public class Comment implements Serializable {
             // Get matching customer object and output
             reactList = tq.getResultList();
             if (reactList.get(0).getCount() != 0) {
-                result += String.format("%c", 0x0001F620) + "x" + reactList.get(0).getCount() + "  ";
+                result += String.format("%s", "Angry ") + "x" + reactList.get(0).getCount() + "  ";
             }
             if (reactList.get(1).getCount() != 0) {
-                result += String.format("%c", 0x0001F601) + "x" + reactList.get(1).getCount() + "  ";
+                result += String.format("%s", "Happy ") + "x" + reactList.get(1).getCount() + "  ";
             }
             if (reactList.get(2).getCount() != 0) {
-                result += String.format("%c", 0x0001F44D) + "x" + reactList.get(2).getCount() + "  ";
+                result += String.format("%s", "Thumbs Up ") + "x" + reactList.get(2).getCount() + "  ";
             }
             if (reactList.get(3).getCount() != 0) {
-                result += String.format("%c", 0x0001F60A) + "x" + reactList.get(3).getCount() + "  ";
+                result += String.format("%s", "Smile ") + "x" + reactList.get(3).getCount() + "  ";
             }
             if (reactList.get(4).getCount() != 0) {
-                result += String.format("%c", 0x0001F622) + "x" + reactList.get(4).getCount() + "  ";
+                result += String.format("%s", "Sad ") + "x" + reactList.get(4).getCount() + "  ";
             }
             if (reactList.get(5).getCount() != 0) {
-                result += String.format("%c", 0x00002764) + "x" + reactList.get(5).getCount() + "  ";
+                result += String.format("%s", "Love ") + "x" + reactList.get(5).getCount() + "  ";
             }
             if (reactList.get(6).getCount() != 0) {
-                result += String.format("%c", 0x0001F62D) + "x" + reactList.get(6).getCount() + "  ";
+                result += String.format("%s", "Cry ") + "x" + reactList.get(6).getCount() + "  ";
             }
-            //result+=reactList.toString();
+       
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
@@ -311,21 +291,13 @@ public class Comment implements Serializable {
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
         List<Project> projectList = new ArrayList<>();
 
-//        String strQuery2 = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
-//
-//        // Issue the query and get a matching Customer
-//        TypedQuery<User> tq2 = em.createQuery(strQuery2, User.class);
-//        List<User> userList = new ArrayList<>();
         try {
             // Get matching customer object and output
             projectList = tq.getResultList();
-            //  userList = tq2.getResultList();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
-        } finally {
-            //em.close();
-        }
+        } 
 
         try {
             // Get transaction and start
@@ -334,7 +306,6 @@ public class Comment implements Serializable {
 
             // Create and set values for new customer
             Comment m = new Comment(sentence, username);
-          //  m.setIssue(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1));
             m.setIssue(projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get());
             em.persist(m);
 
@@ -374,13 +345,9 @@ public class Comment implements Serializable {
             // Get matching customer object and output
             projectList = tq.getResultList();
             issueList = tq2.getResultList();
-            //  userList = tq2.getResultList();
-
         } catch (NoResultException ex) {
             ex.printStackTrace();
-        } finally {
-            //em.close();
-        }
+        } 
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -394,7 +361,7 @@ public class Comment implements Serializable {
             React2 sad = new React2("sad", 0);
             React2 love = new React2("love", 0);
             React2 cry = new React2("cry", 0);
-            // System.out.println(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().toString());
+
             int commentIndex = issueList.get(Issue.getIssueID() - 1).getComments().size() - 1;
             angry.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             happy.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
@@ -423,7 +390,6 @@ public class Comment implements Serializable {
 
         } finally {
             // Close EntityManager
-            //  System.out.println("successfuly add react into database");
             em.close();
         }
     }
