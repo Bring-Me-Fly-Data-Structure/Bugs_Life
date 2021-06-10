@@ -47,7 +47,7 @@ import javax.persistence.*;
 // Issue class that implements Serializable library
 public class Issue implements Serializable {
 
-    // instant variable
+    // instant variables
     @JsonIgnore
     @Transient
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
