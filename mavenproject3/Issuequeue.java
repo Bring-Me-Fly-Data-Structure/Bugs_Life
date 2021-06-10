@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 // Issuequeue class used to store issue list
 public class Issuequeue {
-    // instant variables
+    // instant variable
     private String queuename;
     private ArrayList<Issue> list = new ArrayList<>();
     
@@ -127,7 +127,7 @@ public class Issuequeue {
                     String input = in.next();
                     switch (input) {
                         case "r":
-                            React2.addReact();
+                            React.addReact();
                             break;
                         case "c":
                             Comment.addComment();
@@ -234,7 +234,7 @@ public class Issuequeue {
                     String input = in.next();
                     switch (input) {
                         case "r":
-                            React2.addReact();
+                            React.addReact();
                             break;
                         case "c":
                             Comment.addComment();
@@ -275,7 +275,7 @@ public class Issuequeue {
                     String input = in.next();
                     switch (input) {
                         case "r":
-                            React2.addReact();
+                            React.addReact();
                             break;
                         case "c":
                             Comment.addComment();
