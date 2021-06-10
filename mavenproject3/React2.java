@@ -23,8 +23,10 @@ import javax.transaction.Transactional;
 @Transactional
 @Entity
 @Table(name = "reaction")
+// React class that implements Serializable library
 public class React implements Serializable {
 
+    // instant variables
     @JsonIgnore    // Create an EntityManagerFactory when you start the application
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("hibernateTest");
@@ -51,15 +53,18 @@ public class React implements Serializable {
     @JsonProperty("count")
     private Integer count;
 
+    // empty constructor
     public React() {
     }
 
+    // constructor for user input data
     @JsonCreator
     public React(@JsonProperty("reaction") String reaction, @JsonProperty("count") Integer count) {
         this.reaction = reaction;
         this.count = count;
     }
 
+    // -----accessor & mutator-----
     @JsonProperty("reaction")
     public String getReaction() {
         return reaction;
@@ -96,13 +101,13 @@ public class React implements Serializable {
         this.comment = comment;
     }
 
+    // toString method
     @Override
     public String toString() {
-
         return "React{" + "reaction=" + getReaction() + ", count=" + getCount() + '}';
     }
 
-    //method
+    // allow user to add reaction
     public static void addReact() throws IOException {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter a comment ID to react: ");
@@ -138,44 +143,40 @@ public class React implements Serializable {
                 break;
         }
 
-
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
 
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
 
         try {
-            // Get matching customer object and output
+            // Get matching project object, issue object and output
             projectList = tq.getResultList();
-            issueList = tq2.getResultList();  
+            issueList = tq2.getResultList();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
         }
-        
+
         React2 r = new React2();
 
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
-
             int count = issueList.get(Issue.getIssueID() - 1).getComments().get(Comment.getCommentID() - 1).getReact().get(reactionIndex).getCount();
             r = issueList.get(Issue.getIssueID() - 1).getComments().get(Comment.getCommentID() - 1).getReact().get(reactionIndex);
-
             r.setCount(count + 1);
-
             em.persist(r);
-
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes
@@ -188,5 +189,4 @@ public class React implements Serializable {
             em.close();
         }
     }
-
 }
