@@ -156,15 +156,12 @@ public class React2 implements Serializable {
         try {
             // Get matching customer object and output
             projectList = tq.getResultList();
-            issueList = tq2.getResultList();
-            //  System.out.println(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().get(Comment.getCommentID() - 1).getReact());
+            issueList = tq2.getResultList();  
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
-        } finally {
-            // em.close();
         }
-
+        
         React2 r = new React2();
 
         try {
