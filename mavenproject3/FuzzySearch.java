@@ -1,4 +1,3 @@
-
 package mavenproject3;
 
 import java.io.IOException;
@@ -15,44 +14,42 @@ import javax.persistence.Persistence;
 import javax.persistence.Transient;
 import javax.persistence.TypedQuery;
 
-
+// FuzzySearch class provides fuzzy seach feature
 public class FuzzySearch {
 
+    // instant variables
     @Transient
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("hibernateTest");
 
+    // allow user to search issue 
     public static void search() throws IOException {
-
         Scanner s = new Scanner(System.in);
         System.out.println("\nEnter '1'--title '2'--description text '3'--Comment");
         int searchStatus = s.nextInt();
         System.out.println("Enter keyword: ");
         s.nextLine();
         String keyword = s.nextLine();
-
         Issuequeue matches = new Issuequeue();
         int countMatch = 0;
 
         //read file
         System.out.println("==========");
-
         if (searchStatus == 1) {
-
             EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
             EntityTransaction et = null;
             String[] words;
             String[] keywords;
             Issue a = null;
             // the lowercase c refers to the object
-            // :custID is a parameterized query thats value is set below
+            // :ID is a parameterized query thats value is set below
             String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
-            // Issue the query and get a matching Customer
+            // Issue the query and get a matching Project
             TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
 
             List<Project> projectList = new ArrayList<>();
             try {
-                // Get matching customer object and output
+                // Get matching project object and output
                 projectList = tq.getResultList();
                 for (int i = 0; i < projectList.get(Project.getProjectID() - 1).getIssues().size(); i++) {
                     words = projectList.get(Project.getProjectID() - 1).getIssues().get(i).getTitle().split(" ");
@@ -75,7 +72,6 @@ public class FuzzySearch {
                             }
                         }
                     }
-
                 }
                 sortSimilarityByTitle(matches, keyword);
                 matches.display();
@@ -83,26 +79,21 @@ public class FuzzySearch {
                 String option = s.next();
                 s.nextLine();
                 if (Issue.isInteger(option)) {
-
                     int numIndex = Integer.parseInt(option);
                     Issue.setIssueID(numIndex);
                     matches.displayIssueDetails(numIndex);
                 } else if (option.equals("s")) {
                     FuzzySearch.search();
                 } else if (option.equals("c")) {
-
                     Issue.addIssue();
-
                 } else if (option.equals("b")) {
                     Project.displayProject();
                 }
-
             } catch (NoResultException ex) {
                 ex.printStackTrace();
             } finally {
                 em.close();
             }
-
         } else if (searchStatus == 2) {
             EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
             EntityTransaction et = null;
@@ -110,14 +101,13 @@ public class FuzzySearch {
             String[] keywords;
             Issue a = null;
             // the lowercase c refers to the object
-            // :custID is a parameterized query thats value is set below
+            // :ID is a parameterized query thats value is set below
             String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
-            // Issue the query and get a matching Customer
+            // Issue the query and get a matching Project
             TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
-
             List<Project> projectList = new ArrayList<>();
             try {
-                // Get matching customer object and output
+                // Get matching Project object and output
                 projectList = tq.getResultList();
                 for (int i = 0; i < projectList.get(Project.getProjectID() - 1).getIssues().size(); i++) {
                     words = projectList.get(Project.getProjectID() - 1).getIssues().get(i).getDescriptionText().split(" ");
@@ -140,7 +130,6 @@ public class FuzzySearch {
                             }
                         }
                     }
-
                 }
                 sortSimilarityByDescription(matches, keyword);
                 matches.display();
@@ -148,20 +137,16 @@ public class FuzzySearch {
                 String option = s.next();
                 s.nextLine();
                 if (Issue.isInteger(option)) {
-
                     int numIndex = Integer.parseInt(option);
                     Issue.setIssueID(numIndex);
                     matches.displayIssueDetails(numIndex);
                 } else if (option.equals("s")) {
                     FuzzySearch.search();
                 } else if (option.equals("c")) {
-
                     Issue.addIssue();
-
                 } else if (option.equals("b")) {
                     Project.displayProject();
                 }
-
             } catch (NoResultException ex) {
                 ex.printStackTrace();
             } finally {
@@ -174,21 +159,19 @@ public class FuzzySearch {
             String[] keywords;
             Issue a = null;
             // the lowercase c refers to the object
-            // :custID is a parameterized query thats value is set below
+            // :ID is a parameterized query thats value is set below
             String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
-            // Issue the query and get a matching Customer
+            // Issue the query and get a matching Project
             TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
-
             List<Project> projectList = new ArrayList<>();
             try {
-                // Get matching customer object and output
+                // Get matching project object and output
                 projectList = tq.getResultList();
                 for (int i = 0; i < projectList.get(Project.getProjectID() - 1).getIssues().size(); i++) {
                     String commentText = "";
                     for (int j = 0; j < projectList.get(Project.getProjectID() - 1).getIssues().get(i).getComments().size(); j++) {
                         commentText += (projectList.get(Project.getProjectID() - 1).getIssues().get(i).getComments().get(j).getText() + " ");
                     }
-
                     words = commentText.split(" ");
                     if (!keyword.contains(" ")) { //if keyword is single word
                         for (int j = 0; j < words.length; j++) { //loop through commentText to check with keyword
@@ -209,7 +192,6 @@ public class FuzzySearch {
                             }
                         }
                     }
-
                 }
                 sortSimilarityByComment(matches, keyword);
                 matches.display();
@@ -284,12 +266,12 @@ public class FuzzySearch {
         return (longerLength - editDistance(longer, shorter)) / (double) longerLength;
     }
 
+    // use to sort the issue based on similarity by title
     public static Issuequeue sortSimilarityByTitle(Issuequeue list, String keyword) {
         ArrayList<Issue> sortList = new ArrayList<>();
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
-    
         Comparator<Issue> similarity = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
@@ -309,12 +291,12 @@ public class FuzzySearch {
         return list;
     }
 
+    // use to sort the issue based on similarity by description
     public static Issuequeue sortSimilarityByDescription(Issuequeue list, String keyword) {
         ArrayList<Issue> sortList = new ArrayList<>();
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
-
         Comparator<Issue> similarity = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
@@ -334,12 +316,12 @@ public class FuzzySearch {
         return list;
     }
 
+    // use to sort the issue based on similarity by comment
     public static Issuequeue sortSimilarityByComment(Issuequeue list, String keyword) {
         ArrayList<Issue> sortList = new ArrayList<>();
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
- 
         Comparator<Issue> similarity = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
