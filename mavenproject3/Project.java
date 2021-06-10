@@ -1,4 +1,4 @@
-//package com.example;
+
 package mavenproject3;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -100,11 +100,6 @@ public class Project implements Serializable  {
         this.issues = issues;
     }
 
-//    @Override
-//    public int compareTo(Project o) {
-//        return this.name.compareTo(o.name);
-//    }
-
     public static int getProjectID() {
         return projectID;
     }
@@ -135,12 +130,6 @@ public class Project implements Serializable  {
             e.addProject(a);
             System.out.println("Enter 'a' to sort Projects by alphanumerical \nor 'i' to sort by Project ID: ");
             String sortMethod = in.next();
-
-            /*if (sortMethod.equals("a")) {
-                e.sortAplhanumerically(a);
-            } else if (sortMethod.equals("i")) {
-                e.sortProjectID(a);
-            }*/
            
             switch(sortMethod){
                 case "a":
@@ -163,18 +152,8 @@ public class Project implements Serializable  {
     	finally {
     		em.close();
     	}
-    //    ObjectMapper objM = new ObjectMapper();
-//        try {
-//
-//            Example base = objM.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json"), Example.class);
-//            ArrayList<Project> a = base.getProjects();
 
-            // System.out.println("Enter selected project id to check project: ");
-//        } catch (JsonProcessingException ex) {
-//            System.out.println(" file input error");
-//        }
     }
-    
     
     public static void project() throws IOException {
         Scanner in = new Scanner(System.in);
@@ -205,21 +184,7 @@ public class Project implements Serializable  {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter project name: ");
         String projectName = input.nextLine();
-//        ObjectMapper mapper = new ObjectMapper();
-//        //read file
-//        Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json"), Example.class);
-//        int projectId = root.getProjects().size();
-//
-//        //Update value in object
-//        Project c = new Project(projectId + 1, projectName);
-//        root.addProject(c);
-//
-//        String json = mapper.writeValueAsString(root);
-//        try (FileWriter file = new FileWriter("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json")) {
-//
-//            file.write(json);
-//            System.out.println("Successfully updated json object to file...!!");
-//        }
+
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
