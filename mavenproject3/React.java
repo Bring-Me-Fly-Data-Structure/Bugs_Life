@@ -167,7 +167,7 @@ public class React implements Serializable {
             ex.printStackTrace();
         }
 
-        React2 r = new React2();
+        React r = new React();
 
         try {
             // Get transaction and start
