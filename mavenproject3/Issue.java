@@ -834,6 +834,7 @@ public class Issue implements Serializable {
         try {
             // Get matching project object, issue object and output
             projectList = tq.getResultList();
+            issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
@@ -926,6 +927,7 @@ public class Issue implements Serializable {
         try {
             // Get matching project object, issue object and output
             projectList = tq.getResultList();
+            issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
@@ -1019,6 +1021,7 @@ public class Issue implements Serializable {
         try {
             // Get matching project object, issue project and output
             projectList = tq.getResultList();
+            issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
@@ -1111,6 +1114,7 @@ public class Issue implements Serializable {
         try {
             // Get matching project object, issue object and output
             projectList = tq.getResultList();
+            issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
@@ -1204,6 +1208,7 @@ public class Issue implements Serializable {
         try {
             // Get matching project object, issue object and output
             projectList = tq.getResultList();
+            issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
