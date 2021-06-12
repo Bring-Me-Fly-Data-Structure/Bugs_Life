@@ -493,6 +493,7 @@ public class User implements Serializable {
         } catch (SQLException e) {
             System.out.println("Failed to update Admin Log. Try again!");
         }
+        System.out.println("Good bye " + User.getLoginName() + ", we hope to see you again soon.");
         setLogin_status(false);
         setLoginName(null);
         tester.homepage();
