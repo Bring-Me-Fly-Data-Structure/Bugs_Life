@@ -199,7 +199,7 @@ public class Comment implements Serializable {
 
         // the lowercase c refers to the object
         // :custID is a parameterized query thats value is set below
-        String strQuery = "SELECT c FROM React2 c WHERE c.comment.commentId = :commentId";
+        String strQuery = "SELECT c FROM React c WHERE c.comment.commentId = :commentId";
 
         // Issue the query and get a matching Customer
         TypedQuery<React> tq = em.createQuery(strQuery, React.class);
