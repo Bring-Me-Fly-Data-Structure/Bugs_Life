@@ -457,7 +457,7 @@ public class User implements Serializable {
         if (Doregister.equals("y")) {
             register();
         } else if (Doregister.equals("n")) {
-            System.exit(0);
+            tester.homepage();
         } else if (!Doregister.equals("y") && !Doregister.equals("n")) {
             System.out.println("Invalid input. Please try again");
             System.out.println("");
