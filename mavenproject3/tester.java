@@ -26,7 +26,6 @@ public class tester {
                     User.register();
                     break;
                 } else if (userInput == 3) {
-                    System.out.println("Good bye " + User.getLoginName() + ", we hope to see you again soon.");
                     System.exit(0);
                 }
             } catch (InputMismatchException e) {
