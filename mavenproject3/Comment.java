@@ -231,6 +231,7 @@ public class Comment implements Serializable {
             if (reactList.get(6).getCount() != 0) {
                 result += String.format("%s", "Cry ") + "x" + reactList.get(6).getCount() + "  ";
             }
+            result+="\n";
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
