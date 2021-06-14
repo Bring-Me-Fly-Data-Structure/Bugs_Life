@@ -83,10 +83,6 @@ public class StatusGraph extends ApplicationFrame {
         plot.setBackgroundPaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.white);
 
-//        // customise the range axis...
-//        SymbolAxis rangeAxis = new SymbolAxis("Issue count", new String[] {"1", "2", 
-//                "3", "4", "5", "6"});
-//        plot.setRangeAxis(rangeAxis);
         // customise the renderer...
         LineAndShapeRenderer renderer
                 = (LineAndShapeRenderer) plot.getRenderer();
