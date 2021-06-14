@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mavenproject3;
 
 import java.awt.Color;
@@ -24,9 +19,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
-
 import javax.swing.JPanel;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -83,10 +76,6 @@ public class TagGraph extends ApplicationFrame {
         plot.setBackgroundPaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.white);
 
-//        // customise the range axis...
-//        SymbolAxis rangeAxis = new SymbolAxis("Issue count", new String[] {"1", "2", 
-//                "3", "4", "5", "6"});
-//        plot.setRangeAxis(rangeAxis);
         // customise the renderer...
         LineAndShapeRenderer renderer
                 = (LineAndShapeRenderer) plot.getRenderer();
