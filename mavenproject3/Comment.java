@@ -6,15 +6,10 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 import javax.persistence.*;
@@ -30,9 +25,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "comment")
-// Comment class that implements Serializable
 public class Comment implements Serializable {
-    // instant variables
+
     @JsonIgnore
     @Transient
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
@@ -40,8 +34,12 @@ public class Comment implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "issue_id", nullable = false)
+    @JsonIgnore
     private Issue issue;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_ID", nullable = false)
+//    private User userComment;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
@@ -52,7 +50,8 @@ public class Comment implements Serializable {
     @JsonProperty("text")
     private String text;
 
-    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
+//    @Transient
     @JsonProperty("react")
     private List<React> react = new ArrayList<>();
 
@@ -72,12 +71,11 @@ public class Comment implements Serializable {
     @JsonIgnore
     private static int commentID;
 
-    // empty constructor
     public Comment() {
     }
 
     @JsonCreator
-    // constructor for data.json 
+    //constructor for data.json 
     public Comment(@JsonProperty("comment_id") Integer commentId, @JsonProperty("text") String text, @JsonProperty("react") ArrayList<React> react, @JsonProperty("timestamp") Integer timestamp, @JsonProperty("user") String user) {
         this.commentId = commentId;
         this.text = text;
@@ -97,18 +95,27 @@ public class Comment implements Serializable {
             this.react.add(new React("love", 0));
             this.react.add(new React("cry", 0));
         }
+
     }
 
-    // constructor for user input
+    //constructor for user input
     public Comment(String text, String user) {
+        // this.commentId = commentId;
         this.text = text;
         this.user = user;
         this.timestampformat = new java.util.Date();
         Integer i = Math.toIntExact(new java.util.Date().getTime() / 1000);
         this.timestamp = i;
+        //"like","smile","happy","sad","cry","angry","love"
+//        this.react.add(new React("angry", 0));
+//        this.react.add(new React("happy", 0));
+//        this.react.add(new React("thumb up", 0));
+//        this.react.add(new React("smile", 0));
+//        this.react.add(new React("sad", 0));
+//        this.react.add(new React("love", 0));
+//        this.react.add(new React("cry", 0));
     }
 
-    // ----- accessor & mutator-----
     @JsonProperty("comment_id")
     public Integer getCommentId() {
         return commentId;
@@ -129,6 +136,7 @@ public class Comment implements Serializable {
         this.text = text;
     }
 
+    
     @JsonProperty("react")
     public List<React> getReact() {
         return react;
@@ -167,6 +175,13 @@ public class Comment implements Serializable {
         this.issue = issue;
     }
 
+//    public User getUserComment() {
+//        return userComment;
+//    }
+//
+//    public void setUserComment(User userComment) {
+//        this.userComment = userComment;
+//    }
     public static int getCommentID() {
         return commentID;
     }
@@ -192,55 +207,57 @@ public class Comment implements Serializable {
         SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm");
         return ft.format(getTimestampformat());
     }
-    
-    // toString method
+
     @Override
     public String toString() {
+
         String result = "     Created on: " + changeDateFormat() + "    By: " + user + "\n" + text + "\n$$ " + "\n";
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
-        // :ID is a parameterized query thats value is set below
+        // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM React c WHERE c.comment.commentId = :commentId";
 
-        // Issue the query and get a matching React
+        // Issue the query and get a matching Customer
         TypedQuery<React> tq = em.createQuery(strQuery, React.class);
         tq.setParameter("commentId", commentId);
         List<React> reactList = new ArrayList<>();
         try {
-            // Get matching react object and output
+            // Get matching customer object and output
             reactList = tq.getResultList();
             if (reactList.get(0).getCount() != 0) {
-                result += String.format("%s", "Angry ") + "x" + reactList.get(0).getCount() + "  ";
+                result += String.format("%c", 0x0001F620) + " x" + reactList.get(0).getCount() + "  ";
             }
             if (reactList.get(1).getCount() != 0) {
-                result += String.format("%s", "Happy ") + "x" + reactList.get(1).getCount() + "  ";
+                result += String.format("%c", 0x0001F601) + " x" + reactList.get(1).getCount() + "  ";
             }
             if (reactList.get(2).getCount() != 0) {
-                result += String.format("%s", "Thumbs Up ") + "x" + reactList.get(2).getCount() + "  ";
+                result += String.format("%c", 0x0001F44D) + " x" + reactList.get(2).getCount() + "  ";
             }
             if (reactList.get(3).getCount() != 0) {
-                result += String.format("%s", "Smile ") + "x" + reactList.get(3).getCount() + "  ";
+                result += String.format("%c", 0x0001F60A) + " x" + reactList.get(3).getCount() + "  ";
             }
             if (reactList.get(4).getCount() != 0) {
-                result += String.format("%s", "Sad ") + "x" + reactList.get(4).getCount() + "  ";
+                result += String.format("%c", 0x0001F622) + " x" + reactList.get(4).getCount() + "  ";
             }
             if (reactList.get(5).getCount() != 0) {
-                result += String.format("%s", "Love ") + "x" + reactList.get(5).getCount() + "  ";
+                result += String.format("%c", 0x00002764) + " x" + reactList.get(5).getCount() + "  ";
             }
             if (reactList.get(6).getCount() != 0) {
-                result += String.format("%s", "Cry ") + "x" + reactList.get(6).getCount() + "  ";
+                result += String.format("%c", 0x0001F62D) + " x" + reactList.get(5).getCount() + "  ";
             }
             result+="\n";
+            //result+=reactList.toString();
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
             em.close();
         }
+
         return result;
     }
-    
-    // allow user to add comment on selected issue
+
+    //method
     public static void addComment() throws IOException {
         Scanner input = new Scanner(System.in);
         System.out.println("Write something: (Enter '$undo' for undo, '$redo' for redo, '$end' for end)");
@@ -277,24 +294,33 @@ public class Comment implements Serializable {
         System.out.println("------------------------------");
         String username = User.getLoginName();
 
+
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
         // the lowercase c refers to the object
-        // :ID is a parameterized query thats value is set below
+        // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Project
+        // Issue the query and get a matching Customer
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
         List<Project> projectList = new ArrayList<>();
 
+//        String strQuery2 = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
+//
+//        // Issue the query and get a matching Customer
+//        TypedQuery<User> tq2 = em.createQuery(strQuery2, User.class);
+//        List<User> userList = new ArrayList<>();
         try {
-            // Get matching project object and output
+            // Get matching customer object and output
             projectList = tq.getResultList();
+            //  userList = tq2.getResultList();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
+        } finally {
+            //em.close();
         }
 
         try {
@@ -302,12 +328,14 @@ public class Comment implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Create and set values for new comment
+            // Create and set values for new customer
             Comment m = new Comment(sentence, username);
-            m.setIssue(projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId() == Issue.getIssueID()).findFirst().get());
+          //  m.setIssue(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1));
+            m.setIssue(projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get());
+
             em.persist(m);
 
-            // Save the comment object
+            // Save the customer object
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes
@@ -316,6 +344,7 @@ public class Comment implements Serializable {
             }
             System.out.println("add comment sql error");
             ex.printStackTrace();
+
         } finally {
             // Close EntityManager
             System.out.println("successfuly add comment into database");
@@ -332,26 +361,29 @@ public class Comment implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Project
+        // Issue the query and get a matching Customer
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
-        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
 
         try {
-            // Get matching project object,issue object and output
+            // Get matching customer object and output
             projectList = tq.getResultList();
             issueList = tq2.getResultList();
+            //  userList = tq2.getResultList();
+
         } catch (NoResultException ex) {
             ex.printStackTrace();
+        } finally {
+            //em.close();
         }
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
 
-            // Create and set values for new reaction
+            // Create and set values for new customer
             React angry = new React("angry", 0);
             React happy = new React("happy", 0);
             React thumb = new React("thumb up", 0);
@@ -360,6 +392,8 @@ public class Comment implements Serializable {
             React love = new React("love", 0);
             React cry = new React("cry", 0);
 
+  
+            // System.out.println(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getComments().toString());
             int commentIndex = issueList.get(Issue.getIssueID() - 1).getComments().size() - 1;
             angry.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             happy.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
@@ -368,7 +402,7 @@ public class Comment implements Serializable {
             sad.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             love.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             cry.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
-            // Save the reaction object
+            // Save the customer object
             em.persist(angry);
             em.persist(happy);
             em.persist(thumb);
@@ -376,6 +410,7 @@ public class Comment implements Serializable {
             em.persist(sad);
             em.persist(love);
             em.persist(cry);
+
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes
@@ -384,9 +419,13 @@ public class Comment implements Serializable {
             }
             System.out.println("add react sql error");
             ex.printStackTrace();
+
         } finally {
             // Close EntityManager
+            //  System.out.println("successfuly add react into database");
             em.close();
         }
     }
+
 }
+
