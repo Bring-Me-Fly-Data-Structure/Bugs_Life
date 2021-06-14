@@ -189,10 +189,10 @@ public class Comment implements Serializable {
         return ft.format(getTimestampformat());
     }
 
-    @Override
+   @Override
     public String toString() {
 
-        String result = "     Created on: " + changeDateFormat() + "    By: " + user + "\n" + text + "\n$$ " + "\n";
+        String result = "     Created on: " + changeDateFormat() + "    By: " + user + "\n" + text + "\n$$ " + "";
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
@@ -204,28 +204,28 @@ public class Comment implements Serializable {
         tq.setParameter("commentId", commentId);
         List<React> reactList = new ArrayList<>();
         try {
-            // Get matching customer object and output
+            // Get matching react object and output
             reactList = tq.getResultList();
             if (reactList.get(0).getCount() != 0) {
-                result += String.format("%c", 0x0001F620) + " x" + reactList.get(0).getCount() + "  ";
+                result += String.format("%s", "Angry ") + "x" + reactList.get(0).getCount() + "  ";
             }
             if (reactList.get(1).getCount() != 0) {
-                result += String.format("%c", 0x0001F601) + " x" + reactList.get(1).getCount() + "  ";
+                result += String.format("%s", "Happy ") + "x" + reactList.get(1).getCount() + "  ";
             }
             if (reactList.get(2).getCount() != 0) {
-                result += String.format("%c", 0x0001F44D) + " x" + reactList.get(2).getCount() + "  ";
+                result += String.format("%s", "Thumbs Up ") + "x" + reactList.get(2).getCount() + "  ";
             }
             if (reactList.get(3).getCount() != 0) {
-                result += String.format("%c", 0x0001F60A) + " x" + reactList.get(3).getCount() + "  ";
+                result += String.format("%s", "Smile ") + "x" + reactList.get(3).getCount() + "  ";
             }
             if (reactList.get(4).getCount() != 0) {
-                result += String.format("%c", 0x0001F622) + " x" + reactList.get(4).getCount() + "  ";
+                result += String.format("%s", "Sad ") + "x" + reactList.get(4).getCount() + "  ";
             }
             if (reactList.get(5).getCount() != 0) {
-                result += String.format("%c", 0x00002764) + " x" + reactList.get(5).getCount() + "  ";
+                result += String.format("%s", "Love ") + "x" + reactList.get(5).getCount() + "  ";
             }
             if (reactList.get(6).getCount() != 0) {
-                result += String.format("%c", 0x0001F62D) + " x" + reactList.get(5).getCount() + "  ";
+                result += String.format("%s", "Cry ") + "x" + reactList.get(6).getCount() + "  ";
             }
             result+="\n";
         } catch (NoResultException ex) {
