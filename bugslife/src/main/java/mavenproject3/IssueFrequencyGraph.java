@@ -4,26 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
@@ -60,9 +45,9 @@ public class IssueFrequencyGraph extends ApplicationFrame {
 
     private static JFreeChart createChart3(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createLineChart(
-                "Issue Frequency", // chart title
+                "Number Of Issue Against Date Weekly", // chart title
                 "Date", // domain axis label
-                "Issue count", // range axis label
+                "Number Of Issue", // range axis label
                 dataset, // data
                 PlotOrientation.VERTICAL, // orientation
                 true, // include legend
@@ -107,7 +92,7 @@ public class IssueFrequencyGraph extends ApplicationFrame {
      * @param args ignored.
      */
     public static void GraphIssueF() throws ParseException, IOException {
-        IssueFrequencyGraph demo = new IssueFrequencyGraph("Issue Frequency");
+        IssueFrequencyGraph demo = new IssueFrequencyGraph("Number Of Issue Against Date Weekly");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
