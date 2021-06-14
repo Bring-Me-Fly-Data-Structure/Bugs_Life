@@ -169,7 +169,7 @@ public class ReportGeneration {
         } finally {
             em.close();
         }
-
+        System.out.println("");
         while (true) {
             try {
                 System.out.println("\nEnter '1' to show Statistic of Status Graph\nOr '2' to show Statistic of Tag Graph\n'3' to Issue Frequency\n'4' to show Issue Frequency for Selected Time Range\n'5' to back to admin page");
