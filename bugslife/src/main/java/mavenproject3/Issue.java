@@ -211,6 +211,15 @@ public class Issue implements Serializable {
     public void setTag(ArrayList<String> tag) {
         this.tag = tag;
     }
+    
+    public String getTag2() {
+        return tag2;
+    }
+
+    public void setTag2(String tag2) {
+        this.tag2 = tag2;
+    }
+
 
     @JsonProperty("descriptionText")
     public String getDescriptionText() {
@@ -1137,7 +1146,7 @@ public class Issue implements Serializable {
         }
     }
 
-    public static void setNewTag(ArrayList newTag) throws IOException {
+    public static void setNewTag(ArrayList<String> newTag) throws IOException {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
 
@@ -1181,7 +1190,11 @@ public class Issue implements Serializable {
 
             // Find customer and make changes
             a = em.find(Issue.class, Issue.getIssueID());
-            a.setTag(newTag);
+            String tagStore ="";
+            for (int i = 0; i < newTag.size(); i++) {
+                tagStore += newTag.get(i)+" ";
+            }
+            a.setTag2(tagStore);
 
             // Save the customer object
             em.persist(a);
