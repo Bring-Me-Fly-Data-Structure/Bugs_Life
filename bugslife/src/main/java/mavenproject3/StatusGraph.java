@@ -67,9 +67,9 @@ public class StatusGraph extends ApplicationFrame {
 
     private static JFreeChart createChart1(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createLineChart(
-                "Statistic of Status", // chart title
+                "Number Of Issue Against Status Weekly", // chart title
                 "Status", // domain axis label
-                "Issue count", // range axis label
+                "Number Of Issue", // range axis label
                 dataset, // data
                 PlotOrientation.VERTICAL, // orientation
                 true, // include legend
@@ -111,7 +111,7 @@ public class StatusGraph extends ApplicationFrame {
      * @param args ignored.
      */
     public static void GraphStatus() throws ParseException, IOException {
-        StatusGraph demo = new StatusGraph("Statistic of Status");
+        StatusGraph demo = new StatusGraph("Number Of Issue Against Status Weekly");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
