@@ -1,4 +1,3 @@
-//package com.example;
 package mavenproject3;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -304,23 +303,6 @@ public class Issue implements Serializable {
     public static void setIssueID(int issueID) {
         Issue.issueID = issueID;
     }
-//
-//    @Override
-//    public int compareTo(Issue object) {
-//        int result = 0;
-//        if (this.getPriority() < object.getPriority()) {
-//            result = 2;
-//        } else if (this.getPriority() > object.getPriority()) {
-//            result = -1;
-//        } else if (this.getPriority() == object.getPriority()) {
-//            if (this.getTimestampformat().compareTo(object.getTimestampformat()) > 0) {
-//                result = 1;
-//            } else {
-//                result = 0;
-//            }
-//        }
-//        return result;
-//    }
 
     //main method call addIssue() enough
     public static void addIssue() throws IOException, ParseException {
@@ -379,7 +361,6 @@ public class Issue implements Serializable {
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
-        // Collections.sort(sortList);
         Comparator<Issue> timeOrder = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
@@ -401,10 +382,7 @@ public class Issue implements Serializable {
         String cname = User.getLoginName();
         String aname = "";
         ArrayList<String> tag = new ArrayList<>();
-        //String tag ="";
         Integer priority = 0;
-        // String status = "";
-        // ArrayList<React> b = new ArrayList<>();
         System.out.println("Enter Title : ");
         title = input.nextLine();
 
@@ -440,8 +418,7 @@ public class Issue implements Serializable {
 
         System.out.println(description);
         System.out.println("------------------------------");
-//        System.out.println("Enter cretor name : ");
-//        cname = input.nextLine();
+
         while (true) {
             try {
 
@@ -463,27 +440,7 @@ public class Issue implements Serializable {
                 System.out.println("");
             }
         }
-//        System.out.println("Do u want add assignee name ? input y if yes");
-//        String option = input.next();
-//        input.nextLine();
-//        if (option.equals("Y") || option.equals("y")) {
-//            System.out.println("Enter assignee name : ");
-//            aname = input.nextLine();
-//        }
-//
-//        System.out.println("Do u want add tag ? input y if yes");
-//        String option3 = input.next();
-//        //input.nextLine();
-//        if (option3.equals("Y") || option3.equals("y")) {
-//            System.out.println("Enter number of tag: ");
-//            int numT = input.nextInt();
-//            //buffer
-//            input.nextLine();
-//            for (int i = 0; i < numT; i++) {
-//                System.out.println("Add tag : ");
-//                tag.add(input.nextLine());
-//            }
-//        }
+
         outer:
         while (true) {
             try {
@@ -605,10 +562,9 @@ public class Issue implements Serializable {
             // Create and set values for new Issue
             i = new Issue(title, priority, tag, description, cname, aname, comment);
             i.setProject(projectList.get(Project.getProjectID() - 1));
-            //  projectList.get(Project.getProjectID() - 1).getIssues().add(i);
+   
             // Save the customer object
             em.persist(i);
-            // em.persist(projectList.get(Project.getProjectID() - 1)); //not sure
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes
@@ -639,16 +595,7 @@ public class Issue implements Serializable {
         Scanner input = new Scanner(System.in);
         //display issue board
         Issuequeue i = new Issuequeue();
-//        ObjectMapper objM = new ObjectMapper();
-//        try {
-//
-//            Example base = objM.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\final.json"), Example.class);
-//            List<Issue> a = base.getProjects().get(Project.getProjectID() - 1).getIssues();
-//            i.offer(a);
-//            // i.display(1);
-//        } catch (JsonProcessingException ex) {
-//            System.out.println(" file input error");
-//        }
+
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
@@ -676,7 +623,7 @@ public class Issue implements Serializable {
                     sortID(i);
                     break;
             }
-            //System.out.println(projectList.get(Project.getProjectID() - 1).getIssues().get(0).getTimestampformat()); //testing
+
             i.display();            //fix indexing problems
 
             System.out.println("Enter selected issue ID to check issue \nor 's' to search \nor 'c' to create issue\nor 'h' to check the changelog \nor 'b' to return to project dashboard:");
@@ -742,14 +689,6 @@ public class Issue implements Serializable {
         } finally {
             em.close();
         }
-
-//        int prevIssueSize = 0;
-//        if (Project.getProjectID() > 1) {
-//                    
-//            for (int j = 0; j < Project.getProjectID() - 1; j++) {
-//                prevIssueSize+=projectList.get(j).getIssues().size();
-//            }
-//        }
     }
 
     public static void setIssueStatus(String newStatus) throws IOException {
@@ -782,9 +721,6 @@ public class Issue implements Serializable {
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldstatus = issueList.get(Issue.getIssueID() - 1).getStatus();
-//            issueTitle =projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get().getTitle();
-//            issueID =projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get().getId();
-//            oldstatus =projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get().getStatus();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
@@ -877,9 +813,6 @@ public class Issue implements Serializable {
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
-//            issueTitle=projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-//            oldTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
@@ -973,10 +906,6 @@ public class Issue implements Serializable {
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldDescription = issueList.get(Issue.getIssueID() - 1).getDescriptionText();
-//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-//            oldDescription = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getDescriptionText();
-
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
@@ -1069,9 +998,6 @@ public class Issue implements Serializable {
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldAssignee = issueList.get(Issue.getIssueID() - 1).getAssignee();
-//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-//            oldAssignee = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getAssignee();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
@@ -1164,9 +1090,6 @@ public class Issue implements Serializable {
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldPrio = issueList.get(Issue.getIssueID() - 1).getPriority();
-//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-//            oldPrio = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getPriority();
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
@@ -1261,13 +1184,7 @@ public class Issue implements Serializable {
             issueTitle = issueList.get(Issue.getIssueID() - 1).getTitle();
             issueID = issueList.get(Issue.getIssueID() - 1).getId();
             oldTag = issueList.get(Issue.getIssueID() - 1).getTag();
-//            issueTitle = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTitle();
-//            issueID = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getId();
-//            oldTag = projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1).getTag();
 
-//            for (int i = 0; i < oldTag.size(); i++) {
-//                oldTag+=oldTag.get(i)+" ";
-//            }
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
