@@ -37,9 +37,6 @@ public class Comment implements Serializable {
     @JsonIgnore
     private Issue issue;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_ID", nullable = false)
-//    private User userComment;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
@@ -51,7 +48,6 @@ public class Comment implements Serializable {
     private String text;
 
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
-//    @Transient
     @JsonProperty("react")
     private List<React> react = new ArrayList<>();
 
@@ -106,14 +102,6 @@ public class Comment implements Serializable {
         this.timestampformat = new java.util.Date();
         Integer i = Math.toIntExact(new java.util.Date().getTime() / 1000);
         this.timestamp = i;
-        //"like","smile","happy","sad","cry","angry","love"
-//        this.react.add(new React("angry", 0));
-//        this.react.add(new React("happy", 0));
-//        this.react.add(new React("thumb up", 0));
-//        this.react.add(new React("smile", 0));
-//        this.react.add(new React("sad", 0));
-//        this.react.add(new React("love", 0));
-//        this.react.add(new React("cry", 0));
     }
 
     @JsonProperty("comment_id")
@@ -175,13 +163,6 @@ public class Comment implements Serializable {
         this.issue = issue;
     }
 
-//    public User getUserComment() {
-//        return userComment;
-//    }
-//
-//    public void setUserComment(User userComment) {
-//        this.userComment = userComment;
-//    }
     public static int getCommentID() {
         return commentID;
     }
@@ -247,7 +228,6 @@ public class Comment implements Serializable {
                 result += String.format("%c", 0x0001F62D) + " x" + reactList.get(5).getCount() + "  ";
             }
             result+="\n";
-            //result+=reactList.toString();
         } catch (NoResultException ex) {
             ex.printStackTrace();
         } finally {
@@ -307,11 +287,6 @@ public class Comment implements Serializable {
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
         List<Project> projectList = new ArrayList<>();
 
-//        String strQuery2 = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
-//
-//        // Issue the query and get a matching Customer
-//        TypedQuery<User> tq2 = em.createQuery(strQuery2, User.class);
-//        List<User> userList = new ArrayList<>();
         try {
             // Get matching customer object and output
             projectList = tq.getResultList();
