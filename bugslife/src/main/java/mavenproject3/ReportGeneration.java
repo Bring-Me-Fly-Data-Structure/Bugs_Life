@@ -20,16 +20,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
-//import static mavenproject3.GraphFormation.date1;
-//import static mavenproject3.GraphFormation.date2;
-//import static mavenproject3.GraphFormation.flag;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
-/**
- *
- * @author richi
- */
+
 public class ReportGeneration {
 
     public static long numResolved;
@@ -62,16 +56,7 @@ public class ReportGeneration {
             .createEntityManagerFactory("hibernateTest");
 
     public static void generateReport() throws ParseException, IOException {
-        Scanner input = new Scanner(System.in);
-//        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
-//        System.out.println("Enter check-in date (dd mm yyyy):");
-//        String cindate = input.nextLine();
-//        System.out.println("Enter check-out date (dd mm yyyy):");
-//        String coutdate = input.nextLine();
-//        if (null != cindate && cindate.trim().length() > 0 && null != coutdate && coutdate.trim().length() > 0) {
-//            date1 = myFormat.parse(cindate);
-//            date2 = myFormat.parse(coutdate);
-//        }
+        Scanner input = new Scanner(System.in);     
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
@@ -104,8 +89,6 @@ public class ReportGeneration {
             ArrayList<Integer> all = new ArrayList<>();
 
             //list of timestamps in stated timerange
-           // ArrayList<Integer> range = new ArrayList<>();
-
             for (int i = 0; i < projectList.size(); i++) {
                 numResolved += findWeeklyStatus(projectList.get(i).getIssues(), "Resolved");
                 numInProgress += findWeeklyStatus(projectList.get(i).getIssues(), "In Progress");
@@ -114,7 +97,6 @@ public class ReportGeneration {
                 all.addAll(findIssuePerDay(projectList.get(i).getIssues()));
                 findTag(outer, projectList.get(i).getIssues());
 
-                //range.addAll(findIssuerPerTimeRange(projectList.get(i).getIssues(), GraphFormation.date1, GraphFormation.date2));
 
                 //loop through each issue, find number of issue solved by each user, store it in array 
                 for (int j = 0; j < usersName.size(); j++) {
@@ -128,10 +110,6 @@ public class ReportGeneration {
 
             ArrayList<String> dates = new ArrayList<>();
             all.stream().forEach(allObj -> dates.add(changeDateFormat2(new Date((long) allObj * 1000))));
-
-//            Collections.sort(range);
-//            ArrayList<String> datesRange = new ArrayList<>();
-//            range.stream().forEach(allObj -> datesRange.add(changeDateFormat2(new Date((long) allObj * 1000))));
 
             //find the index of highest solved , then the use the index to determine the top performer
             long max = numSolvedbyAssignee[0];
@@ -166,8 +144,7 @@ public class ReportGeneration {
             }
 
             occurrencesDate = dates.stream().collect(Collectors.groupingBy(w -> w, (Supplier<LinkedHashMap<String, Long>>) LinkedHashMap::new, Collectors.counting()));
-            //occurrencesDateRange = datesRange.stream().collect(Collectors.groupingBy(w -> w, (Supplier<LinkedHashMap<String, Long>>) LinkedHashMap::new, Collectors.counting()));
-
+           
             if (outer.isEmpty()) {
                 System.out.println("Most frequent label of the week: no label found");
                 occurrences = outer.stream().collect(Collectors.groupingBy(w -> w, Collectors.counting()));
@@ -181,7 +158,6 @@ public class ReportGeneration {
                         keys.add(entry.getKey());
                     }
                 }
-                //  System.out.println(occurrences);
                 System.out.print("Most frequent label of the week: ");
                 for (int i = 0; i < keys.size(); i++) {
                     System.out.print("\"" + keys.get(i) + "\" ");
@@ -288,16 +264,11 @@ public class ReportGeneration {
     }
 
     public static void findTag(List<String> outer, List<Issue> list) {
-
-        // list.stream().filter(listObj -> listObj.getTag());
-        //list.stream().forEach(listObj -> outer.addAll(listObj.getTag()));
         list.stream().filter(listObj -> checkThisWeek(listObj.getTimestamp())).forEach(listObj -> outer.addAll(listObj.getTag()));
-//        list.stream().forEach(listObj -> outer.addAll(listObj.getTag()));
     }
 
     public static ArrayList<Integer> findIssuePerDay(List<Issue> list) {
         ArrayList<Integer> timestamps = new ArrayList<>();
-        //list.stream().forEach(issue -> timestamps.add(issue.getTimestamp())&&checkThisWeek(issue.));
         list.stream().filter(listObj -> checkThisWeek(listObj.getTimestamp())).forEach(listObj -> timestamps.add(listObj.getTimestamp()));
         return timestamps;
     }
@@ -309,16 +280,12 @@ public class ReportGeneration {
     }
 
     public static boolean checkTimeRange(Integer issueTimeStamp, Date input1, Date input2) {
-//        Date day1 = new Date((long) input1 * 1000);
-//        Date day2 = new Date((long) input2 * 1000);
         Date timestamp = new Date((long) issueTimeStamp * 1000);
         return timestamp.after(input1) && timestamp.before(input2);
     }
 
     public static boolean checkThisWeek(long unixtimestamp) {
         Calendar c = Calendar.getInstance();
-//        System.out.println(c.getTime().getTime()/1000);
-//        System.out.println(new Date().getTime()/1000);
         c.setFirstDayOfWeek(Calendar.MONDAY);
         c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -327,7 +294,6 @@ public class ReportGeneration {
         c.set(Calendar.MILLISECOND, 0);
         Date monday = c.getTime();
         Date nextMonday = new Date(monday.getTime() + 7 * 24 * 60 * 60 * 1000);
-        //  System.out.println(nextMonday);
         Date today = new Date((long) unixtimestamp * 1000);
 
         return today.after(monday) && today.before(nextMonday);
