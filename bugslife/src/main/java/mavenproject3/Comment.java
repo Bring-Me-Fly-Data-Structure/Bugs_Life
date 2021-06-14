@@ -196,10 +196,10 @@ public class Comment implements Serializable {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM React c WHERE c.comment.commentId = :commentId";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching React
         TypedQuery<React> tq = em.createQuery(strQuery, React.class);
         tq.setParameter("commentId", commentId);
         List<React> reactList = new ArrayList<>();
@@ -280,15 +280,15 @@ public class Comment implements Serializable {
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
         List<Project> projectList = new ArrayList<>();
 
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
             //  userList = tq2.getResultList();
 
@@ -303,14 +303,14 @@ public class Comment implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Create and set values for new customer
+            // Create and set values for new comment
             Comment m = new Comment(sentence, username);
           //  m.setIssue(projectList.get(Project.getProjectID() - 1).getIssues().get(Issue.getIssueID() - 1));
             m.setIssue(projectList.get(Project.getProjectID() - 1).getIssues().stream().filter(issue -> issue.getId()==Issue.getIssueID()).findFirst().get());
 
             em.persist(m);
 
-            // Save the customer object
+            // Save the comment object
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes
@@ -336,15 +336,17 @@ public class Comment implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
 
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
+            // Get matching issue object and output
             issueList = tq2.getResultList();
             //  userList = tq2.getResultList();
 
@@ -358,7 +360,7 @@ public class Comment implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Create and set values for new customer
+            // Create and set values for new react
             React angry = new React("angry", 0);
             React happy = new React("happy", 0);
             React thumb = new React("thumb up", 0);
@@ -377,7 +379,7 @@ public class Comment implements Serializable {
             sad.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             love.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
             cry.setComment(issueList.get(Issue.getIssueID() - 1).getComments().get(commentIndex));
-            // Save the customer object
+            // Save the react object
             em.persist(angry);
             em.persist(happy);
             em.persist(thumb);
