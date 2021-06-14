@@ -221,9 +221,23 @@ public class Issuequeue {
                                     break;
                                 case 5:
                                     ArrayList<String> tag = new ArrayList<>();
-                                    System.out.println("Enter new tag : ");
-                                    String newtag = in.nextLine();
-                                    tag.add(newtag);
+
+                                    while (true) {
+                                        try {
+                                            System.out.println("Enter number of tags: ");
+                                            int userInput = in.nextInt();
+                                            in.nextLine(); //buffer
+                                            for (int i = 0; i < userInput; i++) {
+                                                System.out.println("Enter new tag : ");
+                                                String newtag = in.nextLine();
+                                                tag.add(newtag);
+                                            }
+                                            break;
+                                        } catch (InputMismatchException e) {
+                                            System.out.println("Invalid value!\n");
+                                            in.next();
+                                        }
+                                    }
                                     Issue.setNewTag(tag);
                                     break;
                             }
