@@ -59,12 +59,10 @@ public class JSON_IMPORT_EXPORT {
         // :custID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
-        // String strQuery3 = "SELECT c FROM React2 c WHERE c.react_id IS NOT NULL";
 
         // Issue the query and get a matching Customer
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
-        TypedQuery<User> tq2 = em.createQuery(strQuery2, User.class);
-        //TypedQuery<React2> tq3 = em.createQuery(strQuery3, React2.class);
+        TypedQuery<User> tq2 = em.createQuery(strQuery2, User.class); 
         List<Project> projectList = new ArrayList<>();
         List<User> listU = new ArrayList<>();
         List<changelog> listC = new ArrayList<>();
@@ -115,7 +113,6 @@ public class JSON_IMPORT_EXPORT {
             } catch (SQLException ex) {
                 System.out.println("export adminlog error");
             }
-            // listR = tq3.getResultList();
             ObjectMapper mapper = new ObjectMapper();
 
             Example root = new Example();
@@ -268,7 +265,6 @@ public class JSON_IMPORT_EXPORT {
             });
 
             // Save the customer object
-            //em.persist(a);
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes
