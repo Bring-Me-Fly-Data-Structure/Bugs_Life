@@ -332,8 +332,7 @@ public class Issue implements Serializable {
 
         //action for issue board
         i.offer(create(input));
-        System.out.println("--------------------------------------");
-        System.out.println("Add issue successfully");
+
         displayIssueBoard();
     }
 
