@@ -56,21 +56,23 @@ public class JSON_IMPORT_EXPORT {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching User
         TypedQuery<User> tq2 = em.createQuery(strQuery2, User.class); 
         List<Project> projectList = new ArrayList<>();
         List<User> listU = new ArrayList<>();
         List<changelog> listC = new ArrayList<>();
         List<adminlog> listA = new ArrayList<>();
-        //List<React2> listR = new ArrayList<>();
+       
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
+            // Get matching issue object and output
             listU = tq2.getResultList();
             try {
                 Connection changelogSQL = new Connection();
@@ -264,7 +266,7 @@ public class JSON_IMPORT_EXPORT {
                 em.persist(user);
             });
 
-            // Save the customer object
+            // Save the project object
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes
