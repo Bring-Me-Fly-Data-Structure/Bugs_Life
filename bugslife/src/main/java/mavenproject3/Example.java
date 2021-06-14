@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "projects",
@@ -29,7 +28,6 @@ public class Example {
     private List<changelog> changelogList = new ArrayList<>();
     @JsonProperty("adminlog")
     private List<adminlog> adminlogList = new ArrayList<>();
-
     
     //getters and setters
     @JsonProperty("projects")
@@ -100,8 +98,7 @@ public class Example {
             }
         }
     }
-
-    
+ 
     //display based on ID
     public void sortProjectID(List<Project> a) {
         System.out.println("Project board");
@@ -145,8 +142,5 @@ public class Example {
         } else {
             return false;
         }
-    }
-
-    
-
+    } 
 }
