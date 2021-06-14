@@ -138,7 +138,6 @@ public class ReportGeneration {
             System.out.println("Number of resolved issues: " + numResolved);
             System.out.println("Number of In Progress issues: " + numInProgress);
             System.out.println("Number of unresolved issues: " + numUnresolved);
-            System.out.println("Number of open :"+numOpen);
             if (max == 0) {
                 System.out.println("Top performer of the week: nobody");
             } else {
