@@ -125,7 +125,6 @@ public class Issue implements Serializable {
 
     //constructor for user input data
     public Issue(String title, Integer priority, ArrayList<String> tag, String descriptionText, String createdBy, String assignee, ArrayList<Comment> comments) {
-        // this.id = id;
         this.title = title;
         this.priority = priority;
         this.status = "Open";
@@ -342,7 +341,6 @@ public class Issue implements Serializable {
         while (!list.isEmpty()) {
             sortList.add(list.poll());
         }
-        // Collections.sort(sortList);
         Comparator<Issue> timeOrder = new Comparator<>() {
             @Override
             public int compare(Issue s1, Issue e2) {
@@ -426,7 +424,6 @@ public class Issue implements Serializable {
                 String ans = input.nextLine();
                 if (isInteger(ans)) {
                     int option = Integer.parseInt(ans);
-                    //input.nextLine();
                     if (option == 1) {
                         System.out.println("Enter assignee name : ");
                         aname = input.nextLine();
@@ -455,7 +452,6 @@ public class Issue implements Serializable {
                                 System.out.println("Enter number of tag: ");
                                 String numT = input.nextLine();
                                 //buffer
-                                //input.nextLine();
                                 if(isInteger(numT)){
                                     int numTT=Integer.parseInt(numT);
                                     for (int i = 0; i < numTT; i++) {
@@ -484,7 +480,6 @@ public class Issue implements Serializable {
             try {
                 System.out.println("Add priority : ");
                 String num = input.nextLine();
-                //input.nextLine();
                 if (isInteger(num)) {
                     priority = Integer.parseInt(num);
                     break;
@@ -544,12 +539,10 @@ public class Issue implements Serializable {
         try {
             // Get matching customer object and output
             projectList = tq.getResultList();
-
+            
         } catch (NoResultException ex) {
             ex.printStackTrace();
-        } finally {
-            //em.close();
-        }
+        } 
 
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
@@ -599,7 +592,7 @@ public class Issue implements Serializable {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
 
         // Issue the query and get a matching Customer
@@ -641,7 +634,7 @@ public class Issue implements Serializable {
                 Project.displayProject();
             } else if (option.equals("h")) {
                 changelog.viewChangelogbyProject();
-               // changelog.viewChangelogbyProject();
+
                 while (true) {
                     try {
                         System.out.println("Enter '1' to return issue dashboard");
@@ -698,7 +691,7 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
@@ -724,9 +717,7 @@ public class Issue implements Serializable {
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
-        } finally {
-            //  em.close();
-        }
+        } 
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -816,9 +807,8 @@ public class Issue implements Serializable {
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
-        } finally {
-            //  em.close();
-        }
+        } 
+        
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -883,7 +873,7 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :cutID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
