@@ -61,18 +61,20 @@ public class ReportGeneration {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching User
         TypedQuery<User> tq2 = em.createQuery(strQuery2, User.class);
         List<Project> projectList = new ArrayList<>();
         List<User> listU = new ArrayList<>();
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
+            // Get matching user object and output
             listU = tq2.getResultList();
             ArrayList<String> usersName = new ArrayList<>();
             ArrayList<String> outer = new ArrayList<>();
@@ -194,18 +196,20 @@ public class ReportGeneration {
                     em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
                     // the lowercase c refers to the object
-                    // :custID is a parameterized query thats value is set below
+                    // :ID is a parameterized query thats value is set below
                     strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
                     strQuery2 = "SELECT c FROM User c WHERE c.userid IS NOT NULL";
 
-                    // Issue the query and get a matching Customer
+                    // Issue the query and get a matching Project
                     tq = em.createQuery(strQuery, Project.class);
+                    // Issue the query and get a matching User
                     tq2 = em.createQuery(strQuery2, User.class);
                     projectList = new ArrayList<>();
                     listU = new ArrayList<>();
                     try {
-                        // Get matching customer object and output
+                        // Get matching project object and output
                         projectList = tq.getResultList();
+                        // Get matching user object and output
                         listU = tq2.getResultList();
                         ArrayList<String> usersName = new ArrayList<>();
                         ArrayList<String> outer = new ArrayList<>();
