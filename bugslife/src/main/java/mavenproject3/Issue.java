@@ -873,7 +873,7 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :cutID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
@@ -898,9 +898,7 @@ public class Issue implements Serializable {
             oldDescription = issueList.get(Issue.getIssueID() - 1).getDescriptionText();
         } catch (NoResultException ex) {
             ex.printStackTrace();
-        } finally {
-            //  em.close();
-        }
+        } 
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -965,7 +963,7 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
@@ -991,9 +989,7 @@ public class Issue implements Serializable {
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
-        } finally {
-            //  em.close();
-        }
+        } 
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -1057,7 +1053,7 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
@@ -1083,8 +1079,6 @@ public class Issue implements Serializable {
 
         } catch (NoResultException ex) {
             ex.printStackTrace();
-        } finally {
-            //  em.close();
         }
         try {
             // Get transaction and start
