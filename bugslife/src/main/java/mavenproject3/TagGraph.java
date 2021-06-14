@@ -60,9 +60,9 @@ public class TagGraph extends ApplicationFrame {
 
     private static JFreeChart createChart2(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createLineChart(
-                "Statistic of Tag", // chart title
+                "Number Of Issue Against Tag Weekly", // chart title
                 "Tag", // domain axis label
-                "Issue count", // range axis label
+                "Number Of Issue", // range axis label
                 dataset, // data
                 PlotOrientation.VERTICAL, // orientation
                 true, // include legend
@@ -102,7 +102,7 @@ public class TagGraph extends ApplicationFrame {
      * @param args ignored.
      */
     public static void Graphtag() throws ParseException, IOException {
-        TagGraph demo = new TagGraph("Statistic of Tag");
+        TagGraph demo = new TagGraph("Number Of Issue Against Tag Weekly");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
