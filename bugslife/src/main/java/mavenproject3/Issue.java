@@ -542,12 +542,12 @@ public class Issue implements Serializable {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
         List<Project> projectList = new ArrayList<>();
 
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
             
         } catch (NoResultException ex) {
@@ -566,7 +566,7 @@ public class Issue implements Serializable {
             i = new Issue(title, priority, tag, description, cname, aname, comment);
             i.setProject(projectList.get(Project.getProjectID() - 1));
    
-            // Save the customer object
+            // Save the issue object
             em.persist(i);
             et.commit();
         } catch (Exception ex) {
@@ -605,11 +605,11 @@ public class Issue implements Serializable {
         // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
         List<Project> projectList = new ArrayList<>();
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
             i.offer(projectList.get(Project.getProjectID() - 1).getIssues());
 
@@ -705,8 +705,9 @@ public class Issue implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -716,8 +717,9 @@ public class Issue implements Serializable {
         int issueID = -1;
         String oldstatus = "";
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
+            // Get matching issue object and output
             issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
@@ -733,13 +735,13 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setStatus(newStatus);
             Integer i = Math.toIntExact(new java.util.Date().getTime() / 1000);
             a.setStatusTimestamp(i);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -795,8 +797,9 @@ public class Issue implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Project
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -806,8 +809,9 @@ public class Issue implements Serializable {
         int issueID = -1;
         String oldTitle = "";
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
+            // Get matching issue object and output
             issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
@@ -824,11 +828,11 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setTitle(newTitle);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -887,8 +891,9 @@ public class Issue implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -898,8 +903,9 @@ public class Issue implements Serializable {
         int issueID = -1;
         String oldDescription = "";
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
+            // Get matching issue object and output
             issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
@@ -914,11 +920,11 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setDescriptionText(newDescription);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -977,8 +983,9 @@ public class Issue implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -988,8 +995,9 @@ public class Issue implements Serializable {
         int issueID = -1;
         String oldAssignee = "";
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
+            // Get matching issue object and output
             issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
@@ -1005,11 +1013,11 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setAssignee(newAssignee);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -1067,8 +1075,9 @@ public class Issue implements Serializable {
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -1078,8 +1087,9 @@ public class Issue implements Serializable {
         int issueID = -1;
         int oldPrio = -1;
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
+            // Get matching issue object and output
             issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
@@ -1095,11 +1105,11 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             a.setPriority(newPriority);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
@@ -1153,12 +1163,13 @@ public class Issue implements Serializable {
 
         Issue a = null;
         // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
+        // :ID is a parameterized query thats value is set below
         String strQuery = "SELECT c FROM Project c WHERE c.id IS NOT NULL";
         String strQuery2 = "SELECT c FROM Issue c WHERE c.id IS NOT NULL";
 
-        // Issue the query and get a matching Customer
+        // Issue the query and get a matching Project
         TypedQuery<Project> tq = em.createQuery(strQuery, Project.class);
+        // Issue the query and get a matching Issue
         TypedQuery<Issue> tq2 = em.createQuery(strQuery2, Issue.class);
         List<Project> projectList = new ArrayList<>();
         List<Issue> issueList = new ArrayList<>();
@@ -1170,8 +1181,9 @@ public class Issue implements Serializable {
         ArrayList<String> oldTag = new ArrayList<>();
 
         try {
-            // Get matching customer object and output
+            // Get matching project object and output
             projectList = tq.getResultList();
+            // Get matching issue object and output
             issueList = tq2.getResultList();
             projectName = projectList.get(Project.getProjectID() - 1).getName();
             projectID = projectList.get(Project.getProjectID() - 1).getId();
@@ -1189,7 +1201,7 @@ public class Issue implements Serializable {
             et = em.getTransaction();
             et.begin();
 
-            // Find customer and make changes
+            // Find issue and make changes
             a = em.find(Issue.class, Issue.getIssueID());
             String tagStore ="";
             for (int i = 0; i < newTag.size(); i++) {
@@ -1197,7 +1209,7 @@ public class Issue implements Serializable {
             }
             a.setTag2(tagStore);
 
-            // Save the customer object
+            // Save the issue object
             em.persist(a);
             et.commit();
         } catch (Exception ex) {
