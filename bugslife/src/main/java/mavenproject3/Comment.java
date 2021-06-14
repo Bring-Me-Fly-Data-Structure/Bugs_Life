@@ -260,31 +260,39 @@ public class Comment implements Serializable {
     //method
     public static void addComment() throws IOException {
         Scanner input = new Scanner(System.in);
-
-        System.out.println("Write something: ");
+        System.out.println("Write something: (Enter '$undo' for undo, '$redo' for redo, '$end' for end)");
         String sentence = "";
         UndoRedoStack<String> a = new UndoRedoStack<>();
         while (input.hasNext()) {
             String s1 = input.nextLine();
-            if (s1.equals("end")) {
+            if (s1.equals("$end")) {
                 break;
-            } else if (s1.equals("undo")) {
+            } else if (s1.equals("$undo")) {
                 a.undo();
                 System.out.println(a);
-            } else if (s1.equals("redo")) {
+            } else if (s1.equals("$redo")) {
                 a.redo();
                 System.out.println(a);
             } else {
                 a.push(s1);
                 System.out.println(a);
             }
-
         }
-        for (int i = 0; i < a.size(); i++) {
-            sentence = sentence + a.get(i) + "\n";
+        System.out.println("------------------------------");
+        System.out.println("         Comment added");
+        System.out.println("------------------------------");
+        if (a.size() > 1) {
+            sentence = sentence + a.get(0) + "\n";
+            for (int i = 1; i < a.size() - 1; i++) {
+                sentence = sentence + a.get(i) + "\n";
+            }
+            sentence = sentence + a.get(a.size() - 1);
+        } else {
+            sentence = sentence + a.get(0);
         }
         System.out.println(sentence);
-        String username = User.getLoginName();
+        System.out.println("------------------------------");
+         String username = User.getLoginName();
 
 
         // The EntityManager class allows operations such as create, read, update, delete
