@@ -37,11 +37,18 @@ public class JSON_IMPORT_EXPORT {
             try {
                 System.out.println("Enter '1' to import JSON to MySQL Database, '2' to export data from MySQL to JSON file");
                 int input = in.nextInt();
+                in.nextLine(); //buffer
                 if (input == 1) {
-                    importJson();
+                    System.out.println("Enter video's file path : ");
+                    System.out.println("eg: C:/Users/downloads/data.json");
+                    String filepath = in.nextLine();
+                    importJson(filepath);
                     break;
                 } else if (input == 2) {
-                    exportJson();
+                    System.out.println("Enter video's file path : ");
+                    System.out.println("eg: C:/Users/downloads/data.json");
+                    String filepath = in.nextLine();
+                    exportJson(filepath);
                     break;
                 }
             } catch (InputMismatchException e) {
@@ -51,7 +58,7 @@ public class JSON_IMPORT_EXPORT {
         }
     }
 
-    public static void exportJson() throws IOException {
+    public static void exportJson(String filepath) throws IOException {
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
@@ -123,7 +130,7 @@ public class JSON_IMPORT_EXPORT {
             root.setChangelogList(listC);
             root.setAdminlogList(listA);
             String json = mapper.writeValueAsString(root);
-            try (FileWriter file = new FileWriter("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\localDatabase\\exportTest.json")) {
+            try (FileWriter file = new FileWriter(filepath)) {
 
                 file.write(json);
                 System.out.println("Successfully updated json object to file...!!");
@@ -136,10 +143,10 @@ public class JSON_IMPORT_EXPORT {
 
     }
 
-    public static void importJson() throws IOException {
+    public static void importJson(String filepath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         //read file
-        Example root = mapper.readValue(new File("C:\\Users\\richi\\Desktop\\UM folder\\Y1S2\\WIA1002 DS\\assignment\\initialData.json"), Example.class);
+        Example root = mapper.readValue(new File(filepath), Example.class);
         int sizeProject = root.getProjects().size();
         for (int i = 0; i < sizeProject; i++) {
             int sizeIssue = root.getProjects().get(i).getIssues().size();
