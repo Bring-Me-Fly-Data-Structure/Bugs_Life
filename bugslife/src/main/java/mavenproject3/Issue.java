@@ -430,72 +430,73 @@ public class Issue implements Serializable {
             try {
 
                 System.out.println("Do u want add assignee name ? input '1' if yes ,'2' if no");
-                String ans = input.nextLine();
-                if (isInteger(ans)) {
-                    int option = Integer.parseInt(ans);
-                    if (option == 1) {
+                int ans = input.nextInt();
+                    input.nextLine(); //buffer
+                    if (ans == 1) {
                         System.out.println("Enter assignee name : ");
                         aname = input.nextLine();
                         break;
-                    } else if (option == 2) {
+                    } else if (ans == 2) {
                         break;
                     }
-                }
+
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please try again.");
-                System.out.println("");
+                input.next();
             }
         }
 
-        outer:
+    outer:
         while (true) {
             try {
                 System.out.println("Do u want add tag ? input '1' if yes, '2' if no");
-                String option = input.nextLine();
-                if (isInteger(option)) {
-                    int option3 = Integer.parseInt(option);
-                    if (option3 == 1) {
+                int option = input.nextInt();
+
+
+                    if (option == 1) {
                         while (true) {
                             try {
-                                
+
                                 System.out.println("Enter number of tag: ");
-                                String numT = input.nextLine();
+                                int numT = input.nextInt();
                                 //buffer
-                                if(isInteger(numT)){
-                                    int numTT=Integer.parseInt(numT);
-                                    for (int i = 0; i < numTT; i++) {
-                                    System.out.println("Add tag : ");
-                                    tag.add(input.nextLine());
-                                }
-                                break outer;  
-                                }
+                                input.nextLine();
+
+
+                                    for (int i = 0; i < numT; i++) {
+                                        System.out.println("Add tag : ");
+                                        tag.add(input.nextLine());
+                                    }
+                                    break outer;
+
                             } catch (InputMismatchException e) {
                                 System.out.println("Invalid input. Please try again.");
-                                System.out.println("");
+                                input.next();
                             }
                             //break;
                         }
                         //break;
-                    } else if (option3 == 2) {
+                    } else if (option == 2) {
                         break;
                     }
-                }
+
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please try again.");
-                System.out.println("");
+                input.next();
             }
         }
-        while (true) {
+         while (true) {
             try {
                 System.out.println("Add priority : ");
-                String num = input.nextLine();
-                if (isInteger(num)) {
-                    priority = Integer.parseInt(num);
+                int num = input.nextInt();
+                input.nextLine();//buffer
+
+                    priority = num;
                     break;
-                }
+
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please try again.");
-                System.out.println("");
+                input.next();
             }
 
         }
